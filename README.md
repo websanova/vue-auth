@@ -48,7 +48,7 @@ The `ready()` method can then be used to check when the user is first loaded.
 
 **NOTE:** This pre-fetch of the user would only occur once on the initial load of the site.
 
-**NOTE:** This will all happen automatically once the package is included. Only the end points for the API will need to be changed which are described in the Options section below.
+**NOTE:** This will all happen automatically once the package is included. Only the end points for the API will need to be changed which are described in the `options` section below.
 
 
 ## Privileges
@@ -105,9 +105,9 @@ Note that the users `roles` variable can be set in the options.
 
 `**ready()**`
 
-When the app boots the jwt-auth plugin will fire off a check for a token and subsequent user fetch. In the first instance of this the app will be set to "ready".
+When the app boots the `vue-jwt-auth` plugin will fire off a check for a token and subsequent user fetch. In the first instance of this the app will be set to "ready".
 
-This will only occur once when you refresh/reload your browser.
+This will only occur once when the browser is loaded or refreshed.
 
 `**check()**`
 
@@ -258,7 +258,7 @@ The name of the token stored in local storage.
 
 **default:** _cookieDomain
 
-The domain to use for the cookie. Can also override the local method for this.
+The domain to use for the cookie. This method can be overridden.
 
 `**userData**`         
 
