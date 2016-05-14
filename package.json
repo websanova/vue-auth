@@ -1,0 +1,20 @@
+{
+  "author": {
+    "name": "Websanova",
+    "url": "http://websanova.com",
+    "username": "websanova",
+    "email": "rob@websanova.com"
+  },
+  "dependencies": {},
+  "description": "Vue.js JWT Auth plugin.",
+  "licenses": "MIT, GPL",
+  "devDependencies": {},
+  "keywords": ["jwt", "auth", "authentication", "plugin", "json", "web", "token"],
+  "main": "vue-jwt-auth.js",
+  "name": "vue-jwt-auth",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/websanova/vue-jwt-auth"
+  },
+  "version": "0.1.0"
+}

@@ -7,9 +7,19 @@ Jwt Auth library for Vue.js.
 
 ## Usage
 
+Directly:
+
 ~~~
-import Auth from './plugins/VueAuth';
+import Auth from './plugins/vue-jwt-auth.js';
 Vue.use(Auth, options);
+~~~
+
+Via npm:
+
+~~~
+Vue.use(require('vue-jwt-auth'), {
+    rolesVar: 'type'
+});
 ~~~
 
 
