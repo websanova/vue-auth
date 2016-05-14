@@ -149,7 +149,7 @@ this.$auth.login(data, rememberMe, redirectURL, {
 
 Log the user out.
 
-`**facebook**` `**gogole**`
+`**facebook**` `**google**`
 
 These follows the same format as the `$auth.login()` method.
 
