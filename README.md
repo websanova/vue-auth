@@ -25,8 +25,6 @@ Vue.use(require('vue-jwt-auth'), {
 
 ## Loading
 
-Since `$auth` is just an instance of `Auth` it can be binded and set to watch. It's good to do this in the root app component.
-
 The `ready()` method can then be used to check when the user is first loaded.
 
 ~~~
@@ -44,16 +42,6 @@ The `ready()` method can then be used to check when the user is first loaded.
         Site is loading...
     </div>
 </template>
-
-<script> 
-    export default {
-        data() {
-            return {
-                $auth: this.$auth
-            };
-        }
-    }
-</script>
 ~~~
 
 **NOTE:** This pre-fetch of the user would only occur once on the initial load of the site.

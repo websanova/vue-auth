@@ -1,7 +1,7 @@
 /*
     https://github.com/websanova/vue-jwt-auth
     rob@websanova.com
-    Version 0.1.0
+    Version 0.2.0
  */
 
 module.exports = (function () {
@@ -12,6 +12,7 @@ module.exports = (function () {
         this.authenticated = null;
         this.loaded = false;
         this.data = null;
+        this.set = false;
 
         this.options = {
             authType          : options.authType          || 'bearer',
@@ -245,7 +246,14 @@ module.exports = (function () {
     };
 
     Auth.prototype.context = function(ctx) {
-        if (ctx) { _ctx = ctx; }
+        if (ctx) {
+            if ( ! this.set) {
+                ctx[ctx.set ? 'set' : '$set']('__auth', this);
+                this.set = true;
+            }
+
+            _ctx = ctx;
+        }
 
         return _ctx;
     };
@@ -301,7 +309,7 @@ module.exports = (function () {
     };
 
     return function install(Vue, options) {
-        var auth = new Auth(options);
+        var auth = new Auth(options || {});
 
         Vue.auth = Auth;
 

@@ -9,12 +9,12 @@
   "description": "Vue.js JWT Auth plugin.",
   "licenses": "MIT, GPL",
   "devDependencies": {},
-  "keywords": ["jwt", "auth", "authentication", "plugin", "json", "web", "token"],
+  "keywords": ["vue", "vue.js", "jwt", "auth", "authentication", "plugin", "json", "web", "token"],
   "main": "vue-jwt-auth.js",
   "name": "vue-jwt-auth",
   "repository": {
     "type": "git",
     "url": "https://github.com/websanova/vue-jwt-auth"
   },
-  "version": "0.1.0"
+  "version": "0.2.0"
 }
