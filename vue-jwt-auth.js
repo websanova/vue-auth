@@ -1,7 +1,7 @@
 /*
     https://github.com/websanova/vue-jwt-auth
     rob@websanova.com
-    Version 0.2.0
+    Version 0.2.1
  */
 
 module.exports = (function () {
@@ -116,7 +116,7 @@ module.exports = (function () {
             _this.authenticated = null;
             
             if (options.success) {
-                options.success.call(_ctx);
+                options.success.call(_ctx, resp);
             }
 
             _this.fetch(function () {
@@ -125,9 +125,9 @@ module.exports = (function () {
                 }
             });
         }, {
-            error: function () {
+            error: function (resp) {
                 if (options.error) {
-                    options.error.call(_ctx);
+                    options.error.call(_ctx, resp);
                 }
             }
         });
