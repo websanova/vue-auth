@@ -143,11 +143,7 @@ this.$auth.login(data, rememberMe, redirectURL, {
 * **redirectUrl** - Which route to redirect to after successful login.
 * **options** - The `success` and `error` callbacks can be set.
 
-`**logout**`
-
-Log the user out.
-
-`**facebook**` `**google**`
+`**facebook()**` `**google()**`
 
 These follows the same format as the `$auth.login()` method.
 
@@ -179,6 +175,24 @@ var callbacks = {
 };
 
 this.auth.facebook(data, null, null, callbacks);
+~~~
+
+`**logout()**`
+
+Log the user out.
+
+Also accepts a `redirect` option and `force` redirect option.
+
+Only redirects if on an auth required page.
+
+~~~
+this.$auth.logout('/home');
+~~~
+
+Always redirects.
+
+~~~
+this.$auth.logout('/home/', true);
 ~~~
 
 

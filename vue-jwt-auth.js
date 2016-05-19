@@ -1,7 +1,7 @@
 /*
     https://github.com/websanova/vue-jwt-auth
     rob@websanova.com
-    Version 0.2.1
+    Version 0.3.0
  */
 
 module.exports = (function () {
@@ -296,15 +296,17 @@ module.exports = (function () {
         _social.call(this, 'google', data, rememberMe, url, options);
     };
 
-    Auth.prototype.logout = function(url) {
+    Auth.prototype.logout = function(url, force) {
         _removeRememberMeCookie.call(this);
         _removeToken.call(this);
 
         this.authenticated = false;
         this.data = null;
 
-        if (!this.check()) {
-            _ctx.$router.go(url || '/');
+        if ( ! this.check()) {
+            if (_ctx.$route.auth || force) {
+                _ctx.$router.go(url || '/');
+            }
         }
     };
 
