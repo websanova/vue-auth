@@ -1,9 +1,3 @@
-/*
-    https://github.com/websanova/vue-jwt-auth
-    rob@websanova.com
-    Version 0.3.0
- */
-
 module.exports = (function () {
 
     var _ctx = null;
@@ -20,9 +14,11 @@ module.exports = (function () {
             fetchUrl          : options.fetchUrl          || '/auth/user',
             tokenUrl          : options.tokenUrl          || '/auth/token',
             loginUrl          : options.loginUrl          || '/auth/login',
-            // registerUrl       : options.registerUrl       || '/auth/register',
+            loginAsUrl        : options.loginAsUrl        || '/auth/login-as',
 
-            loginRedirect     : options.loginRedirect     || '/login',
+            authRedirect      : options.authRedirect      || '/login',
+            loginRedirect     : options.loginRedirect     || '/account',
+            logoutRedirect    : options.logoutRedirect    || '/',
             notFoundRedirect  : options.notFoundRedirect  || '/404',
             forbiddenRedirect : options.forbiddenRedirect || '/403',
 
@@ -42,7 +38,13 @@ module.exports = (function () {
             googleUrl         : options.googleUrl         || '/auth/google',
             googleAppId       : options.googleAppId       || '',
             googleScope       : options.googleScope       || 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read',
-            googleRedirect    : options.googleRedirect    || _getUrl() + '/login/google'
+            googleRedirect    : options.googleRedirect    || _getUrl() + '/login/google',
+
+            // twitterUrl       : options.twitterUrl       || '/auth/twitter',
+            // twitterAppId     : options.twitterAppId     || '',
+            // twitterClientId  : options.twitterClientId  || '',
+            // twitterScope     : options.twitterScope     || 'email',
+            // twitterRedirect  : options.twitterRedirect  || _getUrl() + '/login/twitter',
         };
     }
 
@@ -52,7 +54,7 @@ module.exports = (function () {
 
         if (auth && (auth === true || auth.constructor === Array)) {
             if ( ! this.check()) {
-                _ctx.$router.replace(this.options.loginRedirect);
+                _ctx.$router.replace(this.options.authRedirect);
             }
             else if (auth.constructor === Array && ! _compare(auth, _toArray(this.user()[this.options.rolesVar]))) {
                 _ctx.$router.replace(this.options.forbiddenRedirect);
@@ -78,17 +80,17 @@ module.exports = (function () {
     }
 
     function _getToken() {
-        return localStorage.getItem(this.options.tokenName);
+        return localStorage.getItem( (this.other() ? 'login-as-' : '') + this.options.tokenName);
     }
 
     function _setToken(token) {
         if (token) {
-            localStorage.setItem(this.options.tokenName, token);
+            localStorage.setItem( (this.other() ? 'login-as-' : '') + this.options.tokenName, token);
         }
     }
 
     function _removeToken() {
-        localStorage.removeItem(this.options.tokenName);
+        localStorage.removeItem( (this.other() ? 'login-as-' : '') + this.options.tokenName);
     }
 
     function _setRememberMeCookie(rememberMe) {
@@ -103,7 +105,7 @@ module.exports = (function () {
         _setCookie.call(this, 'rememberMe', 'false', -12096e5);
     }
 
-    function _login(path, data, rememberMe, redirectUrl, options) {
+    function _login(path, data, rememberMe, options) {
         var _this = this;
 
         options = options || {};
@@ -120,8 +122,8 @@ module.exports = (function () {
             }
 
             _this.fetch(function () {
-                if (redirectUrl && _this.check()) {
-                    _ctx.$router.go(redirectUrl);
+                if (_this.options.loginRedirect && _this.check()) {
+                    _ctx.$router.go(_this.options.loginRedirect);
                 }
             });
         }, {
@@ -133,16 +135,38 @@ module.exports = (function () {
         });
     }
 
+    function _fetch(cb) {
+        var _this = this;
+
+        cb = cb || function () {};
+
+        _ctx.$http.get(this.options.fetchUrl, function(resp) {
+            _this.authenticated = true;
+            _this.data = _this.options.userData.call(_this, resp);
+            _this.loaded = true;
+
+            return cb();
+        }, {
+            error: function() {
+                _this.loaded = true;
+
+                return cb();
+            }
+        });
+    }
+
     function _refreshToken() {
         if (_getToken.call(this)) {
             _ctx.$http.get(this.options.tokenUrl);
         }
     }
 
-    function _social(type, data, rememberMe, redirectUrl, options) {
+    function _social(type, data, rememberMe, options) {
         var _this  = this,
             state,
             params = '';
+
+        data = data || {};
 
         if (data.code) {
             state = JSON.parse(_ctx.$route.query.state);
@@ -152,9 +176,10 @@ module.exports = (function () {
         else {
             data.state = data.state || {};
             data.state.rememberMe = rememberMe === true ? true : false;
-            data.state.redirect = redirectUrl ? redirectUrl : '';
+            data.state.redirect = this.options.loginRedirect || '';
 
             data.appId = data.appId || this.options[type + 'AppId'];
+            data.clientId = data.clientId || this.options[type + 'ClientId'];
             data.scope = data.scope || this.options[type + 'Scope'];
             data.redirect = data.redirect || this.options[type + 'Redirect'];
 
@@ -166,6 +191,9 @@ module.exports = (function () {
             else if (type === 'google') {
                 window.location = 'https://accounts.google.com/o/oauth2/auth' + params;
             }
+            // else if (type === 'twitter') {
+            //     window.location = 'https://oauth.twitter.com/2/authorize?oauth_callback_url=' + data.redirect + '&oauth_mode=flow_web_client&oauth_client_identifier=' + data.appId + '&redirect_uri=' + data.redirect + '&response_type=token&client_id=' + data.clientId;
+            // }
         }
     }
 
@@ -206,8 +234,6 @@ module.exports = (function () {
     }
 
     Auth.prototype.fetch = function(cb) {
-        var _this = this;
-
         cb = cb || function () {};
 
         if ( ! this.loaded) {
@@ -217,29 +243,17 @@ module.exports = (function () {
         if (this.authenticated === null && _getToken.call(this)) {
             if ( ! document.cookie.match(/rememberMe/)) {
                 _removeToken.call(this);
-                _this.loaded = true;
+                this.loaded = true;
                 
                 return cb();
             }
 
             this.authenticated = false;
             
-            _ctx.$http.get('/auth/user', function(resp) {
-                _this.authenticated = true;
-                _this.data = _this.options.userData.call(_this, resp);
-                _this.loaded = true;
-
-                return cb();
-            }, {
-                error: function() {
-                    _this.loaded = true;
-
-                    return cb();
-                }
-            });
+            _fetch.call(this, cb);
         }
         else {
-            _this.loaded = true;
+            this.loaded = true;
 
             return cb();
         }        
@@ -284,30 +298,79 @@ module.exports = (function () {
         return this.data;
     };
 
-    Auth.prototype.login = function(data, rememberMe, redirectUrl, options) {
-        _login.call(this, this.options.loginUrl, data, rememberMe, redirectUrl, options);
+    Auth.prototype.login = function(data, rememberMe, options) {
+        _login.call(this, this.options.loginUrl, data, rememberMe, options);
     };
 
-    Auth.prototype.facebook = function(data, rememberMe, url, options) {
-        _social.call(this, 'facebook', data, rememberMe, url, options);
+    Auth.prototype.facebook = function(data, rememberMe, options) {
+        _social.call(this, 'facebook', data, rememberMe, options);
     };
 
-    Auth.prototype.google = function(data, rememberMe, url, options) {
-        _social.call(this, 'google', data, rememberMe, url, options);
+    Auth.prototype.google = function(data, rememberMe, options) {
+        _social.call(this, 'google', data, rememberMe, options);
     };
 
-    Auth.prototype.logout = function(url, force) {
+    // Auth.prototype.twitter = function(data, rememberMe, url, options) {
+    //     _social.call(this, 'twitter', data, rememberMe, url, options);
+    // };
+
+    Auth.prototype.logout = function() {
         _removeRememberMeCookie.call(this);
+        
+        // Need to call twice to remove both tokens.
+        _removeToken.call(this);
         _removeToken.call(this);
 
         this.authenticated = false;
         this.data = null;
 
-        if ( ! this.check()) {
-            if (_ctx.$route.auth || force) {
-                _ctx.$router.go(url || '/');
-            }
+        if (_ctx.$route.auth && this.options.logoutRedirect) {
+            _ctx.$router.go(this.options.logoutRedirect);
         }
+    };
+
+    Auth.prototype.loginAs = function(data, options) {
+         var _this = this;
+
+        options = options || {};
+
+        _ctx.$http.post(this.options.loginAsUrl, data, function(resp) {
+            localStorage.setItem('login-as-' + _this.options.tokenName, resp[_this.options.tokenVar]);
+            
+            if (options.success) {
+                options.success.call(_ctx, resp);
+            }
+
+            _fetch.call(_this, function () {
+                if (_this.options.loginRedirect && _this.check()) {
+                    _ctx.$router.go(_this.options.loginRedirect);
+                }
+            });
+        }, {
+            error: function (resp) {
+                if (options.error) {
+                    options.error.call(_ctx, resp);
+                }
+            }
+        });
+    };
+
+    Auth.prototype.logoutAs = function(options) {
+        var _this = this;
+
+        localStorage.removeItem('login-as-' + this.options.tokenName);
+        
+        _fetch.call(this, function () {
+            if (_ctx.$route.auth && _this.options.logoutRedirect) {
+                _ctx.$router.go(_this.options.logoutRedirect);
+            }
+        });
+    };
+
+    Auth.prototype.other = function() {
+        this.data; // Weird but need this to trigger a state change check here. NO idea why.
+
+        return localStorage.getItem('login-as-' + this.options.tokenName);
     };
 
     return function install(Vue, options) {
