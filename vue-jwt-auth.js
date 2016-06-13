@@ -116,7 +116,7 @@ module.exports = (function () {
 
     // Auth
     
-    function _login(path, data, rememberMe, options) {
+    function _login(path, data, rememberMe, redirectUrl, options) {
         options = options || {};
 
         this.$http.post(path, data, function(resp) {
@@ -128,13 +128,13 @@ module.exports = (function () {
 
             this.authenticated = null;
             
-            if (options.success) {
-                options.success.call(this, resp);
-            }
             this.fetch(function () {
-                if (_this.getOption('loginRedirect') && _this.check()) {
-                    
-                    _this.$router.go(_this.getOption('loginRedirect'));
+                if (options.success) {
+                    options.success.call(_this, resp);
+                }
+
+                if (redirectUrl && _this.check()) {
+                    _this.$router.go(redirectUrl);
                 }
             });
         }, {
@@ -146,7 +146,7 @@ module.exports = (function () {
         });
     }
 
-    function _social(type, data, rememberMe, options) {
+    function _social(type, data, rememberMe, redirectUrl, options) {
         var state,
             params = '';
 
@@ -160,7 +160,7 @@ module.exports = (function () {
         else {
             data.state = data.state || {};
             data.state.rememberMe = rememberMe === true ? true : false;
-            data.state.redirect = this.getOption('loginRedirect') || '';
+            data.state.redirect = redirectUrl || '';
 
             data.appId = data.appId || this.getOption(type + 'AppId');
             data.clientId = data.clientId || this.getOption(type + 'ClientId');
@@ -210,8 +210,6 @@ module.exports = (function () {
             loginUrl          : '/auth/login',
             loginAsUrl        : '/auth/login-as',
 
-            authRedirect      : '/login',
-            loginRedirect     : '/account',
             logoutRedirect    : '/',
             notFoundRedirect  : '/404',
             forbiddenRedirect : '/403',
@@ -294,19 +292,19 @@ module.exports = (function () {
 
             // Login / Logout
             
-            login: function (data, rememberMe, options) {
-                _login.call(this, this.getOption('loginUrl'), data, rememberMe, options);
+            login: function (data, rememberMe, redirectUrl, options) {
+                _login.call(this, this.getOption('loginUrl'), data, rememberMe, redirectUrl, options);
             },
 
-            facebook: function (data, rememberMe, options) {
-                _social.call(this, 'facebook', data, rememberMe, options);
+            facebook: function (data, rememberMe, redirectUrl, options) {
+                _social.call(this, 'facebook', data, rememberMe, redirectUrl, options);
             },
 
-            google: function (data, rememberMe, options) {
-                _social.call(this, 'google', data, rememberMe, options);
+            google: function (data, rememberMe, redirectUrl, options) {
+                _social.call(this, 'google', data, rememberMe, redirectUrl, options);
             },
 
-            logout: function() {
+            logout: function(redirectUrl, force) {
                 _removeRememberMeCookie.call(this);
                 
                 // Need to call twice to remove both tokens.
@@ -316,8 +314,8 @@ module.exports = (function () {
                 this.authenticated = false;
                 this.data = null;
 
-                if (this.$route.auth && this.getOption('logoutRedirect')) {
-                    this.$router.go(this.getOption('logoutRedirect'));
+                if (redirectUrl && (this.$route.auth || force)) {
+                    this.$router.go(redirectUrl);
                 }
             },
 
@@ -372,7 +370,7 @@ module.exports = (function () {
 
             // Login As
 
-            loginAs: function(data, options) {
+            loginAs: function(data, redirectUrl, options) {
                 options = options || {};
 
                 this.$http.post(this.getOption('loginAsUrl'), data, function(resp) {
@@ -380,13 +378,13 @@ module.exports = (function () {
 
                     localStorage.setItem('login-as-' + this.getOption('tokenName'), resp[this.getOption('tokenVar')]);
                     
-                    if (options.success) {
-                        options.success.call(this, resp);
-                    }
-
                     _fetch.call(this, function () {
-                        if (_this.getOption('loginRedirect') && _this.check()) {
-                            _this.$router.go(_this.getOption('loginRedirect'));
+                        if (options.success) {
+                            options.success.call(this, resp);
+                        }
+
+                        if (redirectUrl && _this.check()) {
+                            _this.$router.go(redirectUrl);
                         }
                     });
                 }, {
@@ -398,25 +396,27 @@ module.exports = (function () {
                 });
             },
 
-            logoutAs: function(options) {
+            logoutAs: function(redirectUrl) {
                 var _this = this;
 
                 localStorage.removeItem('login-as-' + this.getOption('tokenName'));
                 
                 _fetch.call(this, function () {
-                    if (_this.$route.auth && _this.getOption('logoutRedirect')) {
-                        _this.$router.go(_this.getOption('logoutRedirect'));
+                    if (redirectUrl) {
+                        _this.$router.go(redirectUrl);
                     }
                 });
             },
 
             other: function() {
+                this.data; // TODO: Strange thing, need this to make the check fire consistently ??
+
                 return localStorage.getItem('login-as-' + this.getOption('tokenName'));
             }
         }
     };
 
-    return function install(Vue, options) {
+    return function install(Vue, options, router) {
         var auth = new Vue(Auth);
 
         auth.setOptions(options || {});
@@ -432,7 +432,7 @@ module.exports = (function () {
         });
 
         // // Setup before each route change check.
-        Vue.router.beforeEach(function (transition) {
+        (Vue.router || router).beforeEach(function (transition) {
 
             // Make sure to use $auth.fetch so context is loaded.
             transition.to.router.app.$auth.fetch(function () {

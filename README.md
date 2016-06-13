@@ -195,6 +195,18 @@ Always redirects.
 this.$auth.logout('/home/', true);
 ~~~
 
+`**loginAs(data, redirectUrl, options)**`
+
+Login as another user.
+
+`**logoutAs(redirectUrl)**`
+
+Logout or other user. Will revert to previously logged in user.
+
+`**other()**`
+
+Check if we are currently logged in as another user.
+
 
 ## Options
 
