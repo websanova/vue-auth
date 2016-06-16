@@ -244,7 +244,7 @@ module.exports = (function () {
         created: function () {
             var _this = this;
 
-            Vue.http.interceptors.push({
+            this.$http.interceptors.push({
 
                 // Send auth token on each request.
                 request: function (req) {
