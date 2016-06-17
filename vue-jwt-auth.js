@@ -104,14 +104,16 @@ module.exports = (function () {
     }
 
     function _refreshToken() {
+        var _this = this;
+
         if (_getToken.call(this)) {
             this.$http.get(this.getOption('tokenUrl'));
 
-            // clearTimeout(_tokenRefreshTimeout);
+            clearTimeout(_tokenRefreshTimeout);
 
-            // _tokenRefreshTimeout = setTimeout(function () {
-            //     _refreshToken();
-            // }, this.getOption('tokenTimeout'));
+            _tokenRefreshTimeout = setTimeout(function () {
+                _refreshToken.call(_this);
+            }, this.getOption('tokenTimeout'));
         }
     }
 
@@ -225,7 +227,7 @@ module.exports = (function () {
             rolesVar          : 'roles',
             tokenVar          : 'token',
             tokenName         : 'jwt-auth-token',
-            tokenTimeout      : 1000, // 50 minutes (in milliseconds).
+            tokenTimeout      : 3000 * 1000, // 50 minutes (in milliseconds).
 
             cookieDomain      : _cookieDomain,
             userData          : _userData,
