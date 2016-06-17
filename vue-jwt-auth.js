@@ -1,5 +1,7 @@
 module.exports = (function () {
 
+    var _tokenRefreshTimeout = null;
+
     // Default
 
     function _beforeEach(transition) {
@@ -104,6 +106,12 @@ module.exports = (function () {
     function _refreshToken() {
         if (_getToken.call(this)) {
             this.$http.get(this.getOption('tokenUrl'));
+
+            // clearTimeout(_tokenRefreshTimeout);
+
+            // _tokenRefreshTimeout = setTimeout(function () {
+            //     _refreshToken();
+            // }, this.getOption('tokenTimeout'));
         }
     }
 
@@ -217,7 +225,8 @@ module.exports = (function () {
             rolesVar          : 'roles',
             tokenVar          : 'token',
             tokenName         : 'jwt-auth-token',
-            
+            tokenTimeout      : 1000, // 50 minutes (in milliseconds).
+
             cookieDomain      : _cookieDomain,
             userData          : _userData,
             beforeEach        : _beforeEach,
@@ -239,41 +248,6 @@ module.exports = (function () {
                 loaded: false,
                 authenticated: null
             };
-        },
-
-        created: function () {
-            var _this = this;
-
-            this.$http.interceptors.push({
-
-                // Send auth token on each request.
-                request: function (req) {
-                    var token = _getToken.call(_this);
-
-                    if (token) {
-                        if (_this.getOption('authType') === 'bearer') {
-                            req.headers.Authorization = 'Bearer: ' + token;
-                        }
-                    }
-
-                    return req;
-                },
-
-                // Reset auth token if provided in response.
-                response: function (res) {
-                    var authorization = res.headers('authorization');
-
-                    if (authorization) {
-                        authorization = authorization.split(' ');
-
-                        if (authorization[1]) {
-                            _setToken.call(this, authorization[1]);
-                        }
-                    }
-
-                    return res;
-                }
-            });
         },
 
         methods: {
@@ -431,13 +405,45 @@ module.exports = (function () {
             }
         });
 
-        // // Setup before each route change check.
+        // Setup before each route change check.
         (Vue.router || router).beforeEach(function (transition) {
 
             // Make sure to use $auth.fetch so context is loaded.
             transition.to.router.app.$auth.fetch(function () {
                 auth.getOption('beforeEach').bind(auth)(transition);
             });
-        }); 
+        });
+
+        // Set interceptors.
+        Vue.http.interceptors.push({
+
+            // Send auth token on each request.
+            request: function (req) {
+                var token = _getToken.call(auth);
+
+                if (token) {
+                    if (auth.getOption('authType') === 'bearer') {
+                        req.headers.Authorization = 'Bearer: ' + token;
+                    }
+                }
+
+                return req;
+            },
+
+            // Reset auth token if provided in response.
+            response: function (res) {
+                var authorization = res.headers('authorization');
+
+                if (authorization) {
+                    authorization = authorization.split(' ');
+
+                    if (authorization[1]) {
+                        _setToken.call(auth, authorization[1]);
+                    }
+                }
+
+                return res;
+            }
+        });
     }
 })();
