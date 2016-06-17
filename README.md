@@ -22,6 +22,13 @@ Vue.use(require('vue-jwt-auth'), {
 });
 ~~~
 
+**NOTE:** If you do not set your router as `Vue.router = new VueRouter()` then you will need to feed the `router` in directly as an optional third argument.
+
+~~~
+var router = new VueRouter();
+Vue.use(Auth, options, router);
+~~~
+
 
 ## Loading
 
