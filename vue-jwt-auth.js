@@ -415,7 +415,7 @@ module.exports = (function () {
 
       // Reset auth token if provided in response.
       response: function (res) {
-        var authorization = res.headers('authorization')
+        var authorization = res.headers('Authorization')
 
         if (authorization) {
           authorization = authorization.split(' ')
