@@ -22,7 +22,7 @@ module.exports = (function () {
   }
 
   function _userData (res) {
-    return res.data
+    return res.data || res
   }
 
   function _cookieDomain () {
