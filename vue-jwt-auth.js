@@ -138,7 +138,7 @@ module.exports = (function () {
         }
       })
     }, {
-      error: function (res) {
+      error (res) {
         if (options.error) {
           options.error.call(this, res)
         }
@@ -189,7 +189,7 @@ module.exports = (function () {
 
       return cb()
     }, {
-      error: function () {
+      error () {
         this.loaded = true
 
         return cb()
@@ -233,7 +233,7 @@ module.exports = (function () {
       googleRedirect: _getUrl() + '/login/google'
     },
 
-    data: function () {
+    data () {
       return {
         data: null,
         loaded: false,
@@ -244,30 +244,30 @@ module.exports = (function () {
     methods: {
 
       // Options
-      getOption: function (key) {
+      getOption (key) {
         return this.$options.options[key]
       },
 
-      setOptions: function (options) {
+      setOptions (options) {
         for (var i in options) {
           this.$options.options[i] = options[i]
         }
       },
 
       // Login / Logout
-      login: function (data, rememberMe, redirectUrl, options) {
+      login (data, rememberMe, redirectUrl, options) {
         _login.call(this, this.getOption('loginUrl'), data, rememberMe, redirectUrl, options)
       },
 
-      facebook: function (data, rememberMe, redirectUrl, options) {
+      facebook (data, rememberMe, redirectUrl, options) {
         _social.call(this, 'facebook', data, rememberMe, redirectUrl, options)
       },
 
-      google: function (data, rememberMe, redirectUrl, options) {
+      google (data, rememberMe, redirectUrl, options) {
         _social.call(this, 'google', data, rememberMe, redirectUrl, options)
       },
 
-      logout: function (redirectUrl, force) {
+      logout (redirectUrl, force) {
         _removeRememberMeCookie.call(this)
 
         // Need to call twice to remove both tokens.
@@ -283,19 +283,17 @@ module.exports = (function () {
       },
 
       // User
-      check: function (role) {
-        if (this.data !== null) {
-          if (role) {
-            return _compare(role, this.data[this.getOption('rolesVar')])
-          }
-
+      check (role) {
+        if (this.data === null) {
           return true
         }
-
-        return false
+        var token = _getToken.call(this)
+        var params = this.decodeToken(token)
+        var expired = Math.round(new Date().getTime() / 1000) <= params.exp
+        return !expired || !role || _compare(role, this.data[this.getOption('rolesVar')])
       },
 
-      fetch: function (cb) {
+      fetch (cb) {
         cb = cb || function () {}
 
         if (!this.loaded) {
@@ -321,16 +319,16 @@ module.exports = (function () {
         }
       },
 
-      user: function () {
+      user () {
         return this.data
       },
 
-      ready: function () {
+      ready () {
         return this.loaded
       },
 
       // Login As
-      loginAs: function (data, redirectUrl, options) {
+      loginAs (data, redirectUrl, options) {
         options = options || {}
 
         this.$http.post(this.getOption('loginAsUrl'), data, function (res) {
@@ -348,7 +346,7 @@ module.exports = (function () {
             }
           })
         }, {
-          error: function (res) {
+          error (res) {
             if (options.error) {
               options.error.call(this, res)
             }
@@ -356,7 +354,7 @@ module.exports = (function () {
         })
       },
 
-      logoutAs: function (redirectUrl) {
+      logoutAs (redirectUrl) {
         var _this = this
 
         localStorage.removeItem('login-as-' + this.getOption('tokenName'))
@@ -368,10 +366,62 @@ module.exports = (function () {
         })
       },
 
-      other: function () {
+      other () {
         this.data // TODO: Strange thing, need this to make the check fire consistently ??
 
         return localStorage.getItem('login-as-' + this.getOption('tokenName'))
+      },
+      // Jwt util
+      urlBase64Decode (str) {
+        let output = str.replace(/-/g, '+').replace(/_/g, '/')
+        switch (output.length % 4) {
+          case 0: { break }
+          case 2: {
+            output += '=='
+            break
+          }
+          case 3: { output += '='
+            break
+          }
+          default: {
+            console.log('Illegal base64url string!')
+          }
+        }
+        return decodeURIComponent(escape(window.atob(output))) // polifyll https://github.com/davidchambers/Base64.js
+      },
+      decodeToken (token) {
+        let parts = token.split('.')
+
+        if (parts.length !== 3) {
+          throw new Error('JWT must have 3 parts')
+        }
+
+        let decoded = this.urlBase64Decode(parts[1])
+        if (!decoded) {
+          throw new Error('Cannot decode the token')
+        }
+
+        return JSON.parse(decoded)
+      },
+      getTokenExpirationDate (token) {
+        let decoded = this.decodeToken(token)
+
+        if (typeof decoded.exp === 'undefined') {
+          return null
+        }
+        let d = new Date(0) // The 0 here is the key, which sets the date to the epoch
+        d.setUTCSeconds(decoded.exp)
+
+        return d
+      },
+      isTokenExpired (token, offsetSeconds) {
+        let d = this.getTokenExpirationDate(token)
+        offsetSeconds = offsetSeconds || 0
+        if (d === null) {
+          return false
+        }
+        // Token expired?
+        return !(d.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)))
       }
     }
   }
@@ -383,7 +433,7 @@ module.exports = (function () {
 
     Object.defineProperties(Vue.prototype, {
       $auth: {
-        get: function () {
+        get () {
           _setRoute.call(auth, this.$route, this.$router)
 
           return auth
@@ -402,9 +452,8 @@ module.exports = (function () {
     // Set interceptors.
     Vue.http.interceptors.push({
       // Send auth token on each request.
-      request: function (req) {
+      request (req) {
         var token = _getToken.call(auth)
-
         if (token && auth.getOption('authType') === 'bearer' && req.root === auth.getOption('root')) {
           req.headers.Authorization = 'Bearer: ' + token
         }
@@ -412,7 +461,7 @@ module.exports = (function () {
       },
 
       // Reset auth token if provided in response.
-      response: function (res) {
+      response (res) {
         var authorization = res.headers('Authorization')
 
         if (authorization) {
