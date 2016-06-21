@@ -109,6 +109,59 @@ module.exports = (function () {
     }
   }
 
+  // Jwt util
+  function _urlBase64Decode (str) {
+    let output = str.replace(/-/g, '+').replace(/_/g, '/')
+    switch (output.length % 4) {
+      case 0: { break }
+      case 2: {
+        output += '=='
+        break
+      }
+      case 3: { output += '='
+        break
+      }
+      default: {
+        console.log('Illegal base64url string!')
+      }
+    }
+    return decodeURIComponent(escape(window.atob(output))) // polifyll https://github.com/davidchambers/Base64.js
+  }
+  function _decodeToken (token) {
+    let parts = token.split('.')
+
+    if (parts.length !== 3) {
+      throw new Error('JWT must have 3 parts')
+    }
+
+    let decoded = _urlBase64Decode(parts[1])
+    if (!decoded) {
+      throw new Error('Cannot decode the token')
+    }
+
+    return JSON.parse(decoded)
+  }
+  function _getTokenExpirationDate (token) {
+    let decoded = _decodeToken(token)
+
+    if (typeof decoded.exp === 'undefined') {
+      return null
+    }
+    let d = new Date(0) // The 0 here is the key, which sets the date to the epoch
+    d.setUTCSeconds(decoded.exp)
+
+    return d
+  }
+  function _isTokenExpired (token, offsetSeconds) {
+    let d = _getTokenExpirationDate(token)
+    offsetSeconds = offsetSeconds || 0
+    if (d === null) {
+      return false
+    }
+    // Token expired?
+    return !(d.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)))
+  }
+
   // Router
   function _setRoute (route, router) {
     this.$route = route
@@ -288,9 +341,8 @@ module.exports = (function () {
           return true
         }
         var token = _getToken.call(this)
-        var params = this.decodeToken(token)
-        var expired = Math.round(new Date().getTime() / 1000) <= params.exp
-        return !expired || !role || _compare(role, this.data[this.getOption('rolesVar')])
+        var params = _decodeToken(token)
+        return _isTokenExpired(token, params.exp) && (!role || _compare(role, this.data[this.getOption('rolesVar')]))
       },
 
       fetch (cb) {
@@ -370,58 +422,6 @@ module.exports = (function () {
         this.data // TODO: Strange thing, need this to make the check fire consistently ??
 
         return localStorage.getItem('login-as-' + this.getOption('tokenName'))
-      },
-      // Jwt util
-      urlBase64Decode (str) {
-        let output = str.replace(/-/g, '+').replace(/_/g, '/')
-        switch (output.length % 4) {
-          case 0: { break }
-          case 2: {
-            output += '=='
-            break
-          }
-          case 3: { output += '='
-            break
-          }
-          default: {
-            console.log('Illegal base64url string!')
-          }
-        }
-        return decodeURIComponent(escape(window.atob(output))) // polifyll https://github.com/davidchambers/Base64.js
-      },
-      decodeToken (token) {
-        let parts = token.split('.')
-
-        if (parts.length !== 3) {
-          throw new Error('JWT must have 3 parts')
-        }
-
-        let decoded = this.urlBase64Decode(parts[1])
-        if (!decoded) {
-          throw new Error('Cannot decode the token')
-        }
-
-        return JSON.parse(decoded)
-      },
-      getTokenExpirationDate (token) {
-        let decoded = this.decodeToken(token)
-
-        if (typeof decoded.exp === 'undefined') {
-          return null
-        }
-        let d = new Date(0) // The 0 here is the key, which sets the date to the epoch
-        d.setUTCSeconds(decoded.exp)
-
-        return d
-      },
-      isTokenExpired (token, offsetSeconds) {
-        let d = this.getTokenExpirationDate(token)
-        offsetSeconds = offsetSeconds || 0
-        if (d === null) {
-          return false
-        }
-        // Token expired?
-        return !(d.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)))
       }
     }
   }
