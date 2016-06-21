@@ -203,10 +203,10 @@ module.exports = (function () {
     options: {
       authType: 'bearer',
 
-      fetchUrl: '/auth/user',
-      tokenUrl: '/auth/token',
-      loginUrl: '/auth/login',
-      loginAsUrl: '/auth/login-as',
+      fetchUrl: 'auth/user',
+      tokenUrl: 'auth/token',
+      loginUrl: 'auth/login',
+      loginAsUrl: 'auth/login-as',
 
       logoutRedirect: '/',
       notFoundRedirect: '/404',
@@ -221,12 +221,12 @@ module.exports = (function () {
       userData: _userData,
       beforeEach: _beforeEach,
 
-      facebookUrl: '/auth/facebook',
+      facebookUrl: 'auth/facebook',
       facebookAppId: '',
       facebookScope: 'email',
       facebookRedirect: _getUrl() + '/login/facebook',
 
-      googleUrl: '/auth/google',
+      googleUrl: 'auth/google',
       googleAppId: '',
       googleScope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read',
       googleRedirect: _getUrl() + '/login/google'
