@@ -21,8 +21,8 @@ module.exports = (function () {
     }
   }
 
-  function _userData (resp) {
-    return resp.data
+  function _userData (res) {
+    return res.data
   }
 
   function _cookieDomain () {
@@ -119,18 +119,18 @@ module.exports = (function () {
   function _login (path, data, rememberMe, redirectUrl, options) {
     options = options || {}
 
-    this.$http.post(path, data, function (resp) {
+    this.$http.post(path, data, function (res) {
       var _this = this
 
       _setRememberMeCookie.call(this, rememberMe)
 
-      _setToken.call(this, resp[this.getOption('tokenVar')])
+      _setToken.call(this, res[this.getOption('tokenVar')])
 
       this.authenticated = null
 
       this.fetch(function () {
         if (options.success) {
-          options.success.call(_this, resp)
+          options.success.call(_this, res)
         }
 
         if (redirectUrl && _this.check()) {
@@ -138,9 +138,9 @@ module.exports = (function () {
         }
       })
     }, {
-      error: function (resp) {
+      error: function (res) {
         if (options.error) {
-          options.error.call(this, resp)
+          options.error.call(this, res)
         }
       }
     })
@@ -182,9 +182,9 @@ module.exports = (function () {
   function _fetch (cb) {
     cb = cb || function () {}
 
-    this.$http.get(this.getOption('fetchUrl'), function (resp) {
+    this.$http.get(this.getOption('fetchUrl'), function (res) {
       this.authenticated = true
-      this.data = this.getOption('userData').call(this, resp)
+      this.data = this.getOption('userData').call(this, res)
       this.loaded = true
 
       return cb()
@@ -332,14 +332,14 @@ module.exports = (function () {
       loginAs: function (data, redirectUrl, options) {
         options = options || {}
 
-        this.$http.post(this.getOption('loginAsUrl'), data, function (resp) {
+        this.$http.post(this.getOption('loginAsUrl'), data, function (res) {
           var _this = this
 
-          localStorage.setItem('login-as-' + this.getOption('tokenName'), resp[this.getOption('tokenVar')])
+          localStorage.setItem('login-as-' + this.getOption('tokenName'), res[this.getOption('tokenVar')])
 
           _fetch.call(this, function () {
             if (options.success) {
-              options.success.call(this, resp)
+              options.success.call(this, res)
             }
 
             if (redirectUrl && _this.check()) {
@@ -347,9 +347,9 @@ module.exports = (function () {
             }
           })
         }, {
-          error: function (resp) {
+          error: function (res) {
             if (options.error) {
-              options.error.call(this, resp)
+              options.error.call(this, res)
             }
           }
         })
