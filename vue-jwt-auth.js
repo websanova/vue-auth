@@ -201,6 +201,7 @@ module.exports = (function () {
 
   var Auth = {
     options: {
+      root: '/api',
       authType: 'bearer',
 
       fetchUrl: 'auth/user',
@@ -404,12 +405,9 @@ module.exports = (function () {
       request: function (req) {
         var token = _getToken.call(auth)
 
-        if (token) {
-          if (auth.getOption('authType') === 'bearer') {
-            req.headers.Authorization = 'Bearer: ' + token
-          }
+        if (token && auth.getOption('authType') === 'bearer' && req.root === auth.getOption('root')) {
+          req.headers.Authorization = 'Bearer: ' + token
         }
-
         return req
       },
 
