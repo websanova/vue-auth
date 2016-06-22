@@ -102,13 +102,20 @@ module.exports = (function () {
         var _this = this
 
         if (_getToken.call(this)) {
-            this.$http.get(this.getOption('tokenUrl'))
+            this.$http.get(this.getOption('tokenUrl'), function (res) {
+                var tokenJSON = _decodeToken(_getToken.call(_this)),
+                    expireTime = _getTokenExpirationDate(tokenJSON).valueOf(),
+                    nowTime = new Date().valueOf(),
+                    offsetTime = this.getOption('tokenTimeoutOffset'),
+                    timeout = expireTime - nowTime - offsetTime;
 
-            clearTimeout(_tokenRefreshTimeout)
+                clearTimeout(_tokenRefreshTimeout)
 
-            _tokenRefreshTimeout = setTimeout(function () {
-                _refreshToken.call(_this)
-            }, this.getOption('tokenTimeout'))
+                _tokenRefreshTimeout = setTimeout(function () {
+                    _refreshToken.call(_this)
+                }, timeout)
+
+            });   
         }
     }
 
@@ -147,34 +154,30 @@ module.exports = (function () {
         return JSON.parse(decoded)
     }
   
-    function _getTokenExpirationDate (token) {
-        let decoded = _decodeToken(token)
-
-        if (typeof decoded.exp === 'undefined') {
-            return null
-        }
+    function _getTokenExpirationDate (tokenJSON) {
+        if ( ! tokenJSON || ! tokenJSON.exp) { return }
     
         let d = new Date(0) // The 0 here is the key, which sets the date to the epoch
         
-        d.setUTCSeconds(decoded.exp)
+        d.setUTCSeconds(tokenJSON.exp)
 
         return d
     }
 
-    function _isTokenExpired (token, offsetSeconds) {
-        if ( ! token) { return true; }
+    // function _isTokenExpired (token, offsetSeconds) {
+    //     if ( ! token) { return true; }
 
-        let d = _getTokenExpirationDate(token)
+    //     let d = _getTokenExpirationDate(token)
         
-        offsetSeconds = offsetSeconds || 0
+    //     offsetSeconds = offsetSeconds || 0
     
-        if (d === null) {
-            return false
-        }
+    //     if (d === null) {
+    //         return false
+    //     }
 
-        // Token expired?
-        return !(d.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)))
-    }
+    //     // Token expired?
+    //     return !(d.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)))
+    // }
 
     // Router
   
@@ -284,7 +287,7 @@ module.exports = (function () {
             rolesVar: 'roles',
             tokenVar: 'token',
             tokenName: 'jwt-auth-token',
-            tokenTimeout: 3000 * 1000, // 50 minutes (in milliseconds).
+            tokenTimeoutOffset: 5 * 1000, // 5 minutes.
 
             cookieDomain: _cookieDomain,
             userData: _userData,
