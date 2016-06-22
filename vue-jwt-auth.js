@@ -114,12 +114,11 @@ module.exports = (function () {
                 _tokenRefreshTimeout = setTimeout(function () {
                     _refreshToken.call(_this)
                 }, timeout)
-
             });   
         }
     }
 
-    // Jwt util
+    // Token util
 
     function _urlBase64Decode (str) {
         let output = str.replace(/-/g, '+').replace(/_/g, '/')
