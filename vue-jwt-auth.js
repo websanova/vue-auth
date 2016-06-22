@@ -484,7 +484,8 @@ module.exports = (function () {
 
             // Reset auth token if provided in response.
             response (res) {
-                var authorization = res.headers('Authorization')
+                var authorization = res.headers('Authorization'),
+                    invalidTokenMethod = auth.getOption('invalidToken')
 
                 if (authorization) {
                     authorization = authorization.split(' ')
@@ -494,7 +495,9 @@ module.exports = (function () {
                     }
                 }
 
-                auth.getOption('invalidToken').bind(auth)(res)
+                if (invalidTokenMethod) {
+                    invalidTokenMethod.bind(auth)(res)
+                }
 
                 return res
             }
