@@ -130,6 +130,8 @@ module.exports = (function () {
     }
 
     function _decodeToken (token) {
+        if ( ! token) { return; }
+
         let parts = token.split('.')
 
         if (parts.length !== 3) {
@@ -138,7 +140,7 @@ module.exports = (function () {
 
         let decoded = _urlBase64Decode(parts[1])
         
-        if (!decoded) {
+        if ( ! decoded) {
             throw new Error('Cannot decode the token')
         }
 
@@ -160,6 +162,8 @@ module.exports = (function () {
     }
 
     function _isTokenExpired (token, offsetSeconds) {
+        if ( ! token) { return true; }
+
         let d = _getTokenExpirationDate(token)
         
         offsetSeconds = offsetSeconds || 0
@@ -266,7 +270,6 @@ module.exports = (function () {
 
     var Auth = {
         options: {
-            root: '/api',
             authType: 'bearer',
 
             fetchUrl: 'auth/user',
@@ -352,14 +355,17 @@ module.exports = (function () {
             // User
             
             check (role) {
-                if (this.data === null) {
-                    return true
-                }
-                
                 var token = _getToken.call(this)
-                var params = _decodeToken(token)
-                
-                return _isTokenExpired(token, params.exp) && (!role || _compare(role, this.data[this.getOption('rolesVar')]))
+
+                if ( ! _isTokenExpired(token) && this.data !== null) {
+                    if (role) {
+                        return _compare(role, this.data[this.getOption('rolesVar')]);
+                    }
+
+                    return true;
+                }
+
+                return false;
             },
 
             fetch (cb) {
@@ -475,7 +481,7 @@ module.exports = (function () {
             request (req) {
                 var token = _getToken.call(auth)
 
-                if (token && auth.getOption('authType') === 'bearer' && req.root === auth.getOption('root')) {
+                if (token && auth.getOption('authType') === 'bearer') {
                     req.headers.Authorization = 'Bearer: ' + token
                 }
                 
