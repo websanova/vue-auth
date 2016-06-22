@@ -87,19 +87,19 @@ Vue.router.map({
 
 ## Routes
 
-`**true**`
+**`true`**
 
 User must be authenticated (no roles are checked).
 
-`**false**`
+**`false`**
 
 If the user is logged in then this route will be unavailable. Useful for login/register type pages to be unaccessible once the user is logged in.
 
-`**undefined**`
+**`undefined`**
 
 Public, no checks required.
 
-`**Array**` or `**String**`
+**`Array`** or **`String`**
 
 The user must be logged in. Additionally the string or array will be checked against the users roles.
 
@@ -108,13 +108,13 @@ Note that the users `roles` variable can be set in the options.
 
 ## Methods
 
-`**ready()**`
+**`ready()`**
 
 When the app boots the `vue-jwt-auth` plugin will fire off a check for a token and subsequent user fetch. In the first instance of this the app will be set to "ready".
 
 This will only occur once when the browser is loaded or refreshed.
 
-`**check()**`
+**`check()`**
 
 Check if the user is logged in. It can also be used to check if the user has a specific role.
 
@@ -125,12 +125,12 @@ $auth.check(['admin', 'sub-admin']);
 ~~~
 
 
-`**user()**`
+**`user()`**
 
 Fetch the user object stored in the `$auth` instance.
 
 
-`**login()**`
+**`login()`**
 
 Login the user which accepts four parameters.
 
@@ -150,7 +150,7 @@ this.$auth.login(data, rememberMe, redirectURL, {
 * **redirectUrl** - Which route to redirect to after successful login.
 * **options** - The `success` and `error` callbacks can be set.
 
-`**facebook()**` `**google()**`
+**`facebook()`** **`google()`**
 
 These follows the same format as the `$auth.login()` method.
 
@@ -184,7 +184,7 @@ var callbacks = {
 this.auth.facebook(data, null, null, callbacks);
 ~~~
 
-`**logout()**`
+**`logout()`**
 
 Log the user out.
 
@@ -202,15 +202,15 @@ Always redirects.
 this.$auth.logout('/home/', true);
 ~~~
 
-`**loginAs(data, redirectUrl, options)**`
+**`loginAs(data, redirectUrl, options)`**
 
 Login as another user.
 
-`**logoutAs(redirectUrl)**`
+**`logoutAs(redirectUrl)`**
 
 Logout or other user. Will revert to previously logged in user.
 
-`**other()**`
+**`other()`**
 
 Check if we are currently logged in as another user.
 
@@ -219,133 +219,145 @@ Check if we are currently logged in as another user.
 
 **NOTE:** All the ur's here are relative. It is assumed the vue app will have some scheme for auto pre-pending the full path to the routes.
 
-`**authType**`         
+**`authType`**
 
 **default:** 'bearer'
 
 Set the auth type. Only `bearer` is supported at this time.
 
-`**fetchUrl**`         
+**`fetchUrl`**
 
 **default:** '/auth/user'
 
 The url for fetching the user from the api.
 
-`**tokenUrl**`         
+**`tokenUrl`**
 
 **default:** '/auth/token'
 
 The url for fetching a new token from the api.
 
-`**loginUrl**`         
+**`loginUrl`**
 
 **default:** '/auth/login'
 
 The url for logging in.
 
-`**registerUrl**`      
+**`registerUrl`**
 
 **default:** '/auth/register'
 
 Url method for registering a user.
 
-`**loginRedirect**`    
+**`loginRedirect`**
 
 **default:** '/login'
 
 Redirect to this url if the user does not have authorization to the route.
 
-`**notFoundRedirect**` 
+**`notFoundRedirect`**
 
 **default:** '/404'
 
 Redirect to this url if the route is not accessible (this is in the case of setting a route to `false`). It will not handle 404 redirects for the entire app.
 
-`**forbiddenRedirect**`
+**`forbiddenRedirect`**
 
 **default:** '/403'
 
 Redirect to this url if the user does not have access to the route.
 
-`**rolesVar**`         
+**`rolesVar`**
 
 **default:** 'roles'
 
 The name of the field that contains the roles in the user object returned from the api.
 
-`**tokenVar**`         
+**`tokenVar`**
 
 **default:** 'token'
 
 The name of the field that contains the token returned from the api.
 
-`**tokenName**`        
+**`tokenName`**
 
 **default:** 'jwt-auth-token'
 
 The name of the token stored in local storage.
 
-`**cookieDomain**`     
+**`tokenTimeoutOffset`**
+
+**default:** 5000
+
+Offset for token timeout (for some buffer).
+
+**`cookieDomain`**
 
 **default:** _cookieDomain
 
 The domain to use for the cookie. This method can be overridden.
 
-`**userData**`         
+**`userData`**
 
 **default:** _userData
 
 Locally this will simply return `data` on the response object. The local method can be overridden.
 
-`**beforeEach**`       
+**`beforeEach`**
 
 **default:** _beforeEach
 
 This method runs before each request and handles the logic for permissions to a route. If another scheme is needed it can be overridden.
 
-`**facebookUrl**`      
+**`invalidToken`**
+
+** default:** _invalidToken
+
+Method to run if a `401` is hit during an API request. By default will run logout.
+
+**`facebookUrl`**
 
 **default:** '/auth/facebook'
 
 The url for processing the Facebook token code in the api.
 
-`**facebookAppId**`
+**`facebookAppId`**
 
 **default:** ''
 
 Set the Facebook client app id.
 
-`**facebookScope**`    
+**`facebookScope`**
 
 **default:** 'email'
 
 Set the permissions scope required for the app from Facebook.
 
-`**facebookRedirect**` 
+**`facebookRedirect`**
 
 **default:** _getUrl() + '/login/facebook'
 
 Set the redirect url to return to your app after oauth.
 
-`**googleUrl**`        
+**`googleUrl`**
 
 **default:** '/auth/google'
 
 The url for processing the Google token code in the api.
 
-`**googleAppId**`      
+**`googleAppId`**
 
 **default:** ''
 
 Set the Google client app id.
 
-`**googleScope**`      
+**`googleScope`**
 
 **default:** 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
 
 Set the permissions scope required for the app from Google.
 
-`**googleRedirect**`   
+**`googleRedirect`**
 
 **default:** _getUrl() + '/login/google'
 
