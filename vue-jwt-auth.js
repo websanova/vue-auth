@@ -169,21 +169,6 @@ module.exports = (function () {
         return d
     }
 
-    // function _isTokenExpired (token, offsetSeconds) {
-    //     if ( ! token) { return true; }
-
-    //     let d = _getTokenExpirationDate(token)
-        
-    //     offsetSeconds = offsetSeconds || 0
-    
-    //     if (d === null) {
-    //         return false
-    //     }
-
-    //     // Token expired?
-    //     return !(d.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)))
-    // }
-
     // Router
   
     function _setRoute (route, router) {
