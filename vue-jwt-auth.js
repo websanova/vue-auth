@@ -171,7 +171,7 @@ module.exports = (function () {
         if (d === null) {
             return false
         }
-    
+
         // Token expired?
         return !(d.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)))
     }
@@ -357,7 +357,7 @@ module.exports = (function () {
             check (role) {
                 var token = _getToken.call(this)
 
-                if ( ! _isTokenExpired(token) && this.data !== null) {
+                if (this.data !== null) {
                     if (role) {
                         return _compare(role, this.data[this.getOption('rolesVar')]);
                     }
