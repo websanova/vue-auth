@@ -30,6 +30,12 @@ module.exports = (function () {
         return window.location.hostname
     }
 
+    function _invalidToken (res) {
+        if (res.status === 401) {
+            this.logout(this.getOption('logoutRedirect'))
+        }
+    }
+
     // Utils
 
     function _getUrl () {
@@ -291,6 +297,7 @@ module.exports = (function () {
             cookieDomain: _cookieDomain,
             userData: _userData,
             beforeEach: _beforeEach,
+            invalidToken: _invalidToken,
 
             facebookUrl: 'auth/facebook',
             facebookAppId: '',
@@ -501,6 +508,8 @@ module.exports = (function () {
                         _setToken.call(auth, authorization[1])
                     }
                 }
+
+                auth.getOption('invalidToken').bind(auth)(res)
 
                 return res
             }
