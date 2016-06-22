@@ -311,7 +311,7 @@ This method runs before each request and handles the logic for permissions to a 
 
 **`invalidToken`**
 
-** default:** _invalidToken
+**default:** _invalidToken
 
 Method to run if a `401` is hit during an API request. By default will run logout.
 
