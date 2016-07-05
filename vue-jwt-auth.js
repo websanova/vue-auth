@@ -469,22 +469,15 @@ module.exports = (function () {
         })
 
         // Set interceptors.
-        Vue.http.interceptors.push({
-          
-            // Send auth token on each request.
-            request (req) {
-                var token = _getToken.call(auth)
+        Vue.http.interceptors.push(function(request, next) {
+            var token = _getToken.call(auth)
 
-                if (token && auth.getOption('authType') === 'bearer') {
-                    req.headers.Authorization = 'Bearer: ' + token
-                }
-                
-                return req
-            },
+            if (token && auth.getOption('authType') === 'bearer') {
+                request.headers.Authorization = 'Bearer: ' + token
+            }
 
-            // Reset auth token if provided in response.
-            response (res) {
-                var authorization = res.headers('Authorization'),
+            next(function(response) {
+                var authorization = response.headers('Authorization'),
                     invalidTokenMethod = auth.getOption('invalidToken')
 
                 if (authorization) {
@@ -496,11 +489,11 @@ module.exports = (function () {
                 }
 
                 if (invalidTokenMethod) {
-                    invalidTokenMethod.bind(auth)(res)
+                    invalidTokenMethod.bind(auth)(response)
                 }
 
-                return res
-            }
-        })
+                return response
+            });
+        });
     }
 })()
