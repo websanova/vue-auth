@@ -23,6 +23,8 @@ module.exports = (function () {
     }
 
     function _userData (res) {
+        res = res.json();
+
         return res.data || res
     }
 
@@ -108,7 +110,7 @@ module.exports = (function () {
         var _this = this
 
         if (_getToken.call(this)) {
-            this.$http.get(this.getOption('tokenUrl'), function (res) {
+            this.$http.get(this.getOption('tokenUrl')).then(() => {
                 var tokenJSON = _decodeToken(_getToken.call(_this)),
                     expireTime = _getTokenExpirationDate(tokenJSON).valueOf(),
                     nowTime = new Date().valueOf(),
@@ -181,12 +183,12 @@ module.exports = (function () {
     function _login (path, data, rememberMe, redirectUrl, options) {
         options = options || {}
 
-        this.$http.post(path, data, function (res) {
+        this.$http.post(path, data).then((res) => {
             var _this = this
 
             _setRememberMeCookie.call(this, rememberMe)
 
-            _setToken.call(this, res[this.getOption('tokenVar')])
+            _setToken.call(this, res.json()[this.getOption('tokenVar')])
 
             this.authenticated = null
 
@@ -199,11 +201,9 @@ module.exports = (function () {
                     _this.$router.go(redirectUrl)
                 }
             })
-        }, {
-            error (res) {
-                if (options.error) {
-                    options.error.call(this, res)
-                }
+        }, (res) => {
+            if (options.error) {
+                options.error.call(this, res)
             }
         })
     }
@@ -244,18 +244,16 @@ module.exports = (function () {
     function _fetch (cb) {
         cb = cb || function () {}
 
-        this.$http.get(this.getOption('fetchUrl'), function (res) {
+        this.$http.get(this.getOption('fetchUrl')).then((res) => {
             this.authenticated = true
             this.data = this.getOption('userData').call(this, res)
             this.loaded = true
 
             return cb()
-        }, {
-            error () {
-                this.loaded = true
+        }, () => {
+            this.loaded = true
 
-                return cb()
-            }
+            return cb()
         })
     }
 
@@ -349,8 +347,6 @@ module.exports = (function () {
             // User
             
             check (role) {
-                var token = _getToken.call(this)
-
                 if (this.data !== null) {
                     if (role) {
                         return _compare(role, this.data[this.getOption('rolesVar')]);
@@ -401,10 +397,10 @@ module.exports = (function () {
             loginAs (data, redirectUrl, options) {
                 options = options || {}
 
-                this.$http.post(this.getOption('loginAsUrl'), data, function (res) {
+                this.$http.post(this.getOption('loginAsUrl'), data).then((res) => {
                     var _this = this
 
-                    localStorage.setItem('login-as-' + this.getOption('tokenName'), res[this.getOption('tokenVar')])
+                    localStorage.setItem('login-as-' + this.getOption('tokenName'), res.json()[this.getOption('tokenVar')])
 
                     _fetch.call(this, function () {
                         if (options.success) {
@@ -415,11 +411,9 @@ module.exports = (function () {
                             _this.$router.go(redirectUrl)
                         }
                     })
-                }, {
-                    error (res) {
-                        if (options.error) {
-                            options.error.call(this, res)
-                        }
+                }, (res) => {
+                    if (options.error) {
+                        options.error.call(this, res)
                     }
                 })
             },
@@ -469,22 +463,16 @@ module.exports = (function () {
         })
 
         // Set interceptors.
-        Vue.http.interceptors.push({
-          
-            // Send auth token on each request.
-            request (req) {
-                var token = _getToken.call(auth)
+        Vue.http.interceptors.push((req, next) => {
+            var token = _getToken.call(auth)
 
-                if (token && auth.getOption('authType') === 'bearer') {
-                    req.headers.Authorization = 'Bearer: ' + token
-                }
-                
-                return req
-            },
+            if (token && auth.getOption('authType') === 'bearer') {
+                req.headers.Authorization = 'Bearer: ' + token
+            }
 
             // Reset auth token if provided in response.
-            response (res) {
-                var authorization = res.headers('Authorization'),
+            next ((res) => {
+                var authorization = res.headers.Authorization,
                     invalidTokenMethod = auth.getOption('invalidToken')
 
                 if (authorization) {
@@ -498,9 +486,7 @@ module.exports = (function () {
                 if (invalidTokenMethod) {
                     invalidTokenMethod.bind(auth)(res)
                 }
-
-                return res
-            }
-        })
+            });
+        });
     }
 })()
