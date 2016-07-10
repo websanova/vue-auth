@@ -138,9 +138,9 @@ module.exports = (function () {
     }
 
     function _refreshToken () {
-        var _this = this
+        var _this = this;
 
-        if (_getToken.call(this)) {
+        if (_getToken.call(this) && this.getOption('tokenType') === 'jwt') {
             _http.call(this, {
                 url: this.getOption('tokenUrl'),
                 method: 'get',
@@ -151,11 +151,11 @@ module.exports = (function () {
                         offsetTime = this.getOption('tokenTimeoutOffset'),
                         timeout = expireTime - nowTime - offsetTime;
 
-                    clearTimeout(_tokenRefreshTimeout)
+                    clearTimeout(_tokenRefreshTimeout);
 
                     _tokenRefreshTimeout = setTimeout(function () {
-                        _refreshToken.call(_this)
-                    }, timeout)
+                        _refreshToken.call(_this);
+                    }, timeout);
                 }
             });   
         }
@@ -308,6 +308,7 @@ module.exports = (function () {
     var Auth = {
         options: {
             authType: 'bearer',
+            tokenType: 'jwt',
 
             fetchUrl: 'auth/user',
             tokenUrl: 'auth/token',
