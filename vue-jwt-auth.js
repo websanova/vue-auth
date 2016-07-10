@@ -69,6 +69,37 @@ module.exports = (function () {
         return (typeof val) === 'string' ? [val] : val
     }
 
+    function _http (options) {
+
+        // Version 0.8.0
+        this.$http[options.method || 'get'](options.url, options.data).then(options.success, options.error);
+    }
+
+    function _interceptor (Vue, req, res) {
+
+        // Version 0.8.0
+        Vue.http.interceptors.push((request, next) => {
+            if (req) { req.call(this, request); }
+            
+            next((response) => {
+                if (res) { res.call(this, response); }
+            });
+        });
+
+        // // Version before Promise implementation.
+        // else {
+        //     Vue.http.interceptors.push({
+        //         request (request) {
+        //             if (req) { req.call(this, request); }
+        //         },
+
+        //         response (response) {
+        //             if (res) { res.call(this, response); }
+        //         }
+        //     });
+        // }
+    }
+
     // Remember Me
 
     function _setCookie (name, value, timeOffset) {
@@ -110,18 +141,22 @@ module.exports = (function () {
         var _this = this
 
         if (_getToken.call(this)) {
-            this.$http.get(this.getOption('tokenUrl')).then(() => {
-                var tokenJSON = _decodeToken(_getToken.call(_this)),
-                    expireTime = _getTokenExpirationDate(tokenJSON).valueOf(),
-                    nowTime = new Date().valueOf(),
-                    offsetTime = this.getOption('tokenTimeoutOffset'),
-                    timeout = expireTime - nowTime - offsetTime;
+            _http.call(this, {
+                url: this.getOption('tokenUrl'),
+                method: 'get',
+                success: () => {
+                    var tokenJSON = _decodeToken(_getToken.call(_this)),
+                        expireTime = _getTokenExpirationDate(tokenJSON).valueOf(),
+                        nowTime = new Date().valueOf(),
+                        offsetTime = this.getOption('tokenTimeoutOffset'),
+                        timeout = expireTime - nowTime - offsetTime;
 
-                clearTimeout(_tokenRefreshTimeout)
+                    clearTimeout(_tokenRefreshTimeout)
 
-                _tokenRefreshTimeout = setTimeout(function () {
-                    _refreshToken.call(_this)
-                }, timeout)
+                    _tokenRefreshTimeout = setTimeout(function () {
+                        _refreshToken.call(_this)
+                    }, timeout)
+                }
             });   
         }
     }
@@ -183,29 +218,35 @@ module.exports = (function () {
     function _login (path, data, rememberMe, redirectUrl, options) {
         options = options || {}
 
-        this.$http.post(path, data).then((res) => {
-            var _this = this
+        _http.call(this, {
+            url: path,
+            method: 'post',
+            data: data,
+            success: (res) => {
+                var _this = this
 
-            _setRememberMeCookie.call(this, rememberMe)
+                _setRememberMeCookie.call(this, rememberMe);
 
-            _setToken.call(this, res.json()[this.getOption('tokenVar')])
+                _setToken.call(this, res.json()[this.getOption('tokenVar')]);
 
-            this.authenticated = null
+                this.authenticated = null;
 
-            this.fetch(function () {
-                if (options.success) {
-                    options.success.call(_this, res)
+                this.fetch(function () {
+                    if (options.success) {
+                        options.success.call(_this, res);
+                    }
+
+                    if (redirectUrl && _this.check()) {
+                        _this.$router.go(redirectUrl);
+                    }
+                });
+            },
+            error: (res) => {
+                if (options.error) {
+                    options.error.call(this, res);
                 }
-
-                if (redirectUrl && _this.check()) {
-                    _this.$router.go(redirectUrl)
-                }
-            })
-        }, (res) => {
-            if (options.error) {
-                options.error.call(this, res)
             }
-        })
+        });
     }
 
     function _social (type, data, rememberMe, redirectUrl, options) {
@@ -244,17 +285,22 @@ module.exports = (function () {
     function _fetch (cb) {
         cb = cb || function () {}
 
-        this.$http.get(this.getOption('fetchUrl')).then((res) => {
-            this.authenticated = true
-            this.data = this.getOption('userData').call(this, res)
-            this.loaded = true
+        _http({
+            url: this.getOption('fetchUrl'),
+            method: 'get',
+            success: (res) => {
+                this.authenticated = true;
+                this.data = this.getOption('userData').call(this, res);
+                this.loaded = true;
 
-            return cb()
-        }, () => {
-            this.loaded = true
+                return cb();
+            },
+            error: () => {
+                this.loaded = true;
 
-            return cb()
-        })
+                return cb();
+            }
+        });
     }
 
     // Plugin
@@ -397,25 +443,31 @@ module.exports = (function () {
             loginAs (data, redirectUrl, options) {
                 options = options || {}
 
-                this.$http.post(this.getOption('loginAsUrl'), data).then((res) => {
-                    var _this = this
+                _http({
+                    url: this.getOption('loginAsUrl'),
+                    method: 'post',
+                    data: data,
+                    success: (res) => {
+                        var _this = this;
 
-                    localStorage.setItem('login-as-' + this.getOption('tokenName'), res.json()[this.getOption('tokenVar')])
+                        localStorage.setItem('login-as-' + this.getOption('tokenName'), res.json()[this.getOption('tokenVar')]);
 
-                    _fetch.call(this, function () {
-                        if (options.success) {
-                            options.success.call(this, res)
+                        _fetch.call(this, function () {
+                            if (options.success) {
+                                options.success.call(this, res);
+                            }
+
+                            if (redirectUrl && _this.check()) {
+                                _this.$router.go(redirectUrl);
+                            }
+                        })
+                    },
+                    error:  (res) => {
+                        if (options.error) {
+                            options.error.call(this, res);
                         }
-
-                        if (redirectUrl && _this.check()) {
-                            _this.$router.go(redirectUrl)
-                        }
-                    })
-                }, (res) => {
-                    if (options.error) {
-                        options.error.call(this, res)
                     }
-                })
+                });
             },
 
             logoutAs (redirectUrl) {
@@ -434,7 +486,7 @@ module.exports = (function () {
                 this.data // TODO: Strange thing, need this to make the check fire consistently ??
 
                 return localStorage.getItem('login-as-' + this.getOption('tokenName'))
-            }
+            },
 
             // Token
             
@@ -475,30 +527,30 @@ module.exports = (function () {
         })
 
         // Set interceptors.
-        Vue.http.interceptors.push((req, next) => {
+        _interceptor(Vue, (req) => {
             var token = _getToken.call(auth)
 
             if (token && auth.getOption('authType') === 'bearer') {
                 req.headers.Authorization = 'Bearer: ' + token
             }
+        },
 
-            // Reset auth token if provided in response.
-            next ((res) => {
-                var authorization = res.headers.Authorization,
-                    invalidTokenMethod = auth.getOption('invalidToken')
+        // Reset auth token if provided in response.
+        (res) => {
+            var authorization = res.headers.Authorization,
+                invalidTokenMethod = auth.getOption('invalidToken')
 
-                if (authorization) {
-                    authorization = authorization.split(' ')
+            if (authorization) {
+                authorization = authorization.split(' ')
 
-                    if (authorization[1]) {
-                        _setToken.call(auth, authorization[1])
-                    }
+                if (authorization[1]) {
+                    _setToken.call(auth, authorization[1])
                 }
+            }
 
-                if (invalidTokenMethod) {
-                    invalidTokenMethod.bind(auth)(res)
-                }
-            });
+            if (invalidTokenMethod) {
+                invalidTokenMethod.bind(auth)(res)
+            }
         });
     }
 })()
