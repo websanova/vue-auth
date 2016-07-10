@@ -285,7 +285,7 @@ module.exports = (function () {
     function _fetch (cb) {
         cb = cb || function () {}
 
-        _http({
+        _http.call(this, {
             url: this.getOption('fetchUrl'),
             method: 'get',
             success: (res) => {
@@ -443,7 +443,7 @@ module.exports = (function () {
             loginAs (data, redirectUrl, options) {
                 options = options || {}
 
-                _http({
+                _http.call(this, {
                     url: this.getOption('loginAsUrl'),
                     method: 'post',
                     data: data,
