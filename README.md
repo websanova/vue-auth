@@ -214,6 +214,14 @@ Logout or other user. Will revert to previously logged in user.
 
 Check if we are currently logged in as another user.
 
+**`getAuthHeader()`**
+
+Returns the auth header. Useful when integration third part libraries.
+
+**`version()`**
+
+Returns current version.
+
 
 ## Options
 
@@ -223,7 +231,11 @@ Check if we are currently logged in as another user.
 
 **default:** 'bearer'
 
-Set the auth type. Only `bearer` is supported at this time.
+**`tokenType`**
+
+**default:** 'jwt'
+
+If set to 'jwt' will check expiry time for refreshes, otherwise no other implementation exists and it will just send the token directly.
 
 **`fetchUrl`**
 

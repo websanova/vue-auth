@@ -499,6 +499,10 @@ module.exports = (function () {
                 }
 
                 return false;
+            },
+
+            version() {
+                return '0.9.0';
             }
         }
     }
