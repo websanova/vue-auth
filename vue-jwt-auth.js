@@ -435,6 +435,18 @@ module.exports = (function () {
 
                 return localStorage.getItem('login-as-' + this.getOption('tokenName'))
             }
+
+            // Token
+            
+            getAuthHeader() {
+                var token = _getToken.call(this);
+
+                if (token && this.getOption('authType') === 'bearer') {
+                    return 'Bearer: ' + token;
+                }
+
+                return false;
+            }
         }
     }
 
