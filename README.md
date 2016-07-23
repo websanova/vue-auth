@@ -152,6 +152,11 @@ this.$auth.login(data, rememberMe, redirectURL, {
 
 **`facebook()`** **`google()`**
 
+Deprecated, use `oauth2()` method.
+
+
+**`oauth2()`**
+
 These follows the same format as the `$auth.login()` method.
 
 However the data for these works a bit differently. All the options for social authentication can be set in the `options` however they can also be set directly here in the `data` variable.
@@ -168,7 +173,7 @@ var data = {
     scope: 'email'
 };
 
-this.auth.facebook(data, true, '/account');
+this.auth.oauth2('facebook', data, true, '/account');
 ~~~
 
 ~~~
@@ -181,7 +186,7 @@ var callbacks = {
     error: function () {}
 };
 
-this.auth.facebook(data, null, null, callbacks);
+this.auth.oauth2('facebook', data, null, null, callbacks);
 ~~~
 
 **`logout()`**
