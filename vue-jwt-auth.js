@@ -249,36 +249,30 @@ module.exports = (function () {
         });
     }
 
-    function _social (type, data, rememberMe, redirectUrl, options) {
+    function _oauth2 (type, data, rememberMe, redirectUrl, options) {
         var state,
-            params = ''
+            params = '';
 
-        data = data || {}
+        data = data || {};
 
         if (data.code) {
-            state = JSON.parse(this.$route.query.state)
+            state = JSON.parse(this.$route.query.state);
 
-            _login.call(this, this.getOption(type + 'Url'), data, state.rememberMe, state.redirect, options)
+            _login.call(this, this.getOption(type + 'Url'), data, state.rememberMe, state.redirect, options);
         } else {
-            data.state = data.state || {}
-            data.state.rememberMe = rememberMe === true
-            data.state.redirect = redirectUrl || ''
+            data.state = data.state || {};
+            data.state.rememberMe = rememberMe === true;
+            data.state.redirect = redirectUrl || '';
 
-            data.appId = data.appId || this.getOption(type + 'AppId')
-            data.clientId = data.clientId || this.getOption(type + 'ClientId')
-            data.scope = data.scope || this.getOption(type + 'Scope')
-            data.redirect = data.redirect || this.getOption(type + 'Redirect')
+            data.appId = data.appId || this.getOption(type + 'AppId');;
+            data.clientId = data.clientId || this.getOption(type + 'ClientId');
+            data.scope = data.scope || this.getOption(type + 'Scope');
+            data.redirect = data.redirect || this.getOption(type + 'Redirect');
+            data.url = data.url || this.getOption(type + 'OAuth2');
 
-            params = '?client_id=' + data.appId + '&redirect_uri=' + data.redirect + '&scope=' + data.scope + '&response_type=code&state=' + JSON.stringify(data.state)
+            params = '?client_id=' + data.appId + '&redirect_uri=' + data.redirect + '&scope=' + data.scope + '&response_type=code&state=' + encodeURIComponent(JSON.stringify(data.state));
 
-            if (type === 'facebook') {
-                window.location = 'https://www.facebook.com/v2.5/dialog/oauth' + params
-            } else if (type === 'google') {
-                window.location = 'https://accounts.google.com/o/oauth2/auth' + params
-            }
-            // else if (type === 'twitter') {
-            //     window.location = 'https://oauth.twitter.com/2/authorize?oauth_callback_url=' + data.redirect + '&oauth_mode=flow_web_client&oauth_client_identifier=' + data.appId + '&redirect_uri=' + data.redirect + '&response_type=token&client_id=' + data.clientId;
-            // }
+            window.location = data.url + params;
         }
     }
 
@@ -334,11 +328,19 @@ module.exports = (function () {
             facebookAppId: '',
             facebookScope: 'email',
             facebookRedirect: _getUrl() + '/login/facebook',
+            facebookOAuth2: 'https://www.facebook.com/v2.5/dialog/oauth',
 
             googleUrl: 'auth/google',
             googleAppId: '',
             googleScope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read',
-            googleRedirect: _getUrl() + '/login/google'
+            googleRedirect: _getUrl() + '/login/google',
+            googleOAuth2: 'https://accounts.google.com/o/oauth2/auth',
+
+            bufferUrl: 'auth/buffer',
+            bufferAppId: '',
+            bufferScope: '',
+            bufferRedirect: _getUrl() + '/login/buffer',
+            bufferOAuth2: 'https://bufferapp.com/oauth2/authorize'
         },
 
         data () {
@@ -369,12 +371,18 @@ module.exports = (function () {
                 _login.call(this, this.getOption('loginUrl'), data, rememberMe, redirectUrl, options)
             },
 
-            facebook (data, rememberMe, redirectUrl, options) {
-                _social.call(this, 'facebook', data, rememberMe, redirectUrl, options)
+            oauth2(type, data, rememberMe, redirectUrl, options) {
+                _oauth2.call(this, type, data, rememberMe, redirectUrl, options)
             },
 
+            // Deprecated
+            facebook (data, rememberMe, redirectUrl, options) {
+                _oauth2.call(this, 'facebook', data, rememberMe, redirectUrl, options)
+            },
+
+            // Deprecated
             google (data, rememberMe, redirectUrl, options) {
-                _social.call(this, 'google', data, rememberMe, redirectUrl, options)
+                _oauth2.call(this, 'google', data, rememberMe, redirectUrl, options)
             },
 
             logout (redirectUrl, force) {
@@ -503,7 +511,7 @@ module.exports = (function () {
             },
 
             version() {
-                return '0.9.0';
+                return '0.10.0';
             }
         }
     }
