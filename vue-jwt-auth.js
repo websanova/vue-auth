@@ -260,6 +260,7 @@ module.exports = (function () {
                 state = JSON.parse(decodeURIComponent(this.$route.query.state));
             }
             catch(e) {
+                console.error('vue-jwt-auth:error There was an issue retrieving the state data.');
                 state = {};
             }
 
@@ -516,7 +517,7 @@ module.exports = (function () {
             },
 
             version() {
-                return '0.10.1';
+                return '0.10.2';
             }
         }
     }
