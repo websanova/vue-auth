@@ -256,7 +256,12 @@ module.exports = (function () {
         data = data || {};
 
         if (data.code) {
-            state = JSON.parse(this.$route.query.state);
+            try {
+                state = JSON.parse(decodeURIComponent(this.$route.query.state));
+            }
+            catch(e) {
+                state = {};
+            }
 
             _login.call(this, this.getOption(type + 'Url'), data, state.rememberMe, state.redirect, options);
         } else {
@@ -511,7 +516,7 @@ module.exports = (function () {
             },
 
             version() {
-                return '0.10.0';
+                return '0.10.1';
             }
         }
     }
