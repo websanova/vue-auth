@@ -315,7 +315,7 @@ module.exports = (function () {
             loginUrl: 'auth/login',
             loginAsUrl: 'auth/login-as',
 
-            authRedirect: '/logout',
+            authRedirect: '/login',
             logoutRedirect: '/',
             notFoundRedirect: '/404',
             forbiddenRedirect: '/403',
