@@ -517,7 +517,7 @@ module.exports = (function () {
             },
 
             version() {
-                return '0.10.2';
+                return '0.10.3';
             }
         }
     }
