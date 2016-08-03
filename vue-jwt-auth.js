@@ -446,7 +446,11 @@ module.exports = (function () {
                 }
             },
 
-            user () {
+            user (data) {
+                if (data) {
+                    this.data = data;
+                }
+
                 return this.data
             },
 
@@ -517,7 +521,7 @@ module.exports = (function () {
             },
 
             version() {
-                return '0.10.3';
+                return '0.10.4';
             }
         }
     }
