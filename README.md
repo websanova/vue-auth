@@ -266,7 +266,7 @@ The url for logging in.
 
 Url method for registering a user.
 
-**`loginRedirect`**
+**`authRedirect`**
 
 **default:** '/login'
 
