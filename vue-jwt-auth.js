@@ -523,7 +523,7 @@ module.exports = (function () {
             },
 
             version() {
-                return '0.10.4';
+                return '0.10.5';
             }
         }
     }
