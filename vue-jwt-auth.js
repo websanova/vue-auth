@@ -220,7 +220,7 @@ module.exports = (function () {
 
         _http.call(this, {
             url: path,
-            method: 'post',
+            method: options.method || this.getOption('loginMethod'),
             data: data,
             success: (res) => {
                 var _this = this
@@ -313,7 +313,9 @@ module.exports = (function () {
             fetchUrl: 'auth/user',
             tokenUrl: 'auth/token',
             loginUrl: 'auth/login',
+            loginMethod: 'post',
             loginAsUrl: 'auth/login-as',
+            loginAsMethod: 'post',
 
             authRedirect: '/login',
             logoutRedirect: '/',
@@ -464,8 +466,8 @@ module.exports = (function () {
                 options = options || {}
 
                 _http.call(this, {
-                    url: this.getOption('loginAsUrl'),
-                    method: 'post',
+                    url: options.url || this.getOption('loginAsUrl'),
+                    method: options.method || this.getOption('loginAsMethod'),
                     data: data,
                     success: (res) => {
                         var _this = this;
