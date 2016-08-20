@@ -260,6 +260,24 @@ The url for fetching a new token from the api.
 
 The url for logging in.
 
+**`loginMethod`**
+
+**default:** 'post'
+
+The method used for logging in.
+
+**`loginAsUrl`**
+
+**default:** '/auth/login-as'
+
+The url for logging in "as".
+
+**`loginAsMethod`**
+
+**default:** 'post'
+
+The method used for logging in "as".
+
 **`registerUrl`**
 
 **default:** '/auth/register'
