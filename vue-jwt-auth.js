@@ -523,7 +523,11 @@ module.exports = (function () {
             },
 
             version() {
-                return '0.10.5';
+                return '0.11.0';
+            },
+
+            token(name) {
+                return localStorage.getItem((name ? name + '-' : '') + this.getOption('tokenName'));
             }
         }
     }

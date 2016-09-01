@@ -227,6 +227,11 @@ Returns the auth header. Useful when integration third part libraries.
 
 Returns current version.
 
+**`token(<name>)`**
+
+Fetch the main users tokens.
+
+To fetch the "logged in as" token use `token('login-as')`.
 
 ## Options
 
