@@ -233,6 +233,19 @@ Fetch the main users tokens.
 
 To fetch the "logged in as" token use `token('login-as')`.
 
+**`useToken(<name>)`**
+
+Set `null` for auto. Set `default` to always use the main token. Otherwise used a named one.
+
+Useful when performing admin actions when using "other" user.
+
+```
+this.$auth.useToken('default'); // Set the request to use the "admin" token.
+this.$http... // do stuff
+this.$auth.useToken(null); // Set it back.
+```
+
+
 ## Options
 
 **NOTE:** All the ur's here are relative. It is assumed the vue app will have some scheme for auto pre-pending the full path to the routes.

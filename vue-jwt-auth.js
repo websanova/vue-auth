@@ -129,8 +129,12 @@ module.exports = (function () {
         }
     }
 
-    function _getToken () {
-        return localStorage.getItem((this.other() ? 'login-as-' : '') + this.getOption('tokenName'))
+    function _getToken (name) {
+        if ( ! name && this.other()) { name = 'login-as-'; }
+        else if ( ! name || name === 'default') { name = ''; }
+        else { name += '-'; }
+        
+        return localStorage.getItem(name + this.getOption('tokenName'))
     }
 
     function _removeToken () {
@@ -355,7 +359,8 @@ module.exports = (function () {
             return {
                 data: null,
                 loaded: false,
-                authenticated: null
+                authenticated: null,
+                useToken: null
             }
         },
 
@@ -523,11 +528,15 @@ module.exports = (function () {
             },
 
             version() {
-                return '0.11.0';
+                return '0.12.0';
             },
 
             token(name) {
                 return localStorage.getItem((name ? name + '-' : '') + this.getOption('tokenName'));
+            },
+
+            useToken(name) {
+                this.useToken = name;
             }
         }
     }
@@ -558,10 +567,10 @@ module.exports = (function () {
 
         // Set interceptors.
         _interceptor(Vue, (req) => {
-            var token = _getToken.call(auth)
+            var token = _getToken.call(auth, auth.useToken);
 
             if (token && auth.getOption('authType') === 'bearer') {
-                req.headers.Authorization = 'Bearer: ' + token
+                req.headers.Authorization = 'Bearer: ' + token;
             }
         },
 
