@@ -360,7 +360,7 @@ module.exports = (function () {
                 data: null,
                 loaded: false,
                 authenticated: null,
-                useToken: null
+                currentToken: null
             }
         },
 
@@ -528,7 +528,7 @@ module.exports = (function () {
             },
 
             version() {
-                return '0.12.0';
+                return '0.12.1';
             },
 
             token(name) {
@@ -536,7 +536,7 @@ module.exports = (function () {
             },
 
             useToken(name) {
-                this.useToken = name;
+                this.currentToken = name;
             }
         }
     }
@@ -567,7 +567,7 @@ module.exports = (function () {
 
         // Set interceptors.
         _interceptor(Vue, (req) => {
-            var token = _getToken.call(auth, auth.useToken);
+            var token = _getToken.call(auth, auth.currentToken);
 
             if (token && auth.getOption('authType') === 'bearer') {
                 req.headers.Authorization = 'Bearer: ' + token;
