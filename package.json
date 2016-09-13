@@ -1,20 +1,50 @@
 {
+  "name": "@websanova/vue-auth",
+
+  "description": "Vue.js token based authentication plugin. Supports simple token based and Json Web Tokens (JWT) authentication.",
+  
+  "keywords": ["vue", "vue.js", "jwt", "auth", "authentication", "plugin", "json", "web", "token"],
+
   "author": {
     "name": "Websanova",
     "url": "http://websanova.com",
     "username": "websanova",
     "email": "rob@websanova.com"
   },
-  "dependencies": {},
-  "description": "Vue.js JWT Auth plugin.",
-  "licenses": "MIT, GPL",
-  "devDependencies": {},
-  "keywords": ["vue", "vue.js", "jwt", "auth", "authentication", "plugin", "json", "web", "token"],
-  "main": "vue-jwt-auth.js",
-  "name": "vue-jwt-auth",
+  
+  "main": "src/index.js",
+  
+  "version": "1.0.0-dev",
+  
   "repository": {
     "type": "git",
-    "url": "https://github.com/websanova/vue-jwt-auth"
+    "url": "https://github.com/websanova/vue-auth"
   },
-  "version": "0.12.1"
+  
+  "licenses": "MIT, GPL",
+  
+  "dependencies": {},
+  
+  "devDependencies": {
+    "babel-core": "6.9.1",
+    "babel-loader": "6.2.4",
+    "babel-plugin-transform-runtime": "6.9.0",
+    "babel-preset-es2015": "6.9.0",
+    "babel-runtime": "6.9.2",
+    "css-loader": "0.23.1",
+    "style-loader": "0.13.1",
+    "vue-hot-reload-api": "1.3.2",
+    "vue-html-loader": "1.2.3",
+    "vue-style-loader": "1.0.0",
+    "vue-loader": "8.5.3",
+    "webpack": "1.13.1",
+    "webpack-dev-server": "1.14.1",
+    "webpack-stream": "3.2.0",
+    "copy-webpack-plugin": "3.0.1",
+    "replace-webpack-plugin": "0.1.2"
+  },
+  
+  "scripts": {
+    "demo": "webpack-dev-server --host=0.0.0.0 --https --port=8000 --content-base=demo/public/ --config=demo/webpack.config.js"
+  }
 }
