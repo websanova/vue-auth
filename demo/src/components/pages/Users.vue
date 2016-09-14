@@ -34,7 +34,7 @@
                     method: 'GET'
                 })
                 .then((res) => {
-                    this.users = res.json().data.items;
+                    this.users = res.data.data.items;
                     
                     console.log('success ' + this.context);
                 }, (res) => {

@@ -66,7 +66,7 @@
                     error: function (res) {
                         console.log('error ' + this.context);
 
-                        this.error = res.json();
+                        this.error = res.data;
                     }
                 });
             }

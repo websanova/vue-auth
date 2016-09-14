@@ -87,7 +87,7 @@ module.exports = {
     },
 
     _httpData: function (res) {
-        return res.json() || {};
+        return res.data || {};
     },
 
     _http: function (data) {
