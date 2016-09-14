@@ -4,6 +4,17 @@ Vue.js token based authentication plugin. Supports simple token based and JSON W
 
 Note this is the new name for the formerly named `vue-jwt-auth`. Since it's likely this package will expand with potentially more authentication options.
 
+* [Install](https://github.com/websanova/vue-auth#install)
+* [Demo](https://github.com/websanova/vue-auth#demo)
+* [Privileges](https://github.com/websanova/vue-auth#privileges)
+* [Routes](https://github.com/websanova/vue-auth#routes)
+* [Methods](https://github.com/websanova/vue-auth#methods)
+* [Options](https://github.com/websanova/vue-auth#options)
+* [Driver Options](https://github.com/websanova/vue-auth#driver-options)
+* [Change Log](https://github.com/websanova/vue-auth#change-log)
+
+
+
 ### Tested with
 
 * vue >= 1.0.0
