@@ -94,11 +94,11 @@ Vue.router.map({
 
 ### auth: ```true```
 
-    * User must be authenticated (no roles are checked).
+* User must be authenticated (no roles are checked).
 
 ### auth: ```false```
 
-    * If the user is logged in then this route will be unavailable. Useful for login/register type pages to be unaccessible once the user is logged in.
+* If the user is logged in then this route will be unavailable. Useful for login/register type pages to be unaccessible once the user is logged in.
 
 ### auth: ```undefined```
 
