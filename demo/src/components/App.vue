@@ -31,6 +31,12 @@
         <div style="max-width:400px; margin:0 auto 50px auto;">
             <router-view></router-view>
         </div>
+
+        <hr/>
+
+        <div style="text-align:center; font-size:12px;">
+            Websanova <a href="https://github.com/websanova/laravel-api-demo">demo server</a> available on GitHub
+        </div>
     </div>
 
     <div v-if="!$auth.ready() || !loaded">

@@ -54,7 +54,11 @@ Vue.use(Auth, options, router);
 
 ## Demo
 
-To run the front end part of the demo just install and run.
+To run the front end part of the demo just install and run. The demo runs on a publicly available server so just the front end needs run.
+
+* Demo server available publicly at https://api-demo.websanova.com
+* Demo server on GitHub https://github.com/websanova/laravel-api-demo
+* Change the http options root in the `app.js` demo file to a different server for personal testing.
 
 ~~~
 > sudo npm install
@@ -493,6 +497,7 @@ These are all function related directly to Vue that sort of acts like a driver. 
 * Module renamed to `vue-auth` from `vue-jwt-auth`.
 * Package name is scoped through `@websanova/vue-auth` now.
 * Added demo with lots of sample code.
+* Added demo server (https://api-demo.websanova.com) available on GitHub (https://github.com/websanova/laravel-api-demo).
 * Any default data for a request is an object now that goes directly into the `http` method. So it can be called with whatever parameters the method supports.
 * All `success` and `error` functions will contain proper context from Vue component.
 * Redirects can be objects now, so you can do a redirect as a `/path` or `{name: 'object'}` etc.
