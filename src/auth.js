@@ -78,39 +78,18 @@ module.exports = function () {
         var token = __token.get.call(this);
 
         if (token) {
-            if (this.options.authType === 'bearer') {
-                this.options._setHeaders.call(this, req, {
-                    authorization: 'Bearer: ' + token
-                });
-            }
-            else if (this.options.authType === 'basic') {
-                this.options._setHeaders.call(this, req, {
-                    authorization: token
-                });
-            }
+            this.options[this.options.authType + 'Auth'].request.call(this, req, token);
         }
 
         return req;
     }
     
     function _responseIntercept(res) {
-        var token = '';
-
-        token = this.options._getHeaders.call(this, res).authorization;
+        var token = this.options._getHeaders.call(this, res).authorization || this.options._httpData.call(this, res)[this.options.tokenVar];
 
         if (token) {
-            token = token.split('Bearer ');
-
-            __token.set.call(this, null, token[token.length > 1 ? 1 : 0]);
+            this.options[this.options.authType + 'Auth'].response.call(this, res, token);
         }
-
-        token = this.options._httpData.call(this, res)[this.options.tokenVar];
-
-        if (token) {
-            token = token.split('Bearer ');
-
-            __token.set.call(this, null, token[token.length > 1 ? 1 : 0]);
-        }   
 
         if (this.options._invalidToken) {
             this.options._invalidToken.call(this, res);
@@ -420,7 +399,33 @@ module.exports = function () {
         logoutOtherPerform: _logoutOtherPerform,
         logoutOtherProcess: _logoutOtherProcess,
 
-        oauth2Perform:      _oauth2Perform
+        oauth2Perform:      _oauth2Perform,
+
+        // Auth drivers
+        
+        bearerAuth: {
+            request: function (req, token) {
+                this.options._setHeaders.call(this, req, {
+                    authorization: 'Bearer ' + token
+                });
+            },
+            response: function (res, token) {
+                var token = token.split('Bearer ');
+
+                __token.set.call(this, null, token[token.length > 1 ? 1 : 0]);
+            }
+        },
+
+        basicAuth: {
+            request: function (req, token) {
+                this.options._setHeaders.call(this, req, {
+                    authorization: token
+                });
+            },
+            response: function (res, token) {
+                __token.set.call(this, null, token);
+            }
+        }
     };
 
     function Auth(options, driver) {
