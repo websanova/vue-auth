@@ -492,7 +492,7 @@ These are all function related directly to Vue that sort of acts like a driver. 
 
 ## Change Log
 
-### v1.0.0-dev
+### v1.0.x-dev
 
 * Module renamed to `vue-auth` from `vue-jwt-auth`.
 * Package name is scoped through `@websanova/vue-auth` now.
@@ -516,6 +516,7 @@ These are all function related directly to Vue that sort of acts like a driver. 
 * Support for drivers allowing more flexibility between different versions (this is still in development).
 * Two auth drivers which are named `bearer` and `basic`.
 * A fetch call has been added allowing the user to be reset.
+* Now supports a "loose" driver based model for authentication allowing for some customization of request/response intercepts for requests.
 * The token function will return current function or called with `other` or `default` will return the appropriate token.
 * Checking token expiration (base64 decode) has been removed. Since a refresh will not occur often for SPA it was a bit too much extra code. Will need to do it custom if it's really necessary.
 * Reduced file size.
