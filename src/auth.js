@@ -343,10 +343,6 @@ module.exports = function () {
         }
     }
 
-    function _oauth2Process() {
-
-    }
-
     var defaultOptions = {
 
         // Variables
@@ -354,7 +350,6 @@ module.exports = function () {
         tokenVar:          'token',
         tokenName:         'auth-token',
         tokenHeader:       'Authorization',
-
         authType:          'bearer',
         rolesVar:          'roles',
 
@@ -425,8 +420,7 @@ module.exports = function () {
         logoutOtherPerform: _logoutOtherPerform,
         logoutOtherProcess: _logoutOtherProcess,
 
-        oauth2Perform:      _oauth2Perform,
-        oauth2Process:      _oauth2Process,
+        oauth2Perform:      _oauth2Perform
     };
 
     function Auth(options, driver) {

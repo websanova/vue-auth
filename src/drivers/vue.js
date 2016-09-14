@@ -73,7 +73,7 @@ module.exports = {
     },
 
     _invalidToken: function (res) {
-        if (res.status === 401) {
+        if (this.check() && res.status === 401) {
             this.logout();
         }
     },
