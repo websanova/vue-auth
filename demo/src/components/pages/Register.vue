@@ -1,32 +1,34 @@
 <template>
-    <h1>Register</h1>
+    <div>
+        <h1>Register</h1>
 
-    <b>NOTE:</b> Please use only dummy data here as it is running off a demo server.
-
-    <hr/>
-
-    <form v-on:submit.prevent="register()">
-        <table><tr>
-            <td>Username:</td>
-            <td><input v-model="data.body.username" /></td>
-        </tr><tr>
-            <td>Password:</td>
-            <td><input v-model="data.body.password" type="password" /></td>
-        </tr><tr>
-            <td></td>
-            <td><label><input v-model="data.autoLogin" type="checkbox" /> Auto Login</label></td>
-        </tr><tr>
-            <td></td>
-            <td><label><input v-model="data.rememberMe" type="checkbox" /> Remember Me</label></td>
-        </tr><tr>
-            <td></td>
-            <td><button type="submit">Register</button></td>
-        </tr></table>
+        <b>NOTE:</b> Please use only dummy data here as it is running off a demo server.
 
         <hr/>
 
-        <div v-show="error" style="color:red; word-wrap:break-word;">{{ error | json }}</div>
-    </form>
+        <form v-on:submit.prevent="register()">
+            <table><tr>
+                <td>Username:</td>
+                <td><input v-model="data.body.username" /></td>
+            </tr><tr>
+                <td>Password:</td>
+                <td><input v-model="data.body.password" type="password" /></td>
+            </tr><tr>
+                <td></td>
+                <td><label><input v-model="data.autoLogin" type="checkbox" /> Auto Login</label></td>
+            </tr><tr>
+                <td></td>
+                <td><label><input v-model="data.rememberMe" type="checkbox" /> Remember Me</label></td>
+            </tr><tr>
+                <td></td>
+                <td><button type="submit">Register</button></td>
+            </tr></table>
+
+            <hr/>
+
+            <div v-show="error" style="color:red; word-wrap:break-word;">{{ error | json }}</div>
+        </form>
+    </div>
 </template>
 
 <script>

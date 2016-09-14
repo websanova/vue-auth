@@ -1,19 +1,20 @@
 <template>
-    <h1>Account</h1>
+    <div>
+        <h1>Account</h1>
 
-    <b>Username:</b> {{ $auth.user().username }}
+        <b>Username:</b> {{ $auth.user().username }}
 
-    <hr/>
+        <hr/>
 
-    <h3>Test User</h3>
+        <h3>Test User</h3>
 
-    <ul>
-        <li><a v-on:click="fetch()" href="javascript:void(0);">Test fetch user</a></li>
-        <li><a v-on:click="refresh()" href="javascript:void(0);">Test refresh token</a></li>
-        <li v-if="$auth.other()"><a v-on:click="getUsers()" href="javascript:void(0);">Test fetching users (as user via user)</a></li>
-        <li v-if="$auth.other()"><a v-on:click="getUsers(true)" href="javascript:void(0);">Test fetching users (as user via admin)</a></li>
-    </ul>
-
+        <ul>
+            <li><a v-on:click="fetch()" href="javascript:void(0);">Test fetch user</a></li>
+            <li><a v-on:click="refresh()" href="javascript:void(0);">Test refresh token</a></li>
+            <li v-if="$auth.other()"><a v-on:click="getUsers()" href="javascript:void(0);">Test fetching users (as user via user)</a></li>
+            <li v-if="$auth.other()"><a v-on:click="getUsers(true)" href="javascript:void(0);">Test fetching users (as user via admin)</a></li>
+        </ul>
+    </div>
 </template>
 
 <script>

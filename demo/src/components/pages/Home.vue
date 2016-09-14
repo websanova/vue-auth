@@ -1,27 +1,29 @@
 <template>
-    <h1>Vue Auth Plugin Demo</h1>
+    <div>
+        <h1>Vue Auth Plugin Demo</h1>
 
-    <hr/>
+        <hr/>
 
-    <h3>Test Redirects</h3>
+        <h3>Test Redirects</h3>
 
-    <ul>
-        <li><a v-link="{name: 'account'}">Test account access</a></li>
-        <li><a v-link="{name: 'admin'}">Test admin access</a></li>
-        <li><a v-link="{name: 'login'}">Test login page access</a></li>
-    </ul>
+        <ul>
+            <li><a v-link="{name: 'account'}">Test account access</a></li>
+            <li><a v-link="{name: 'admin'}">Test admin access</a></li>
+            <li><a v-link="{name: 'login'}">Test login page access</a></li>
+        </ul>
 
-    <hr/>
+        <hr/>
 
-    <h3>Test Tokens</h3>
+        <h3>Test Tokens</h3>
 
-    <div style="word-wrap:break-word;">{{ token === '' ? 'select token' : (token ? token : 'no token set') }}</div>
+        <div style="word-wrap:break-word;">{{ token === '' ? 'select token' : (token ? token : 'no token set') }}</div>
 
-    <ul>
-        <li><a v-on:click="setToken()" href="javascript:void(0);">Test default token</a></li>
-        <li><a v-on:click="setToken('other')" href="javascript:void(0);">Test other token</a></li>
-        <li><a v-on:click="setToken('default')" href="javascript:void(0);">Test admin token</a></li>
-    </ul>
+        <ul>
+            <li><a v-on:click="setToken()" href="javascript:void(0);">Test default token</a></li>
+            <li><a v-on:click="setToken('other')" href="javascript:void(0);">Test other token</a></li>
+            <li><a v-on:click="setToken('default')" href="javascript:void(0);">Test admin token</a></li>
+        </ul>
+    </div>
 </template>
 
 <script>

@@ -1,14 +1,16 @@
 <template>
-    <h1>Users</h1>
+    <div>
+        <h1>Users</h1>
 
-    <hr/>
+        <hr/>
 
-    <div v-for="user in users" style="margin-bottom: 5px;">
-        {{ user.username }}
-        
-        <span style="float:right;">
-            <a v-on:click="loginOther(user)" href="javascript:void(0);">login as</a>
-        </span>
+        <div v-for="user in users" style="margin-bottom: 5px;">
+            {{ user.username }}
+            
+            <span style="float:right;">
+                <a v-on:click="loginOther(user)" href="javascript:void(0);">login as</a>
+            </span>
+        </div>
     </div>
 </template>
 
