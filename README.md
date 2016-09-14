@@ -118,8 +118,14 @@ Vue.router.map({
 ### auth: `Array` `String`
 
 * The user must be logged in. Additionally the string or array will be checked against the users roles.
-
 * Note that the users `roles` variable can be set in the options.
+
+### auth: `Object`
+
+* The user must be logged in and the object will be checked against the users roles.
+* Note for this to work both the auth and user roles must both be objects.
+* An object must also be used when using `$auth.check({some: 'name'})` where the value can be a `String` or `Array`.
+
 
 
 
@@ -263,7 +269,7 @@ this.$auth.login({
     success: function () {},
     error: function () {},
     rememberMe: true,
-    redirect: {name: 'account'},
+    redirect: '/account',
     // etc...
 });
 ~~~
@@ -272,13 +278,15 @@ this.$auth.login({
 
 * Data object is passed directly to http method.
 * Accepts `redirect` parameter which is passed directly to router.
+* Accepts `makeRequest` parameter which must be set to `true` to send request to api. Otherwise the logout just happens locally by deleting tokens.
 
 ~~~
 this.$auth.logout({
+    makeRequest: true,
     params: {},
     success: function () {},
     error: function () {},
-    redirect: {name: 'account'},
+    redirect: '/login',
     // etc...
 });
 ~~~
@@ -302,17 +310,18 @@ this.$auth.loginOther({
 
 * Data object is passed directly to http method.
 * Accepts `redirect` parameter which is passed directly to router.
+* Also accepts `makeRequest` parameter same as `logout` method.
 
 ~~~
 this.$auth.logoutOther({
+    makeRequest: true,
     params: {},
     success: function () {},
     error: function () {},
-    redirect: {name: 'account'},
+    redirect: {path: '/admin'},
     // etc...
 });
 ~~~
-
 
 ### oauth2
 
@@ -351,217 +360,129 @@ else {
 
 Pretty much all methods are overrideable now in case there any specific issues with a particular version of Vue.
 
+
+
 ### tokenVar: `'token'`
 
-    * The name of the token to check for in the response.
+* The name of the token to check for in the response.
 
 ### tokenName: `'auth-token'`
 
-    * The name of the token stored in local storage.
+* The name of the token stored in local storage.
 
 ### tokenHeader: `'Authorization'`
 
-    * Name of authorization token header to look for in the response.
+* Name of authorization token header to look for in the response.
 
 ### authType: `'bearer'` `'basic'`
 
-    * Authentication type to use.
+* Authentication type to use.
 
 ### rolesVar: `'roles'`
 
-    * Name of roles var in user object.
+* Name of roles var in user object.
 
 ### authRedirect: `{path: '/login'}`
 
-    * Redirect if authentication is required in a route.
+* Redirect to use if authentication is required on a route.
 
-### forbiddenRedirect:  {path: '/403'}
+### forbiddenRedirect: `{path: '/403'}`
 
-### notFoundRedirect:   {path: '/404'}
+* Redirect to use if route is forbidden.
 
-### registerData:       {url: 'auth/register',     method: 'POST', redirect: '/login'}
+### notFoundRedirect: `{path: '/404'}`
 
-### loginData:          {url: 'auth/login',        method: 'POST', redirect: '/'}
+* Redirect to use if route is not found (set the `false`).
 
-### logoutData:         {url: 'auth/logout',       method: 'POST', redirect: '/', makeRequest: false}
+### registerData: `{url: 'auth/register', method: 'POST', redirect: '/login'}`
 
-### oauth1Data:         {url: 'auth/login',        method: 'POST'}
+* Default register request data and redirect.
 
-### fetchData:          {url: 'auth/user',         method: 'GET'}
+### loginData: `{url: 'auth/login', method: 'POST', redirect: '/'}`
 
-### refreshData:        {url: 'auth/refresh',      method: 'GET', atInit: true}
+* Default login request data and redirect.
 
-### loginOtherData:     {url: 'auth/login-other',  method: 'POST', redirect: '/'}
+### logoutData: `{url: 'auth/logout', method: 'POST', redirect: '/', makeRequest: false}`
 
-### logoutOtherData:    {url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false}
+* Default logout request data and redirect.
+* This request is only made if `makeRequest` is set to true.
 
-### facebookData:       {url: 'auth/facebook',     method: 'POST', redirect: '/'}
+### oauth1Data: `{url: 'auth/login', method: 'POST'}`
 
-### googleData:         {url: 'auth/google',       method: 'POST', redirect: '/'}
+* Default oauth1 request data and redirect.
 
-### facebookOauth2Data: {
+### fetchData: `{url: 'auth/user', method: 'GET'}`
 
-    url: 'https://www.facebook.com/v2.5/dialog/oauth',
-    redirect: function () { return this.options.getUrl() + '/login/facebook'; },
-    clientId: '',
-    scope: 'email'
-}
+* Default user fetch request data and redirect.
 
-### googleOauth2Data: {
-    url: 'https://accounts.google.com/o/oauth2/auth',
-    redirect: function () { return this.options.getUrl() + '/login/google'; },
-    clientId: '',
-    scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
-}
+### refreshData: `{url: 'auth/refresh', method: 'GET', atInit: true}`
 
-### getUrl:             _getUrl
+* Default refresh request data and redirect.
 
-### cookieDomain:       _cookieDomain
+### loginOtherData: `{url: 'auth/login-other', method: 'POST', redirect: '/'}`
 
-### parseUserData:      _parseUserData
+* Default login as "other" request data and redirect.
 
-### tokenExpired:       _tokenExpired
+### logoutOtherData: `{url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false}`
 
-### check:              _check
+* Default logout as "other" request data and redirect.
 
-### transitionEach:     _transitionEach
+### facebookData: `{url: 'auth/facebook', method: 'POST', redirect: '/'}`
 
-### routerBeforeEach:   _routerBeforeEach
+* Default  request data and redirect.
 
-### requestIntercept:   _requestIntercept
+### googleData: `{url: 'auth/google', method: 'POST', redirect: '/'}`
 
-### responseIntercept:  _responseIntercept
+* Default  request data and redirect.
 
-### registerPerform:    _registerPerform
+### facebookOauth2Data: `{url: 'https://www.facebook.com/v2.5/dialog/oauth', redirect: function () { return this.options.getUrl() + '/login/facebook'; }, clientId: '', scope: 'email'}`
 
-### registerProcess:    _registerProcess
+* Default oauth2 data that ships with plugin.
+* These can be overridden when calling `oauth2()` method or in the plugin options on init.
 
-### loginPerform:       _loginPerform
+### googleOauth2Data: `{url: 'https://accounts.google.com/o/oauth2/auth', redirect: function () { return this.options.getUrl() + '/login/google'; }, clientId: '', scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'}`
 
-### loginProcess:       _loginProcess
+* Same as facebookOauth2Data.
 
-### logoutPerform:      _logoutPerform
+### getUrl: `_getUrl`
 
-### logoutProcess:      _logoutProcess
+* Returns the current sites url for use in oauth2 redirects back to the site.
 
-### fetchPerform:       _fetchPerform
+### cookieDomain: `_cookieDomain`
 
-### fetchProcess:       _fetchProcess
+* Set the cookie domain used for `rememberMe` option.
 
-### refreshPerform:     _refreshPerform
+### parseUserData: `_parseUserData`
 
-### refreshProcess:     _refreshProcess
+* Set what data is stored from the user from the response data.
 
-### loginOtherPerform:  _loginOtherPerform
+### tokenExpired: `_tokenExpired`
 
-### loginOtherProcess:  _loginOtherProcess
+* Hook for checking if a token refresh should occur or not. Set this to return `false` when creating a custom solution.
 
-### logoutOtherPerform: _logoutOtherPerform
+### check: `_check`
 
-### logoutOtherProcess: _logoutOtherProcess
-
-### oauth2Perform:      _oauth2Perform
-
-### oauth2Process:      _oauth2Process
-
+* Function used during `check` method. 
 
 
 
 ## Driver Options
 
-_init: function () {
-        this.options._bind.call(this);
+These are all function related directly to Vue that sort of acts like a driver. It makes it easier to deal with incompatibilities between Vue versions.
 
-        this.options._beforeEach.call(this, this.options.routerBeforeEach, this.options.transitionEach);
-        this.options._interceptor.call(this, this.options.requestIntercept, this.options.responseIntercept);
-    },
-
-    _bind: function () {
-        this.options.http = this.options.http || this.options.Vue.http;
-        this.options.router = this.options.router || this.options.Vue.router;
-    },
-
-    _watch: function (data) {
-        return new this.options.Vue({
-            data: function () {
-                return data;
-            }
-        });
-    },
-
-    _getHeaders: function (res) {
-        return {
-            authorization: res.headers[this.options.tokenHeader]
-        };
-    },
-
-    _setHeaders: function (req, headers) {
-        if (headers.authorization) {
-            req.headers[this.options.tokenHeader] = headers.authorization;
-        }
-    },
-
-    _bindData: function (data, ctx) {
-        var error, success;
-
-        data = data || {};
-
-        error = data.error;
-        success = data.success;
-
-        data.query = ctx.$route.query || {};
-
-        if (data.success) { data.success = function (res) { success.call(ctx, res); } }
-        if (data.error) { data.error = function (res) { error.call(ctx, res); } }
-
-        return data;
-    },
-
-    _interceptor: function (req, res) {
-        var _this = this;
-
-        this.options.http.interceptors.push(function (request, next) {
-            if (req) { req.call(_this, request); }
-            
-            next(function (response) {
-                if (res) { res.call(_this, response); }
-            });
-        });
-    },
-
-    _beforeEach: function (routerBeforeEach, transitionEach) {
-        var _this = this;
-
-        this.options.router.beforeEach(function (transition) {
-            routerBeforeEach.call(_this, function () {
-                transitionEach.call(_this, transition.to.auth, function () { transition.next(); });
-            });
-        })
-    },
-
-    _invalidToken: function (res) {
-        if (res.status === 401) {
-            this.logout();
-        }
-    },
-
-    _routerReplace: function (data) {
-        this.options.router.replace(data);
-    },
-
-    _routerGo: function (data) {
-        this.options.router.go(data);
-    },
-
-    _httpData: function (res) {
-        return res.json() || {};
-    },
-
-    _http: function (data) {
-        this.options.http(data).then(data.success, data.error);
-    }
-
-
+* `_init`
+* `_bind`
+* `_watch`
+* `_getHeaders`
+* `_setHeaders`
+* `_bindData`
+* `_interceptor`
+* `_beforeEach`
+* `_invalidToken`
+* `_routerReplace`
+* `_routerGo`
+* `_httpData`
+* `_http`
 
 
 
@@ -569,95 +490,30 @@ _init: function () {
 
 ### v1.0.1-dev
 
-
-
--changes
-    -package name is scoped now - it's a bit annoying have to worry about package names being take so they are now scped throught `@websanova` and will be consistently named with the GitHub repo.
-
-    - because this plugin is still in a lot of development, this has been made as incremental change even though it's been overhauled quite a bit.
-        -i will not be maintaining any backward compatability. However this is also released as an rc and will go into version one soon once bugs have been ironed out so it's a bit safer to use.
-
-    -added demo
-        -sudo npm run demo (you will need to hook up back-end php file for full demo).
-    -the library has been renamed to vue-auth (allows to support more types of login methods in the future).
-    -options for paths are now objects where you can specify any default data you want to pass into your calls.
-        -this goes for any routing params also, but now gives the option of using a string path, or an object with name or path and params.
-    -there is now a new register call with the option to auto login on success.
-    -there is now no fetch call if the auth call returns a token.
-        -because there are different ways that this can be implemented
-        -the default is to just refresh the token on each app init.
-        -however some users may want to set this token one the user is requested (since that typically happens once or few times) and save a hit to the server.
-        -to solve this a hook has been created to automatically sniff out and set a `token` var in each response. This means you can set it pretty much anywhere and it will automatically update the token.
-        -the fetch call will be on by default, if you want it disabled (because you are sending the token already somewhere else) just init the app options with { refreshData: { atInit: false }}
-        -you can also just call the `refresh` method manually if that suits you better also and provide a `success` callback.
-        -can set as header or as var in your data which is always checked at each response so you can insert it wherever you like.
-    -better handling for invalid tokens
-        -there were some inconsitincies here before
-        -this will now automatically logout the user and redirect them (if an invalid token is detected).
-    -all functions are overrideable now
-    -there is a driver file for vue which supports the binding between the plugin and framework. This allows multiple drivers and overrides for any issues between versions in the future and allows full backward compatability.
-    -reverted from using Vue in the base code and just went back to regular JavaScript (not a good idea).
-    -all the redirects area also objects now, so you can do a redirect as a `/path` or `{name: 'object'}`.
-    -any functions, fields params that involve logging in a secondary user are called `other` now.
-    -you can still perform actions as the "admin" user when logged in as other by using `useToken('default')` and switching back to `useToken('other')`.
-        -actually this is now enabledOther() and disableOther - not the same as logging out which kills the token for other...
-    -you can now specify separate path data for login and oauth1 and oauth2, etc.
-    -login, oauth, etc functions now just use one data object to pass in. Specify any options, paths or redirect values in there.
-        -these objects act as a base and any values you pass in will override them in that request. This allows a lot more flexibility for any specific setup you may have or hooking up with existing api's that can't be changed.
-    -removed function google, and facebook, just use oauth2('facebook', data), etc...
-    -the plugin comes preloaded with oauth2 info for google and facebook but you can easily add your own in the options...
-        -use provider parameter 'provider'
-        -state parameter (pass any info along here)
-        -rememberMe (automatically passed through state for you)
-        -provide example...
-    -there is a logout request that can be made if options.logoutData.url is set (by default it's null).
-        -either way the logout will follow consistent format and a `success` callback can be set in.
-        -the success method will contain the proper context.
-    -login, oauth1, oauth2, register will now have the proper context from calling component (you don't need to use _this kind of stuff).
-        -without circular bindings
-    -switch to "safe" javascript.
-    -support for drivers (this allows more flexibility between different versions)
-    -auth drivers (these are not fully extendable yet) for now it supports "bearer" and "plain" (both set the Authorization header in the request).
-    -fetch call (I've found sometimes we need to refetch the user data) this has been provided
-        -perhaps we update some field but some other processing takes place on the server that changes the users fields
-        -we can do it manually by calling user(data) which will set it
-        -or you can perform a fetch request also if that's not possible.
-    -token function...
-    -simpler consitent code base
-        -properly pakaged and minified distribution
-    -bse64 token stuff removed there really is no readon for this
-        -if you need to check this on your own intervals there is a `token` function and it can be put into a timeout on your own using `token` and `refresh` calls..
-<!--     -if you don't like the refresh call on boot
-        -you can override the tokenExpired routine and check for whatever you like there, you can use `token` call to get the existing token.
-        -you can also just override it and return false if you want to do it on your own and use `refresh` call manually. -->
-
-
-    -overall file size ????? (compare this).
-
-    *oauth2 support coming.
-
-
-
-    **removed expiration check - actually this is just bloat and doesn't really need to be done on front end - let the server determine if it's expired.
-        -since this would only fail once every ten or 14 days since most tokens are alive that long it seemed a bit excessive.
-        -this also doesn't affect situations where the server would invalidate a token anyway (so it can still fail).
-        -for those who REALLY need to check this and save that call - there is the `token` method this can be done on your own with 
-            -maybe provide some callback or hook for this....
-
-    -----
-
-
--all http methods just pass in directly into $http(data).then(success, error);
--this means you can load up the data with whatever works for you, (body, params, url, method, etc).
-    -appropriate defaults are set for you already such as url, method and redirect
-    -these can be overridden on in the initial options or on a per request basis.
-
-registerData
-    -autoLogin can set this to perform a register and automatically login
-    -you can also set the rememberMe option as you would with login. Of course in this case it's only used with the auto login option.
-    -redirect: can be string or object
-
-loginData
-    -redirect:
-    -rememberMe:
-
+* Module renamed to `vue-auth` from `vue-jwt-auth`.
+* Package name is scoped through `@websanova/vue-auth` now.
+* Added demo with lots of sample code.
+* Any default data for a request is an object now that goes directly into the `http` method. So it can be called with whatever parameters the method supports.
+* All `success` and `error` functions will contain proper context from Vue component.
+* Redirects can be objects now, so you can do a redirect as a `/path` or `{name: 'object'}` etc.
+* There is now a new `register` call with the option to auto login on success.
+* The `auth` parameter in routes and the `check()` method now support objects for checking more complicated roles.
+* Better handling for invalid tokens.
+* All functions are overrideable now.
+* There is a driver file for vue which supports the binding between the plugin and framework. This allows multiple drivers and overrides for any issues between versions in the future and allows full backward compatability.
+* Reverted from using Vue in the base code and just went back to regular JavaScript (was not really a good idea).
+* Any functions, fields parameters that involve logging in a secondary user are called `other` now.
+* Actions can now be performed as "admin" user when logged in as "other" user by using `disabledOther` and `enableOther`.
+* The `login`, `oauth2`, etc all have their own default parameters now.
+* Removed `google` and `facebook` functions just use `oauth2` method now.
+* The `logout` method can now perform an api request if `makdeRequest` is set to true.
+* Switch to Vanilla JavaScriipt (for development). Had some issues with using fancy es6 syntax.
+* Support for drivers allowing more flexibility between different versions (this is still in development).
+* Two auth drivers which are named `bearer` and `basic`.
+* A fetch call has been added allowing the user to be reset.
+* The token function will return current function or called with `other` or `default` will return the appropriate token.
+* Checking token expiration (base64 decode) has been removed. Since a refresh will not occur often for SPA it was a bit too much extra code. Will need to do it custom if it's really necessary.
+* Reduced file size.
+* Simpler consistent code base.
+* Properly packaged and minified distribution.
+* General bug fixes and improvements.

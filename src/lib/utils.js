@@ -31,7 +31,17 @@ module.exports = (function (){
     }
 
     function compare(one, two) {
-        var i, ii;
+        var i, ii, key;
+
+        if (typeof one === 'object' && typeof two === 'object') {
+            for (key in one) {
+                if (compare(one[key], two[key])) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         one = toArray(one);
         two = toArray(two);

@@ -59,7 +59,7 @@ module.exports = function () {
             if ( ! this.check()) {
                 this.options._routerReplace.call(this, this.options.authRedirect);
             }
-            else if (routeAuth.constructor === Array && ! __utils.compare(routeAuth, __utils.toArray(this.watch.data[this.options.rolesVar]))) {
+            else if (routeAuth.constructor === Array && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
                 this.options._routerReplace.call(this, this.options.forbiddenRedirect);
             }
             else {
@@ -369,7 +369,7 @@ module.exports = function () {
         logoutData:         {url: 'auth/logout',       method: 'POST', redirect: '/', makeRequest: false},
         oauth1Data:         {url: 'auth/login',        method: 'POST'},
         fetchData:          {url: 'auth/user',         method: 'GET'},
-        refreshData:        {url: 'auth/refresh',      method: 'GET', atInit: true},
+        refreshData:        {url: 'auth/refresh',      method: 'GET'},
         loginOtherData:     {url: 'auth/login-other',  method: 'POST', redirect: '/'},
         logoutOtherData:    {url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false},
 
