@@ -286,8 +286,6 @@ module.exports = function () {
         var state = {},
             params = '',
             query = {};
-        
-        // console.log(data);
 
         if (data.code === true) {
             data = __utils.extend(this.options[data.provider + 'Data'], [data]);
@@ -308,8 +306,6 @@ module.exports = function () {
             this.options.loginPerform.call(this, data);
         } else {
             data = __utils.extend(this.options[data.provider + 'Oauth2Data'], [data]);
-
-            // console.log(data);
 
             data.redirect = data.redirect.call(this);
 
@@ -410,8 +406,7 @@ module.exports = function () {
                 });
             },
             response: function (res, token) {
-                var token = token.split('Bearer ');
-
+                token = token.split('Bearer ');
                 __token.set.call(this, null, token[token.length > 1 ? 1 : 0]);
             }
         },

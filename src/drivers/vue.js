@@ -24,13 +24,13 @@ module.exports = {
 
     _getHeaders: function (res) {
         return {
-            authorization: res.headers[this.options.tokenHeader]
+            authorization: res.headers.get(this.options.tokenHeader)
         };
     },
 
     _setHeaders: function (req, headers) {
         if (headers.authorization) {
-            req.headers[this.options.tokenHeader] = headers.authorization;
+            req.headers.set(this.options.tokenHeader, headers.authorization);
         }
     },
 
