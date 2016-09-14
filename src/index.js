@@ -4,7 +4,7 @@ module.exports = (function () {
 
     return function install(Vue, options) {
         var auth,
-            driver = require('./drivers/vue.js');
+            driver = require('./drivers/vue.1.0.0.js')
 
             driver.Vue = Vue;
 

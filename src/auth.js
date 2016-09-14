@@ -424,10 +424,17 @@ module.exports = function () {
     };
 
     function Auth(options, driver) {
- 
+        var router = options.router,
+            http = options.http;
+
+        delete options.http;
+        delete options.router;
+
         this.currentToken = null;
 
         this.options = __utils.extend(defaultOptions, [driver || {}, options || {}]);
+        this.options.router = router;
+        this.options.http = http;
 
         this.watch = this.options._watch.call(this, {
             data: null,
