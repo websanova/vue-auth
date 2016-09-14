@@ -92,99 +92,247 @@ Vue.router.map({
 
 ## Routes
 
-### auth: ```true```
+### auth: `true`
 
 * User must be authenticated (no roles are checked).
 
-### auth: ```false```
+### auth: `false`
 
 * If the user is logged in then this route will be unavailable. Useful for login/register type pages to be unaccessible once the user is logged in.
 
-### auth: ```undefined```
+### auth: `undefined`
 
-    * Public, no checks required.
+* Public, no checks required.
 
-### auth: ```Array``` ```String```
+### auth: `Array` `String`
 
-    * The user must be logged in. Additionally the string or array will be checked against the users roles.
+* The user must be logged in. Additionally the string or array will be checked against the users roles.
 
-    * Note that the users `roles` variable can be set in the options.
+* Note that the users `roles` variable can be set in the options.
 
 
 
 ## Methods
 
-Auth.prototype.ready = function () {
-        return this.watch.loaded;
-    };
-    
-    Auth.prototype.user = function (data) {
-        if (data) {
-            this.watch.data = data;
-        }
+These are all methods available in the vue app via `$auth`.
 
-        return this.watch.data;
-    };
+* All `success` and `error` functions will receive proper context from currently called component.
 
-    Auth.prototype.check = function (role) {
-        return this.options.check.call(this, role);
-    };
+### ready
 
-    Auth.prototype.other = function () {
-        this.watch.data; // To fire watch
+* Fires once on the initial app load to pre-load users (if set).
 
-        return __token.get.call(this, 'other') ? true : false;
-    };
+~~~
+<div v-if="$auth.ready()">
+    <vue-router></vue-router>
+</div>
+<div v-if="!$auth.ready()">
+    Site loading...
+</div>
+~~~
 
-    Auth.prototype.enableOther = function (data) {
-        if (this.other()) {
-            this.currentToken = null;
-        }
-    };
+### user
 
-    Auth.prototype.disableOther = function (data) {
-        if (this.other()) {
-            this.currentToken = 'default';
-        }
-    };
+* Returns the currently stored users data.
 
-    Auth.prototype.token = function (name) {
-        return __token.get.call(this, name);
-    };
+~~~
+<div>
+    {{ $auth.user().email }}
+</div>
+~~~
 
-    Auth.prototype.fetch = function (data) {
-        __bindContext.call(this, 'fetch', data);
-    };
+### check
 
-    Auth.prototype.refresh = function (data) {
-        __bindContext.call(this, 'refresh', data);
-    };
+* Check to see if the user is logged in.
+* It also accepts arguments to check for a specific role or set of roles.
 
-    Auth.prototype.register = function (data) {
-        __bindContext.call(this, 'register', data);
-    };
+~~~
+<a v-if="!$auth.check()" v-link="'/login'">login</a>
+<a v-if="$auth.check('admin')">admin</a>
+<a v-if="$auth.check(['admin', 'manager')]">manage</a>
+<a v-if="$auth.check()" v-on:click="$auth.logout()">logout</a>
+~~~
 
-    Auth.prototype.login = function (data) {
-        __bindContext.call(this, 'login', data);
-    };
+### other
 
-    Auth.prototype.logout = function (data) {
-        __bindContext.call(this, 'logout', data);
-    };
+* Checks if secondary "other" user is logged in.
 
-    Auth.prototype.loginOther = function (data) {
-        __bindContext.call(this, 'loginOther', data);
-    };
+~~~
+<a v-if="$auth.other()" v-on:click="logoutOther()">logout other</a>
+~~~
 
-    Auth.prototype.logoutOther = function (data) {
-        __bindContext.call(this, 'logoutOther', data);  
-    };
+### disableOther
 
-    Auth.prototype.oauth2 = function (data) {
-        __bindContext.call(this, 'oauth2', data);  
-    }
+* Disables other using the default token until it is re-enabled (or logged out).
+* This allows you to login is as "another" user but still perform requests as an admin.
+
+~~~
+this.$auth.disableOther();
+
+this.$http.get('users'); // Will run as admin.
+
+this.$auth.enableOther();
+~~~
+
+### enableOther
+
+* See disableOther.
+
+### token
+
+* Returns the currently activated token if none are specified.
+* Can also specify a specific token, but only `other` and `default` will actually return anything.
+
+~~~
+var token = this.$auth.token();
+var token = this.$auth.token('other');
+var token = this.$auth.token('default');
+~~~
+
+### fetch
+
+* Fetch the user (again) allowing the users data to be reset (from the api).
+* Data object is passed directly to http method.
+
+~~~
+this.$auth.fetch({
+    params: {},
+    success: function () {},
+    error: function () {},
+    // etc...
+});
+~~~
+
+### refresh
+
+* Manually refresh the token.
+* The refresh will always fire on boot, to disable this override the `expiredToken` option method.
+* Can be used in conjunction with `expiredToken` and `token` to write custom refreshes.
+* If any custom expiration custom logic needs to be done (for instance decoding and checking expiration date in jwt token) override the `expiredToken` method and return `boolean`.
+* Data object is passed directly to http method.
+
+~~~
+this.$auth.refresh({
+    params: {},
+    success: function () {},
+    error: function () {},
+    // etc...
+});
+~~~
+
+### register
+
+* Convenience method for registration.
+* Data object is passed directly to http method.
+* Accepts `autoLogin` parameter to attempt login directly after register.
+* Accepts `rememberMe` parameter when used in conjunction with `autoLogin` equal to `true`.
+* Accepts `redirect` parameter which is passed directly to router.
+
+~~~
+this.$auth.register({
+    params: {},
+    success: function () {},
+    error: function () {},
+    autoLogin: true,
+    rememberMe: true,
+    redirect: {name: 'account'},
+    // etc...
+});
+~~~
+
+### login
+
+* Data object is passed directly to http method.
+* Accepts `rememberMe` parameter.
+* Accepts `redirect` parameter which is passed directly to router.
+
+~~~
+this.$auth.login({
+    params: {},
+    success: function () {},
+    error: function () {},
+    rememberMe: true,
+    redirect: {name: 'account'},
+    // etc...
+});
+~~~
+
+### logout
+
+* Data object is passed directly to http method.
+* Accepts `redirect` parameter which is passed directly to router.
+
+~~~
+this.$auth.logout({
+    params: {},
+    success: function () {},
+    error: function () {},
+    redirect: {name: 'account'},
+    // etc...
+});
+~~~
+
+### loginOther
+
+* Data object is passed directly to http method.
+* Accepts `redirect` parameter which is passed directly to router.
+
+~~~
+this.$auth.loginOther({
+    params: {},
+    success: function () {},
+    error: function () {},
+    redirect: {name: 'account'},
+    // etc...
+});
+~~~
+
+### logoutOther
+
+* Data object is passed directly to http method.
+* Accepts `redirect` parameter which is passed directly to router.
+
+~~~
+this.$auth.logoutOther({
+    params: {},
+    success: function () {},
+    error: function () {},
+    redirect: {name: 'account'},
+    // etc...
+});
+~~~
 
 
+### oauth2
+
+* Convenience method for OAuth2.
+* Initial request is to third party.
+* Second call is to api server.
+* Accepts `code` parameter which should be set to `true` when the code is set.
+* Accepts `provider` parameter which hooks into data for third party.
+* Third party data should follow format such as `facebookData`, `facebookOath2Data`. Check options section for more info.
+* Accepts `redirect` parameter which is passed directly to router.
+
+~~~
+if (this.$route.query.code) {
+    this.$auth.oauth2({
+        code: true,
+        provider: 'facebook',
+        params: {
+            code: this.code
+        },
+        success: function(res) {},
+        error: function (res) {}
+        redirect: {path: '/account'},
+        // etc
+    });
+}
+else {
+    this.$auth.oauth2({
+        provider: 'facebook'
+    });
+}
+~~~
 
 
 
@@ -468,9 +616,9 @@ _init: function () {
         -properly pakaged and minified distribution
     -bse64 token stuff removed there really is no readon for this
         -if you need to check this on your own intervals there is a `token` function and it can be put into a timeout on your own using `token` and `refresh` calls..
-    -if you don't like the refresh call on boot
+<!--     -if you don't like the refresh call on boot
         -you can override the tokenExpired routine and check for whatever you like there, you can use `token` call to get the existing token.
-        -you can also just override it and return false if you want to do it on your own and use `refresh` call manually.
+        -you can also just override it and return false if you want to do it on your own and use `refresh` call manually. -->
 
 
     -overall file size ????? (compare this).
