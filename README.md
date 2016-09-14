@@ -488,7 +488,7 @@ These are all function related directly to Vue that sort of acts like a driver. 
 
 ## Change Log
 
-### v1.0.1-dev
+### v1.0.0-dev
 
 * Module renamed to `vue-auth` from `vue-jwt-auth`.
 * Package name is scoped through `@websanova/vue-auth` now.
