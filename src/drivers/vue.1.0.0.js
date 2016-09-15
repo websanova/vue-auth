@@ -83,7 +83,9 @@ module.exports = {
     },
 
     _routerGo: function (data) {
-        this.options.router.go(data);
+        var router = this.options.router;
+
+        (router.push || router.go).call(router, data);
     },
 
     _httpData: function (res) {
