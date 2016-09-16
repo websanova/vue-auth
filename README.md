@@ -17,12 +17,12 @@ Note this is the new name for the formerly named `vue-jwt-auth`. Since it's like
 
 ### Tested with
 
-Vue 2.x is not currently supported due to many inconsistencies between libraries.
 
 * vue 1.0.26
 * vue-resource 1.0.2
 * vue-router 0.7.13
 
+Early support for Vue 2.0 is now available also but may still be a bit unstable due to many changes in the api. Please let me know of any issues you may find.
 
 
 ## Notes
