@@ -69,7 +69,7 @@ To run the front end part of the demo just install and run. The demo runs on a p
 > sudo npm run demo
 ~~~
 
-There is a demo server already available in the demo. If a different path is required it must be set in the `demo/app.js` file.
+If a different path is required it must be set in the `demo/app.js` file.
 
 To run the build:
 
@@ -95,6 +95,10 @@ Vue.router.map({
     },
     '/account': {
         auth: true,
+        component: require('./Account')
+    },
+    '/private': {
+        auth: [{"people": "administrator", "people": "superadmin"}],
         component: require('./Account')
     },
     '/login': {
