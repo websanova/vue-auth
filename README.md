@@ -45,11 +45,13 @@ Vue.use(require('@websanova/vue-auth'), {
 });
 ~~~
 
-**NOTE:** If you do not set your router as `Vue.router = new VueRouter()` then you will need to feed the `router` in directly as an optional third argument.
+**NOTE:** If you do not set your router as `Vue.router = new VueRouter()` then you will need to feed the `router` in directly through the options.
 
 ~~~
 var router = new VueRouter();
-Vue.use(Auth, options, router);
+Vue.use(Auth, {
+    router: router
+});
 ~~~
 
 
