@@ -454,7 +454,7 @@ module.exports = function () {
             this.watch.data = data;
         }
 
-        return this.watch.data;
+        return this.watch.data || {};
     };
 
     Auth.prototype.check = function (role) {
