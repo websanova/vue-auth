@@ -1,5 +1,13 @@
 module.exports = (function (){
 
+    function isObject(val) {
+        if (val !== null && typeof val === 'object' && val.constructor !== Array ) {
+            return true;
+        }
+
+        return false;
+    }
+
     function toArray(val) {
         return (typeof val) === 'string' ? [val] : val;
     }
@@ -8,8 +16,8 @@ module.exports = (function (){
         var i, ii, key, data = {};
 
         for (key in mainObj) {
-            if (typeof mainObj[key] === 'object') {
-                data[key] = extend(mainObj[key], []);
+            if (isObject(mainObj[key])) {
+                data[key] = extend(mainObj[key], {});
             }
             else {
                 data[key] = mainObj[key];
@@ -18,7 +26,7 @@ module.exports = (function (){
 
         for (i = 0, ii = appendObj.length; i < ii; i++) {
             for (key in appendObj[i]) {
-                if (typeof appendObj[i][key] === 'object') {
+                if (isObject(appendObj[i][key])) {
                     data[key] = extend(mainObj[key] || {}, [appendObj[i][key]]);
                 }
                 else  {

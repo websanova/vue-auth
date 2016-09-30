@@ -23,14 +23,22 @@ module.exports = {
     },
 
     _getHeaders: function (res) {
-        return {
-            authorization: res.headers.get(this.options.tokenHeader)
-        };
+        var i,
+            data = {},
+            headers = res.headers.map;
+
+        for (i in headers) {
+            data[i] = headers[i][0];
+        }
+
+        return data;
     },
 
     _setHeaders: function (req, headers) {
-        if (headers.authorization) {
-            req.headers.set(this.options.tokenHeader, headers.authorization);
+        var i;
+
+        for (i in headers) {
+            req.headers.set(i, headers[i]);
         }
     },
 

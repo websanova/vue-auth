@@ -45,12 +45,13 @@ Vue.use(require('@websanova/vue-auth'), {
 });
 ~~~
 
-**NOTE:** If you do not set your router as `Vue.router = new VueRouter()` then you will need to feed the `router` in directly through the options.
+**NOTE:** If you do not set your router as `Vue.router = new VueRouter()` then you will need to feed the `router` in directly through the options. Also true for `http`.
 
 ~~~
 var router = new VueRouter();
 Vue.use(Auth, {
-    router: router
+    router: router,
+    http: http
 });
 ~~~
 
@@ -372,23 +373,14 @@ else {
 
 Pretty much all methods are overrideable now in case there any specific issues with a particular version of Vue.
 
+### token: `[{name: 'Authorization', authType: 'bearer', foundIn: 'header'}, {name: 'token', authType: 'bearer', foundIn: 'response'}]`
 
-
-### tokenVar: `'token'`
-
-* The name of the token to check for in the response.
+* Set of method for fetching the token from the response. It will attempt each until a token is found and stop there.
+* For sending requests it will by default use the method in the first position.
 
 ### tokenName: `'auth-token'`
 
 * The name of the token stored in local storage.
-
-### tokenHeader: `'Authorization'`
-
-* Name of authorization token header to look for in the response.
-
-### authType: `'bearer'` `'basic'`
-
-* Authentication type to use.
 
 ### rolesVar: `'roles'`
 
