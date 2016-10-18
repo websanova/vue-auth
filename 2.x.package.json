@@ -2,7 +2,7 @@
   "main": "src/index.js",
   
   "dependencies": {
-    "@websanova/vue-auth": "1.1.0-beta"
+    "@websanova/vue-auth": "1.2.0-beta"
   },
   
   "devDependencies": {
