@@ -75,7 +75,7 @@ module.exports = {
 
         this.options.router.beforeEach(function (transition, location, next) {
             routerBeforeEach.call(_this, function () {
-                transitionEach.call(_this, (transition.to || transition).auth, function () { (next || transition.next)(); });
+                transitionEach.call(_this, (transition.meta || {}).auth || (transition.to || transition).auth, function () { (next || transition.next)(); });
             });
         })
     },
