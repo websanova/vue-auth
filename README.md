@@ -67,8 +67,12 @@ To run the front end part of the demo just install and run. The demo runs on a p
 
 ~~~
 > sudo npm install
-> sudo npm run demo
+> sudo npm run 1.x.demo
+> sudo npm run 2.x.demo
 ~~~
+
+Note: For Vue 2 demo there is a separate package.json. Unfortunately there is no really great way to run both at the same time.
+
 
 If a different path is required it must be set in the `demo/app.js` file.
 
@@ -83,6 +87,8 @@ To run the build:
 ## Privileges
 
 The `vue-auth` plugin works with the `vue-router` plugin. Setting an `auth` field in the router mapping section will set access to that route.
+
+**Vue 1.x**
 
 ~~~
 Vue.router.map({
@@ -112,6 +118,36 @@ Vue.router.map({
 });
 ~~~
 
+**Vue 1.x**
+
+~~~
+Vue.router = new VueRouter({
+    routes: [{
+        path: '/admin',
+        meta: {auth: 'admin'},
+        component: require('./Admin')
+    }, {
+        path: '/manage',
+        meta: {auth: ['admin', 'manager']},
+        component: require('./Manage')
+    }, {
+        path: '/account',
+        meta: {auth: true},
+        component: require('./Account')
+    }, {
+        path: '/private',
+        meta: {auth: [{"people": "administrator", "people": "superadmin"}]},
+        component: require('./Account')
+    }, {
+        path: '/login',
+        meta: {auth: false},
+        component: require('./Login')
+    }, {
+        path: '/contact',
+        component: require('./Contact')
+    }]
+});
+~~~
 
 
 ## Routes
@@ -373,7 +409,7 @@ else {
 
 Pretty much all methods are overrideable now in case there any specific issues with a particular version of Vue.
 
-### token: `[{name: 'Authorization', authType: 'bearer', foundIn: 'header'}, {name: 'token', authType: 'bearer', foundIn: 'response'}]`
+### token: `[{request: 'Authorization', response: 'Authorization', authType: 'bearer', foundIn: 'header'}, {request: 'token', response: 'token', authType: 'bearer', foundIn: 'response'}]`
 
 * Set of method for fetching the token from the response. It will attempt each until a token is found and stop there.
 * For sending requests it will by default use the method in the first position.
@@ -491,6 +527,12 @@ These are all function related directly to Vue that sort of acts like a driver. 
 
 
 ## Change Log
+
+### v1.2.x-beta
+
+* Token parameters now accept `request` and `response` params instead of `name`.
+* Support for Vue 2 `auth` in `meta` of route.
+
 
 ### v1.0.x-dev
 
