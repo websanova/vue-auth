@@ -9,9 +9,9 @@ module.exports = function () {
     function __duckPunch(methodName, data) {
         var _this = this,
             success = data.success;
-        
+
         data = __utils.extend(this.options[methodName + 'Data'], [data]);
-        
+
         data.success = function (res) {
             data.success = success;
 
@@ -26,7 +26,7 @@ module.exports = function () {
 
         _auth.options[methodName + 'Perform'].call(_auth, _auth.options._bindData.call(_auth, data, this));
     }
-    
+
     // Overrideable
 
     function _routerBeforeEach(cb) {
@@ -52,25 +52,25 @@ module.exports = function () {
         }
     }
 
-    function _transitionEach(routeAuth, next) {
+    function _transitionEach(routeAuth, cb) {
         routeAuth = __utils.toArray(routeAuth);
 
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array)) {
             if ( ! this.check()) {
-                this.options._routerReplace.call(this, this.options.authRedirect);
+                cb.call(this, this.options.authRedirect);
             }
             else if (routeAuth.constructor === Array && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
-                this.options._routerReplace.call(this, this.options.forbiddenRedirect);
+                cb.call(this, this.options.forbiddenRedirect);
             }
             else {
-                return next();
+                return cb();
             }
         }
         else if (routeAuth === false && this.check()) {
-            this.options._routerReplace.call(this, this.options.notFoundRedirect);
+            cb.call(this, this.options.notFoundRedirect);
         }
         else {
-            return next();
+            return cb();
         }
     }
 
@@ -83,7 +83,7 @@ module.exports = function () {
 
         return req;
     }
-    
+
     function _responseIntercept(res) {
         var token = this.options._getHeaders.call(this, res).authorization || this.options._httpData.call(this, res)[this.options.tokenVar];
 
@@ -198,7 +198,7 @@ module.exports = function () {
 
     function _logoutPerform(data) {
         data = __utils.extend(this.options.logoutData, [data || {}]);
-        
+
         if (data.makeRequest) {
             __duckPunch.call(this, 'logout', data);
         }
@@ -259,7 +259,7 @@ module.exports = function () {
 
     function _logoutOtherPerform(data) {
         data = __utils.extend(this.options.logoutOtherData, [data || {}]);
-        
+
         if (data.makeRequest) {
             __duckPunch.call(this, 'logoutOther', data);
         }
@@ -345,7 +345,7 @@ module.exports = function () {
 
         facebookData:       {url: 'auth/facebook',     method: 'POST', redirect: '/'},
         googleData:         {url: 'auth/google',       method: 'POST', redirect: '/'},
-        
+
         facebookOauth2Data: {
             url: 'https://www.facebook.com/v2.5/dialog/oauth',
             redirect: function () { return this.options.getUrl() + '/login/facebook'; },
@@ -366,7 +366,7 @@ module.exports = function () {
         parseUserData:      _parseUserData,
         tokenExpired:       _tokenExpired,
         check:              _check,
-        
+
         transitionEach:     _transitionEach,
         routerBeforeEach:   _routerBeforeEach,
         requestIntercept:   _requestIntercept,
@@ -382,7 +382,7 @@ module.exports = function () {
 
         logoutPerform:      _logoutPerform,
         logoutProcess:      _logoutProcess,
-        
+
         fetchPerform:       _fetchPerform,
         fetchProcess:       _fetchProcess,
 
@@ -391,14 +391,14 @@ module.exports = function () {
 
         loginOtherPerform:  _loginOtherPerform,
         loginOtherProcess:  _loginOtherProcess,
-        
+
         logoutOtherPerform: _logoutOtherPerform,
         logoutOtherProcess: _logoutOtherProcess,
 
         oauth2Perform:      _oauth2Perform,
 
         // Auth drivers
-        
+
         bearerAuth: {
             request: function (req, token) {
                 this.options._setHeaders.call(this, req, {
@@ -448,7 +448,7 @@ module.exports = function () {
     Auth.prototype.ready = function () {
         return this.watch.loaded;
     };
-    
+
     Auth.prototype.user = function (data) {
         if (data) {
             this.watch.data = data;
@@ -508,11 +508,11 @@ module.exports = function () {
     };
 
     Auth.prototype.logoutOther = function (data) {
-        __bindContext.call(this, 'logoutOther', data);  
+        __bindContext.call(this, 'logoutOther', data);
     };
 
     Auth.prototype.oauth2 = function (data) {
-        __bindContext.call(this, 'oauth2', data);  
+        __bindContext.call(this, 'oauth2', data);
     }
 
     return Auth;
