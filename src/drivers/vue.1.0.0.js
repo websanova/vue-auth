@@ -23,14 +23,22 @@ module.exports = {
     },
 
     _getHeaders: function (res) {
-        return {
-            authorization: res.headers.get(this.options.tokenHeader)
-        };
+        var i,
+            data = {},
+            headers = res.headers.map;
+
+        for (i in headers) {
+            data[i] = headers[i][0];
+        }
+
+        return data;
     },
 
     _setHeaders: function (req, headers) {
-        if (headers.authorization) {
-            req.headers.set(this.options.tokenHeader, headers.authorization);
+        var i;
+
+        for (i in headers) {
+            req.headers.set(i, headers[i]);
         }
     },
 
@@ -67,20 +75,17 @@ module.exports = {
 
         this.options.router.beforeEach(function (transition, location, next) {
             routerBeforeEach.call(_this, function () {
-                let auth;
+                var auth;
 
                 if (transition.to) {
                     auth = transition.to.auth;
                 } else {
-                    let authRoutes = transition.matched.filter(function (route) {
+                    var authRoutes = transition.matched.filter(function (route) {
                         return route.meta.hasOwnProperty('auth');
                     });
                     // matches the nested route, the last one in the list
                     auth = authRoutes[authRoutes.length - 1].meta.auth;
                 }
-
-                console.log("Route is changing...");
-                console.log(auth);
 
                 transitionEach.call(_this, auth, function (redirect) {
                     if (!redirect) {
@@ -90,7 +95,6 @@ module.exports = {
 
                     // router v2.x
                     if (next) {
-                        console.log(redirect);
                         next(redirect);
                     } else {
                         this.options._routerReplace.call(this, redirect);

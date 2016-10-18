@@ -78,21 +78,34 @@ module.exports = function () {
         var token = __token.get.call(this);
 
         if (token) {
-            this.options[this.options.authType + 'Auth'].request.call(this, req, token);
+            this.options[this.options.token[0].authType + 'Auth'].request.call(this, req, token);
         }
 
         return req;
     }
 
     function _responseIntercept(res) {
-        var token = this.options._getHeaders.call(this, res).authorization || this.options._httpData.call(this, res)[this.options.tokenVar];
-
-        if (token) {
-            this.options[this.options.authType + 'Auth'].response.call(this, res, token);
-        }
+        var i, ii,
+            token,
+            tokens = this.options.token;
 
         if (this.options._invalidToken) {
             this.options._invalidToken.call(this, res);
+        }
+
+        for (i = 0, ii = tokens.length; i < ii; i++) {
+            if (tokens[i].foundIn === 'header') {
+                token = this.options._getHeaders.call(this, res)[tokens[i].name];
+            }
+            else if (tokens[i].foundIn === 'response') {
+                token = this.options._httpData.call(this, res)[tokens[i].name];
+            }
+
+            if (token) {
+                this.options[tokens[i].authType + 'Auth'].response.call(this, res, token);
+                
+                break;
+            }
         }
     }
 
@@ -320,14 +333,27 @@ module.exports = function () {
 
     var defaultOptions = {
 
+        // Tokens
+
+        token: [{
+            name: 'Authorization',
+            authType: 'bearer',
+            foundIn: 'header'
+        }, {
+            name: 'token',
+            authType: 'bearer',
+            foundIn: 'response'
+        }],
+
+        // tokenVar:          'token',
+        // tokenHeader:       'Authorization',
+        // authType:          'bearer',
+
         // Variables
 
-        tokenVar:          'token',
-        tokenName:         'auth-token',
-        tokenHeader:       'Authorization',
-        authType:          'bearer',
         rolesVar:          'roles',
-
+        tokenName:         'auth-token',
+        
         // Objects
 
         authRedirect:       {path: '/login'},
@@ -401,9 +427,11 @@ module.exports = function () {
 
         bearerAuth: {
             request: function (req, token) {
-                this.options._setHeaders.call(this, req, {
-                    authorization: 'Bearer ' + token
-                });
+                var data = {};
+
+                data[this.options.token[0].name] = 'Bearer ' + token;
+
+                this.options._setHeaders.call(this, req, data);
             },
             response: function (res, token) {
                 token = token.split('Bearer ');
@@ -413,9 +441,11 @@ module.exports = function () {
 
         basicAuth: {
             request: function (req, token) {
-                this.options._setHeaders.call(this, req, {
-                    authorization: token
-                });
+                var data = {};
+
+                data[this.options.token[0].name] = token;
+
+                this.options._setHeaders.call(this, req, token);
             },
             response: function (res, token) {
                 __token.set.call(this, null, token);
@@ -454,7 +484,7 @@ module.exports = function () {
             this.watch.data = data;
         }
 
-        return this.watch.data;
+        return this.watch.data || {};
     };
 
     Auth.prototype.check = function (role) {
