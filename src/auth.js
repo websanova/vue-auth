@@ -95,10 +95,10 @@ module.exports = function () {
 
         for (i = 0, ii = tokens.length; i < ii; i++) {
             if (tokens[i].foundIn === 'header') {
-                token = this.options._getHeaders.call(this, res)[tokens[i].name];
+                token = this.options._getHeaders.call(this, res)[tokens[i].response];
             }
             else if (tokens[i].foundIn === 'response') {
-                token = this.options._httpData.call(this, res)[tokens[i].name];
+                token = this.options._httpData.call(this, res)[tokens[i].response];
             }
 
             if (token) {
@@ -336,18 +336,16 @@ module.exports = function () {
         // Tokens
 
         token: [{
-            name: 'Authorization',
+            request: 'Authorization',
+            response: 'Authorization',
             authType: 'bearer',
             foundIn: 'header'
         }, {
-            name: 'token',
+            request: 'token',
+            response: 'token',
             authType: 'bearer',
             foundIn: 'response'
         }],
-
-        // tokenVar:          'token',
-        // tokenHeader:       'Authorization',
-        // authType:          'bearer',
 
         // Variables
 
@@ -429,7 +427,7 @@ module.exports = function () {
             request: function (req, token) {
                 var data = {};
 
-                data[this.options.token[0].name] = 'Bearer ' + token;
+                data[this.options.token[0].request] = 'Bearer ' + token;
 
                 this.options._setHeaders.call(this, req, data);
             },
@@ -443,7 +441,7 @@ module.exports = function () {
             request: function (req, token) {
                 var data = {};
 
-                data[this.options.token[0].name] = token;
+                data[this.options.token[0].request] = token;
 
                 this.options._setHeaders.call(this, req, token);
             },
