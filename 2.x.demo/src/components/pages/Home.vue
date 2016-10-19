@@ -9,6 +9,8 @@
         <ul>
             <li><router-link :to="{name: 'account'}">Test account access</router-link></li>
             <li><router-link :to="{name: 'admin'}">Test admin access</router-link></li>
+            <li><router-link :to="{name: 'admin-products'}">Test admin products access</router-link></li>
+            <li><router-link :to="{name: 'admin-product-info', params: {product_id: 1}}">Test admin product 1 info access (should work)</router-link></li>
             <li><router-link :to="{name: 'login'}">Test login page access</router-link></li>
         </ul>
 

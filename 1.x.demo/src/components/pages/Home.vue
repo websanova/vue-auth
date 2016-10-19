@@ -9,6 +9,8 @@
         <ul>
             <li><a v-link="{name: 'account'}">Test account access</a></li>
             <li><a v-link="{name: 'admin'}">Test admin access</a></li>
+            <li><a v-link="{name: 'admin-products'}">Test admin products access</a></li>
+            <li><a v-link="{name: 'admin-product-info', params: {product_id: 1}}">Test admin product 1 info access (should work)</a></li>
             <li><a v-link="{name: 'login'}">Test login page access</a></li>
         </ul>
 

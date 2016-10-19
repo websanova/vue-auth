@@ -1,9 +1,4 @@
 {  
-  "main": "src/index.js",
-  
-  "dependencies": {
-    "@websanova/vue-auth": "1.2.0-beta"
-  },
   
   "devDependencies": {
     "babel-core": "6.16.0",

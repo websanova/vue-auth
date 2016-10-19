@@ -45,19 +45,21 @@ Vue.router = new VueRouter({
         children: [{
             path: 'products',
             name: 'admin-products',
-            component: require('./components/pages/admin/Products.vue')
-        }, {
-            path: ':product_id',
-            name: 'admin-product',
-            component: require('./components/pages/admin/Product.vue'),
+            component: require('./components/pages/admin/Products.vue'),
             children: [{
-                path: 'info',
-                name: 'admin-product-info',
-                component: require('./components/pages/admin/ProductInfo.vue'),
-            }, {
-                path: 'media',
-                name: 'admin-product-media',
-                component: require('./components/pages/admin/ProductMedia.vue'),
+                path: ':product_id',
+                name: 'admin-product',
+                component: require('./components/pages/admin/Product.vue'),
+                children: [{
+                    path: 'info',
+                    name: 'admin-product-info',
+                    component: require('./components/pages/admin/ProductInfo.vue'),
+                    meta: {auth: undefined}
+                }, {
+                    path: 'media',
+                    name: 'admin-product-media',
+                    component: require('./components/pages/admin/ProductMedia.vue')
+                }]
             }]
         }]
     }, {

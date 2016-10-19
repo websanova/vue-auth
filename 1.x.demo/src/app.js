@@ -43,7 +43,30 @@ Vue.router.map({
     '/admin': {
         auth: 'admin',
         name: 'admin',
-        component: require('./components/pages/Admin.vue')
+        component: require('./components/pages/Admin.vue'),
+        subRoutes: {
+            '/products': {
+                name: 'admin-products',
+                component: require('./components/pages/admin/Products.vue'),
+                subRoutes: {
+                    '/:product_id': {
+                        name: 'admin-product',
+                        component: require('./components/pages/admin/Product.vue'),
+                        subRoutes: {
+                            '/info': {
+                                auth: undefined,
+                                name: 'admin-product-info',
+                                component: require('./components/pages/admin/ProductInfo.vue'),
+                            },
+                            '/media': {
+                                name: 'admin-product-media',
+                                component: require('./components/pages/admin/ProductMedia.vue'),
+                            }
+                        }
+                    }
+                }
+            }
+        }
     },
     '/users': {
         auth: ['admin'],
