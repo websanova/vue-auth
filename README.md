@@ -17,10 +17,8 @@ Note this is the new name for the formerly named `vue-jwt-auth`. Since it's like
 
 ### Tested with
 
-
-* vue 1.0.26
-* vue-resource 1.0.2
-* vue-router 0.7.13
+* vue 1.0.26, vue-resource 1.0.2, vue-router 0.7.13
+* vue 2.0.1, vue-resource 1.0.2, vue-router 2.0.0
 
 Early support for Vue 2.0 is now available also but may still be a bit unstable due to many changes in the api. Please let me know of any issues you may find.
 
@@ -118,7 +116,7 @@ Vue.router.map({
 });
 ~~~
 
-**Vue 1.x**
+**Vue 2.x**
 
 ~~~
 Vue.router = new VueRouter({
