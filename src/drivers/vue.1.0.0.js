@@ -83,8 +83,11 @@ module.exports = {
                     var authRoutes = transition.matched.filter(function (route) {
                         return route.meta.hasOwnProperty('auth');
                     });
+
                     // matches the nested route, the last one in the list
-                    auth = authRoutes[authRoutes.length - 1].meta.auth;
+                    if (authRoutes.length) {
+                        auth = authRoutes[authRoutes.length - 1].meta.auth;
+                    }
                 }
 
                 transitionEach.call(_this, auth, function (redirect) {
