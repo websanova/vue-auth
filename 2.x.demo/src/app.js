@@ -41,7 +41,25 @@ Vue.router = new VueRouter({
         path: '/admin',
         name: 'admin',
         component: require('./components/pages/Admin.vue'),
-        meta: {auth: 'admin'}
+        meta: {auth: 'admin'},
+        children: [{
+            path: 'products',
+            name: 'admin-products',
+            component: require('./components/pages/admin/Products.vue')
+        }, {
+            path: ':product_id',
+            name: 'admin-product',
+            component: require('./components/pages/admin/Product.vue'),
+            children: [{
+                path: 'info',
+                name: 'admin-product-info',
+                component: require('./components/pages/admin/ProductInfo.vue'),
+            }, {
+                path: 'media',
+                name: 'admin-product-media',
+                component: require('./components/pages/admin/ProductMedia.vue'),
+            }]
+        }]
     }, {
         path: '/users',
         name: 'users',
