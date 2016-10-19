@@ -75,7 +75,31 @@ module.exports = {
 
         this.options.router.beforeEach(function (transition, location, next) {
             routerBeforeEach.call(_this, function () {
-                transitionEach.call(_this, transition.meta ? transition.meta.auth : (transition.to || {}).auth, function () { (next || transition.next)(); });
+                var auth;
+
+                if (transition.to) {
+                    auth = transition.to.auth;
+                } else {
+                    var authRoutes = transition.matched.filter(function (route) {
+                        return route.meta.hasOwnProperty('auth');
+                    });
+                    // matches the nested route, the last one in the list
+                    auth = authRoutes[authRoutes.length - 1].meta.auth;
+                }
+
+                transitionEach.call(_this, auth, function (redirect) {
+                    if (!redirect) {
+                        (next || transition.next)();
+                        return;
+                    }
+
+                    // router v2.x
+                    if (next) {
+                        next(redirect);
+                    } else {
+                        this.options._routerReplace.call(this, redirect);
+                    }
+                });
             });
         })
     },
@@ -87,7 +111,9 @@ module.exports = {
     },
 
     _routerReplace: function (data) {
-        this.options.router.replace(data);
+        var router = this.options.router;
+
+        router.replace.call(router, data);
     },
 
     _routerGo: function (data) {
