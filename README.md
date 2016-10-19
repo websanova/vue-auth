@@ -528,6 +528,11 @@ These are all function related directly to Vue that sort of acts like a driver. 
 
 ## Change Log
 
+### v1.3.x-beta
+
+* Add support for sub route `auth` matching via parent in Vue 2.
+
+
 ### v1.2.x-beta
 
 * Token parameters now accept `request` and `response` params instead of `name`.
