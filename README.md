@@ -145,10 +145,12 @@ custom2Auth: {
     request: function (req, token) {
         token = token.split(';');
 
-        req.headers.set('header1', token[0]);
-        req.headers.set('header2', token[1]);
-        req.headers.set('header3', token[2]);
-        req.headers.set('header4', token[3]);
+        this.options._setHeaders.call(this, req {
+            header1: token[0],
+            header2: token[1],
+            header3: token[2],
+            header4: token[3]
+        });
     },
     response: function (res) {
         var headers = this.options._getHeaders.call(this, res);
