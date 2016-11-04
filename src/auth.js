@@ -78,34 +78,23 @@ module.exports = function () {
         var token = __token.get.call(this);
 
         if (token) {
-            this.options[this.options.token[0].authType + 'Auth'].request.call(this, req, token);
+            this.options[this.options.authType + 'Auth'].request.call(this, req, token);
         }
 
         return req;
     }
 
     function _responseIntercept(res) {
-        var i, ii,
-            token,
-            tokens = this.options.token;
+        var token;
 
         if (this.options._invalidToken) {
             this.options._invalidToken.call(this, res);
         }
 
-        for (i = 0, ii = tokens.length; i < ii; i++) {
-            if (tokens[i].foundIn === 'header') {
-                token = this.options._getHeaders.call(this, res)[tokens[i].response];
-            }
-            else if (tokens[i].foundIn === 'response') {
-                token = this.options._httpData.call(this, res)[tokens[i].response];
-            }
+        token = this.options[this.options.authType + 'Auth'].response.call(this, res);
 
-            if (token) {
-                this.options[tokens[i].authType + 'Auth'].response.call(this, res, token);
-                
-                break;
-            }
+        if (token) {
+            __token.set.call(this, null, token);
         }
     }
 
@@ -333,22 +322,9 @@ module.exports = function () {
 
     var defaultOptions = {
 
-        // Tokens
-
-        token: [{
-            request: 'Authorization',
-            response: 'Authorization',
-            authType: 'bearer',
-            foundIn: 'header'
-        }, {
-            request: 'token',
-            response: 'token',
-            authType: 'bearer',
-            foundIn: 'response'
-        }],
-
         // Variables
 
+        authType:          'bearer',
         rolesVar:          'roles',
         tokenName:         'auth-token',
         
@@ -425,28 +401,27 @@ module.exports = function () {
 
         bearerAuth: {
             request: function (req, token) {
-                var data = {};
-
-                data[this.options.token[0].request] = 'Bearer ' + token;
-
-                this.options._setHeaders.call(this, req, data);
+                this.options._setHeaders.call(this, req, {Authorization: 'Bearer ' + token});
             },
-            response: function (res, token) {
-                token = token.split('Bearer ');
-                __token.set.call(this, null, token[token.length > 1 ? 1 : 0]);
+            response: function (res) {
+                var token = this.options._getHeaders.call(this, res).Authorization;
+
+                if (token) {
+                    token = token.split('Bearer ');
+                    
+                    return token[token.length > 1 ? 1 : 0];
+                }
             }
         },
 
         basicAuth: {
             request: function (req, token) {
-                var data = {};
-
-                data[this.options.token[0].request] = token;
-
-                this.options._setHeaders.call(this, req, token);
+                this.options._setHeaders.call(this, req, {Authorization: token});
             },
-            response: function (res, token) {
-                __token.set.call(this, null, token);
+            response: function (res) {
+                var token = this.options._getHeaders.call(this, res).Authorization;
+                
+                return token;
             }
         }
     };
