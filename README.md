@@ -648,6 +648,11 @@ These are all function related directly to Vue that sort of acts like a driver. 
 
 ## Change Log
 
+### v1.5.x-beta
+
+* Added auth driver for "devise".
+* Updated docs to include info about parsing user data from server.
+
 ### v1.4.x-beta
 
 * Simplified support for auth drivers.
