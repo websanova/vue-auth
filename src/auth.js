@@ -403,6 +403,7 @@ module.exports = function () {
             request: function (req, token) {
                 this.options._setHeaders.call(this, req, {Authorization: 'Bearer ' + token});
             },
+            
             response: function (res) {
                 var token = this.options._getHeaders.call(this, res).Authorization;
 
@@ -418,10 +419,41 @@ module.exports = function () {
             request: function (req, token) {
                 this.options._setHeaders.call(this, req, {Authorization: token});
             },
+            
             response: function (res) {
                 var token = this.options._getHeaders.call(this, res).Authorization;
                 
                 return token;
+            }
+        },
+
+        deviseAuth: {
+            tokens: ['Token-Type', 'Access-Token', 'Client', 'Uid', 'Expiry'],
+
+            request: function (req, token) {
+                var headers = {},
+                    tokens = token.split(';');
+
+                this.options.deviseAuth.tokens.forEach(function (tokenName, index) {
+                    if (tokens[index]) {
+                        headers[tokenName] = tokens[index];
+                    }
+                });
+                
+                this.options._setHeaders.call(this, req, headers);
+            },
+            
+            response: function (res) {
+                var token = [],
+                    headers = this.options._getHeaders.call(this, res);
+                
+                this.options.deviseAuth.tokens.forEach(function (tokenName) {
+                    if (headers[tokenName]) {
+                        token.push(headers[tokenName]);
+                    }
+                });
+                
+                return token.join(';');
             }
         }
     };
