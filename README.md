@@ -6,6 +6,7 @@ Note this is the new name for the formerly named `vue-jwt-auth`. Since it's like
 
 * [Install](https://github.com/websanova/vue-auth#install)
 * [Demo](https://github.com/websanova/vue-auth#demo)
+* [User Data](https://github.com/websanova/vue-auth#user-data)
 * [Authentication](https://github.com/websanova/vue-auth#authentication)
 * [Privileges](https://github.com/websanova/vue-auth#privileges)
 * [Routes](https://github.com/websanova/vue-auth#routes)
