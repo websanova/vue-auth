@@ -447,13 +447,15 @@ module.exports = function () {
                 var token = [],
                     headers = this.options._getHeaders.call(this, res);
                 
-                this.options.deviseAuth.tokens.forEach(function (tokenName) {
-                    if (headers[tokenName]) {
-                        token.push(headers[tokenName]);
-                    }
-                });
-                
-                return token.join(';');
+                if (headers['Access-Token']) {
+                    this.options.deviseAuth.tokens.forEach(function (tokenName) {
+                        if (headers[tokenName]) {
+                            token.push(headers[tokenName]);
+                        }
+                    });
+                    
+                    return token.join(';');
+                }
             }
         }
     };
