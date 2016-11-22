@@ -121,6 +121,26 @@ Vue.use(require('vue-auth'), {
 });
 ~~~
 
+### User Fetching
+
+By default, user fetch request is happening after every login. This is a useful shortcut, but sometimes we don't need this functionality.
+
+We can pass the `fetchData` option to control this behaviour.
+
+~~~
+Vue.use(require('@websanova/vue-auth'), {
+  notFoundRedirect: '/',
+  rolesVar: 'user_permissions',
+  fetchData: null
+})
+~~~
+
+If you pass a falsy value for `fetchData`, automatic user fetching will not happen.
+
+If you don't pass the `fetchData` option, the plugin will do the user fetching with default parameters.
+
+If you pass a custom object for `fetchData`, the plugin will use that configuration when fetching the user. Make sure that you provide an config object that has `url` and `method` properties in this case.
+
 
 
 ## Authentication

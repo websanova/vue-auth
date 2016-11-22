@@ -45,7 +45,13 @@ module.exports = function () {
             }
 
             this.watch.authenticated = false
-            this.options.fetchPerform.call(this, {success: cb, error: cb});
+            if (this.options.fetchData) {
+                this.options.fetchPerform.call(this, {success: cb, error: cb});
+            } else {
+                this.watch.data = {};
+                _setLoggedInState.call(this);
+                cb.call(this);
+            }
         } else {
             this.watch.loaded = true;
             return cb.call(this);
@@ -128,6 +134,11 @@ module.exports = function () {
         return window.location.protocol + '//' + window.location.hostname + (port ? ':' + port : '')
     }
 
+    function _setLoggedInState() {
+        this.watch.authenticated = true;
+        this.watch.loaded = true;
+    }
+
     function _fetchPerform(data) {
         var _this = this,
             error = data.error;
@@ -142,9 +153,8 @@ module.exports = function () {
     }
 
     function _fetchProcess(res, data) {
-        this.watch.authenticated = true;
         this.watch.data = this.options.parseUserData.call(this, this.options._httpData.call(this, res));
-        this.watch.loaded = true;
+        _setLoggedInState.call(this);
 
         if (data.success) { data.success.call(this, res); }
     }
@@ -187,15 +197,22 @@ module.exports = function () {
 
         this.authenticated = null;
 
-        this.options.fetchPerform.call(this, {
-            success: function () {
-                if (data.success) { data.success.call(this, res); }
+        if (this.options.fetchData) {
+            this.options.fetchPerform.call(this, {
+                success: _afterLoginProcessed.bind(this, data)
+            });
+        } else {
+            this.watch.data = {};
+            _afterLoginProcessed.call(this, data);
+        }
+    }
 
-                if (data.redirect && _this.options.check.call(_this)) {
-                    _this.options._routerGo.call(_this, data.redirect);
-                }
-            }
-        });
+    function _afterLoginProcessed(data) {
+        if (data.success) { data.success.call(this, res); }
+
+        if (data.redirect && this.options.check.call(this)) {
+            this.options._routerGo.call(this, data.redirect);
+        }
     }
 
     function _logoutPerform(data) {
