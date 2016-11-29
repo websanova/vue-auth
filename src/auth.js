@@ -103,7 +103,7 @@ module.exports = function () {
     }
 
     function _check(role) {
-        if (this.watch.data !== null) {
+        if (this.watch.authenticated === true) {
             if (role) {
                 return __utils.compare(role, this.watch.data[this.options.rolesVar]);
             }
