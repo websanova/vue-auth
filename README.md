@@ -710,11 +710,11 @@ These are all function related directly to Vue that sort of acts like a driver. 
 
 ## Change Log
 
-### v2.0.x-beta
+### v2.2.x-beta
 
 Vue has been in such a volatile state, especially between versions and 1 and 2. There have been many breaking changes as well as [removing vue-resource as the officially recommended package](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4) for Vue.
 
-Because of all these changes and potential breaking changes the package has been changed to a much more driver centric model for "router", "resource" and "authentication" . Due to the nature of Vue and the current eco-system with Webpack, to avoid bloat this  means the drivers will need to be passed in manually.
+Because of all these changes and potential breaking changes the package has been changed to a much more driver centric model for "router", "resource" and "authentication" . Due to the nature of Vue and the current eco-system with Webpack, to avoid bloat **this means the drivers will need to be passed in manually**. Check the install section for more info.
 
 We will see some ugly `require` code when including the plugin. But as a trade off it will reduce bloat and allow the plugin to much better support different versions of Vue as well as different "router", "resource" and "authentication" modules.
 
