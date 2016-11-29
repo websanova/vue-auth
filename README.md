@@ -52,8 +52,8 @@ Vue.router = new VueRouter({
 
 Vue.use(require('@websanova/vue-auth'), {
     auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
-    http: require('@websanova/vue-auth/drivers/http/resource.1.x.js'),
-    router: require('@websanova/vue-auth/drivers/router/router.2.x.js'),
+    http: require('@websanova/vue-auth/drivers/http/vue-resource.1.x.js'),
+    router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
     ...
     rolesVar: 'type'
     ...
