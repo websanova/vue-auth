@@ -690,21 +690,28 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 ## Driver Options
 
-These are all function related directly to Vue that sort of acts like a driver. It makes it easier to deal with incompatibilities between Vue versions.
+These are driver methods for `router`, `http` and `auth`. If creating a driver it's best to check some of the existing files for samples.
 
-* `_init`
-* `_bind`
-* `_watch`
-* `_getHeaders`
-* `_setHeaders`
+### Router
+
 * `_bindData`
-* `_interceptor`
 * `_beforeEach`
-* `_invalidToken`
 * `_routerReplace`
 * `_routerGo`
+
+### Http
+
+* `_interceptor`
+* `_invalidToken`
 * `_httpData`
 * `_http`
+* `_getHeaders`
+* `_setHeaders`
+
+### Auth
+
+* `request`
+* `response`
 
 
 
