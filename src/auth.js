@@ -18,13 +18,13 @@ module.exports = function () {
             _this.options[methodName + 'Process'].call(_this, res, data);
         };
 
-        this.options._http.call(this, data);
+        this.options.http._http.call(this, data);
     }
 
     function __bindContext(methodName, data) {
         var _auth = this.$auth;
 
-        _auth.options[methodName + 'Perform'].call(_auth, _auth.options._bindData.call(_auth, data, this));
+        _auth.options[methodName + 'Perform'].call(_auth, _auth.options.router._bindData.call(_auth, data, this));
     }
 
     // Overrideable
@@ -78,7 +78,7 @@ module.exports = function () {
         var token = __token.get.call(this);
 
         if (token) {
-            this.options[this.options.authType + 'Auth'].request.call(this, req, token);
+            this.options.auth.request.call(this, req, token);
         }
 
         return req;
@@ -87,11 +87,11 @@ module.exports = function () {
     function _responseIntercept(res) {
         var token;
 
-        if (this.options._invalidToken) {
-            this.options._invalidToken.call(this, res);
+        if (this.options.http._invalidToken) {
+            this.options.http._invalidToken.call(this, res);
         }
 
-        token = this.options[this.options.authType + 'Auth'].response.call(this, res);
+        token = this.options.auth.response.call(this, res);
 
         if (token) {
             __token.set.call(this, null, token);
@@ -143,7 +143,7 @@ module.exports = function () {
 
     function _fetchProcess(res, data) {
         this.watch.authenticated = true;
-        this.watch.data = this.options.parseUserData.call(this, this.options._httpData.call(this, res));
+        this.watch.data = this.options.parseUserData.call(this, this.options.http._httpData.call(this, res));
         this.watch.loaded = true;
 
         if (data.success) { data.success.call(this, res); }
@@ -171,7 +171,7 @@ module.exports = function () {
             if (data.success) { data.success.call(this, res); }
 
             if (data.redirect) {
-                this.options._routerGo.call(this, data.redirect);
+                this.options.router._routerGo.call(this, data.redirect);
             }
         }
     }
@@ -192,7 +192,7 @@ module.exports = function () {
                 if (data.success) { data.success.call(this, res); }
 
                 if (data.redirect && _this.options.check.call(_this)) {
-                    _this.options._routerGo.call(_this, data.redirect);
+                    _this.options.router._routerGo.call(_this, data.redirect);
                 }
             }
         });
@@ -221,7 +221,7 @@ module.exports = function () {
         if (data.success) { data.success.call(this, res, data); }
 
         if (data.redirect) {
-            this.options._routerGo.call(this, data.redirect);
+            this.options.router._routerGo.call(this, data.redirect);
         }
     }
 
@@ -253,7 +253,7 @@ module.exports = function () {
                 if (data.success) { data.success.call(this, res); }
 
                 if (data.redirect && _this.options.check.call(_this)) {
-                    _this.options._routerGo.call(_this, data.redirect);
+                    _this.options.router._routerGo.call(_this, data.redirect);
                 }
             }
         });
@@ -278,7 +278,7 @@ module.exports = function () {
                 if (data.success) { data.success.call(this, res, data); }
 
                 if (data.redirect) {
-                    this.options._routerGo.call(this, data.redirect);
+                    this.options.router._routerGo.call(this, data.redirect);
                 }
             }
         });
@@ -324,7 +324,6 @@ module.exports = function () {
 
         // Variables
 
-        authType:          'bearer',
         rolesVar:          'roles',
         tokenName:         'auth-token',
         
@@ -395,91 +394,28 @@ module.exports = function () {
         logoutOtherPerform: _logoutOtherPerform,
         logoutOtherProcess: _logoutOtherProcess,
 
-        oauth2Perform:      _oauth2Perform,
-
-        // Auth drivers
-
-        bearerAuth: {
-            request: function (req, token) {
-                this.options._setHeaders.call(this, req, {Authorization: 'Bearer ' + token});
-            },
-            
-            response: function (res) {
-                var token = this.options._getHeaders.call(this, res).Authorization;
-
-                if (token) {
-                    token = token.split('Bearer ');
-                    
-                    return token[token.length > 1 ? 1 : 0];
-                }
-            }
-        },
-
-        basicAuth: {
-            request: function (req, token) {
-                this.options._setHeaders.call(this, req, {Authorization: token});
-            },
-            
-            response: function (res) {
-                var token = this.options._getHeaders.call(this, res).Authorization;
-                
-                return token;
-            }
-        },
-
-        deviseAuth: {
-            tokens: ['Token-Type', 'Access-Token', 'Client', 'Uid', 'Expiry'],
-
-            request: function (req, token) {
-                var headers = {},
-                    tokens = token.split(';');
-
-                this.options.deviseAuth.tokens.forEach(function (tokenName, index) {
-                    if (tokens[index]) {
-                        headers[tokenName] = tokens[index];
-                    }
-                });
-                
-                this.options._setHeaders.call(this, req, headers);
-            },
-            
-            response: function (res) {
-                var token = [],
-                    headers = this.options._getHeaders.call(this, res);
-                
-                if (headers['Access-Token']) {
-                    this.options.deviseAuth.tokens.forEach(function (tokenName) {
-                        if (headers[tokenName]) {
-                            token.push(headers[tokenName]);
-                        }
-                    });
-                    
-                    return token.join(';');
-                }
-            }
-        }
+        oauth2Perform:      _oauth2Perform
     };
 
-    function Auth(options, driver) {
-        var router = options.router,
-            http = options.http;
-
-        delete options.http;
-        delete options.router;
-
+    function Auth(Vue, options) {
         this.currentToken = null;
 
-        this.options = __utils.extend(defaultOptions, [driver || {}, options || {}]);
-        this.options.router = router;
-        this.options.http = http;
+        this.options = __utils.extend(defaultOptions, [options || {}]);
+        this.options.Vue = Vue;
 
-        this.watch = this.options._watch.call(this, {
-            data: null,
-            loaded: false,
-            authenticated: null
+        this.watch = new this.options.Vue({
+            data: function () {
+                return {
+                    data: null,
+                    loaded: false,
+                    authenticated: null
+                };
+            }
         });
 
-        driver._init.call(this);
+        // Init interceptors.
+        this.options.router._beforeEach.call(this, this.options.routerBeforeEach, this.options.transitionEach);
+        this.options.http._interceptor.call(this, this.options.requestIntercept, this.options.responseIntercept);
     }
 
     Auth.prototype.ready = function () {

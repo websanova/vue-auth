@@ -25,21 +25,55 @@ Note this is the new name for the formerly named `vue-jwt-auth`. Since it's like
 Early support for Vue 2.0 is now available also but may still be a bit unstable due to many changes in the api. Please let me know of any issues you may find.
 
 
+
 ## Notes
 
-* There is a ton of changes in the `v1.0.0-dev` version, check the change log below.
-* Because the changes are quite different a `v1.0.0` version has been started, however it is still very much in dev mode.
-* The changes are mostly non breaking but there will be potentially a few (check change log).
+* The new 2.x branch features a driver centric model. This means the `router` and `http` options must **ALWAYS** set the driver to use. Please read the [Change Log](https://github.com/websanova/vue-auth#change-log) for more info. 
 
 
 
-## Install
+## Install 2.x
+
+~~~
+> sudo npm install @websanova/vue-auth
+~~~    
+
+The `router` and `http` drivers MUST be set. The drivers are quite small so can be replaced or overridden as necessary.
+
+**Note that the version in the driver file should denote the version it is compatible with. So `router.2x.` means it's for router 2.x.**
+
+~~~
+Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
+
+Vue.router = new VueRouter({
+    ...
+});
+
+Vue.use(require('@websanova/vue-auth'), {
+    auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
+    http: require('@websanova/vue-auth/drivers/http/resource.1.x.js'),
+    router: require('@websanova/vue-auth/drivers/router/router.2.x.js'),
+    ...
+    rolesVar: 'type'
+    ...
+});
+~~~
+
+
+
+## Install 1.x
 
 ~~~
 > sudo npm install @websanova/vue-auth
 ~~~    
 
 ~~~
+Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
+
+Vue.router = new VueRouter({
+    ...
+});
+
 Vue.use(require('@websanova/vue-auth'), {
     rolesVar: 'type'
 });
@@ -647,6 +681,21 @@ These are all function related directly to Vue that sort of acts like a driver. 
 
 
 ## Change Log
+
+### v2.0.x-beta
+
+Vue has been in such a volatile state, especially between versions and 1 and 2. There have been many breaking changes as well as [removing vue-resource as the officially recommended package](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4) for Vue.
+
+Because of all these changes and potential breaking changes the package has been changed to a much more driver centric model for "router", "resource" and "authentication" . Due to the nature of Vue and the current eco-system with Webpack, to avoid bloat this  means the drivers will need to be passed in manually.
+
+We will see some ugly `require` code when including the plugin. But as a trade off it will reduce bloat and allow the plugin to much better support different versions of Vue as well as different "router", "resource" and "authentication" modules.
+
+**To ease confusion for this driver centric model the plugin has been bumped to a 2.x version. This will also keep it in line with the current Vue 2.x version.**
+
+* Stability for extend functionality.
+* Driver centric model for "router", "resource" and "authentication".
+* The options for `router`, `http` and `auth` must be set now and will not auto bind (this is because webpack would pre load all drivers with dynamic variable).
+
 
 ### v1.5.x-beta
 

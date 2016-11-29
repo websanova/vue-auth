@@ -3,12 +3,18 @@ var Auth = require('./auth.js')();
 module.exports = (function () {
 
     return function install(Vue, options) {
-        var auth,
-            driver = require('./drivers/vue.1.0.0.js')
+        // var auth,
+        //     driver = require('./drivers/vue.1.0.0.js')
 
-            driver.Vue = Vue;
+        //     driver.Vue = Vue;
 
-        auth = new Auth(options, driver);
+        // auth = new Auth(options, driver);
+        
+        // options = options || {};
+
+        // console.log(options.Vue);
+
+        var auth = new Auth(Vue, options);
 
         var login = auth.login;
         var fetch = auth.fetch;
