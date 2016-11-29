@@ -699,6 +699,8 @@ We will see some ugly `require` code when including the plugin. But as a trade o
 * Driver centric model for "router", "resource" and "authentication".
 * The options for `router`, `http` and `auth` must be set now and will not auto bind (this is because webpack would pre load all drivers with dynamic variable).
 * Added `loginData.fetchUser` option to allow disabling of user fetch on login (which will also be disabled on refreshes).
+* Make "authorization" header case insensitive for bearer and basic auth.
+* Bearer auth "bearer" text is now case insensitive and will accept with and without colon after "bearer" text.
 
 
 ### v1.5.x-beta
