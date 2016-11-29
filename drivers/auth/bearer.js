@@ -5,12 +5,13 @@ module.exports = {
     },
     
     response: function (res) {
-        var token = this.options.http._getHeaders.call(this, res).Authorization;
+        var headers = this.options.http._getHeaders.call(this, res),
+            token = headers.Authorization || headers.authorization;
 
         if (token) {
-            token = token.split('Bearer ');
+            token = token.split(/Bearer\:?\s?/i);
             
-            return token[token.length > 1 ? 1 : 0];
+            return token[token.length > 1 ? 1 : 0].trim();
         }
     }
 };
