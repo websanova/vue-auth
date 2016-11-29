@@ -24,7 +24,7 @@
   "licenses": "MIT, GPL",
   
   "dependencies": {
-
+    "@websanova/vue-auth": "2.0.0-beta"
   },
   
   "devDependencies": {
