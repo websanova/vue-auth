@@ -465,6 +465,7 @@ this.$auth.register({
 * Data object is passed directly to http method.
 * Accepts `rememberMe` parameter.
 * Accepts `redirect` parameter which is passed directly to router.
+* Accepts `fetchUser` param which allows disabling fetching user after login.
 
 ~~~
 this.$auth.login({
@@ -473,6 +474,7 @@ this.$auth.login({
     error: function () {},
     rememberMe: true,
     redirect: '/account',
+    fetchUser: true
     // etc...
 });
 ~~~
@@ -592,9 +594,10 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 * Default register request data and redirect.
 
-### loginData: `{url: 'auth/login', method: 'POST', redirect: '/'}`
+### loginData: `{url: 'auth/login', method: 'POST', redirect: '/', fetchUser: true}`
 
 * Default login request data and redirect.
+* To disable user fetching on login set the `fetchUser` to `false`.
 
 ### logoutData: `{url: 'auth/logout', method: 'POST', redirect: '/', makeRequest: false}`
 
@@ -695,6 +698,7 @@ We will see some ugly `require` code when including the plugin. But as a trade o
 * Stability for extend functionality.
 * Driver centric model for "router", "resource" and "authentication".
 * The options for `router`, `http` and `auth` must be set now and will not auto bind (this is because webpack would pre load all drivers with dynamic variable).
+* Added `loginData.fetchUser` option to allow disabling of user fetch on login (which will also be disabled on refreshes).
 
 
 ### v1.5.x-beta

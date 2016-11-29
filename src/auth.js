@@ -138,7 +138,12 @@ module.exports = function () {
             if (error) { error.call(_this, res); }
         };
 
-        __duckPunch.call(this, 'fetch', data);
+        if (this.watch.authenticated !== true && !this.options.loginData.fetchUser) {
+            _fetchProcess.call(this, {}, data);
+        }
+        else {
+            __duckPunch.call(this, 'fetch', data);
+        }
     }
 
     function _fetchProcess(res, data) {
@@ -334,7 +339,7 @@ module.exports = function () {
         notFoundRedirect:   {path: '/404'},
 
         registerData:       {url: 'auth/register',     method: 'POST', redirect: '/login'},
-        loginData:          {url: 'auth/login',        method: 'POST', redirect: '/'},
+        loginData:          {url: 'auth/login',        method: 'POST', redirect: '/', fetchUser: true},
         logoutData:         {url: 'auth/logout',       method: 'POST', redirect: '/', makeRequest: false},
         oauth1Data:         {url: 'auth/login',        method: 'POST'},
         fetchData:          {url: 'auth/user',         method: 'GET'},
