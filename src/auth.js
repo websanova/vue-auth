@@ -215,7 +215,7 @@ module.exports = function () {
         __token.delete.call(this, 'other');
         __token.delete.call(this, 'default');
 
-        this.authenticated = false;
+        this.watch.authenticated = false;
         this.watch.data = null;
 
         if (data.success) { data.success.call(this, res, data); }
