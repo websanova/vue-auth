@@ -41,7 +41,7 @@ module.exports = (function (){
     function compare(one, two) {
         var i, ii, key;
 
-        if (typeof one === 'object' && typeof two === 'object') {
+            if (Object.prototype.toString.call(one) === '[object Object]' && Object.prototype.toString.call(two) === '[object Object]') {
             for (key in one) {
                 if (compare(one[key], two[key])) {
                     return true;
