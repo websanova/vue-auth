@@ -692,7 +692,7 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 In the 2.x version the plugin now features a driver centric model.
 
-NOTE: Some drivers may have dependencies such as `Vue.router` being set.
+**NOTE: Some drivers may have dependencies such as `Vue.router` being set.**
 
 ~~~
 Vue.use(require('@websanova/vue-auth'), {
