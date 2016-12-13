@@ -703,6 +703,8 @@ Vue.use(require('@websanova/vue-auth'), {
 });
 ~~~
 
+If you are creating a driver a method named `_init` which will receive the current auth scope can be used to check for any dependencies.
+
 
 
 ## Change Log
