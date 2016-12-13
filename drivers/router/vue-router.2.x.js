@@ -1,5 +1,11 @@
 module.exports = {
 
+    _init: function () {
+        if ( ! this.options.Vue.router) {
+            return 'vue-router.2.x.js : Vue.router must be set.';
+        }
+    },
+
     _bindData: function (data, ctx) {
         var error, success;
 

@@ -403,6 +403,8 @@ module.exports = function () {
     };
 
     function Auth(Vue, options) {
+        var i, ii, msg, drivers = ['auth', 'http', 'router'];
+        
         this.currentToken = null;
 
         this.options = __utils.extend(defaultOptions, [options || {}]);
@@ -417,6 +419,22 @@ module.exports = function () {
                 };
             }
         });
+
+        for (i = 0, ii = drivers.length; i < ii; i++) {
+            if ( ! this.options[drivers[i]]) {
+                console.error('Error (@websanova/vue-auth): "' + drivers[i] + '" driver must be set.');
+                return;
+            }
+
+            if (this.options[drivers[i]]._init) {
+                msg = this.options[drivers[i]]._init.call(this);
+
+                if (msg) {
+                    console.error('Error (@websanova/vue-auth): ' + msg);
+                    return;
+                }
+            }
+        }
 
         // Init interceptors.
         this.options.router._beforeEach.call(this, this.options.routerBeforeEach, this.options.transitionEach);
