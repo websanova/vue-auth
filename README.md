@@ -13,7 +13,7 @@ Note this is the new name for the formerly named `vue-jwt-auth`. Since it's like
 * [Routes](https://github.com/websanova/vue-auth#routes)
 * [Methods](https://github.com/websanova/vue-auth#methods)
 * [Options](https://github.com/websanova/vue-auth#options)
-* [Driver Options](https://github.com/websanova/vue-auth#driver-options)
+* [Drivers](https://github.com/websanova/vue-auth#drivers)
 * [Change Log](https://github.com/websanova/vue-auth#change-log)
 
 
@@ -688,30 +688,20 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 
 
-## Driver Options
+## Drivers
 
-These are driver methods for `router`, `http` and `auth`. If creating a driver it's best to check some of the existing files for samples.
+In the 2.x version the plugin now features a driver centric model.
 
-### Router
+NOTE: Some drivers may have dependencies such as `Vue.router` being set.
 
-* `_bindData`
-* `_beforeEach`
-* `_routerReplace`
-* `_routerGo`
-
-### Http
-
-* `_interceptor`
-* `_invalidToken`
-* `_httpData`
-* `_http`
-* `_getHeaders`
-* `_setHeaders`
-
-### Auth
-
-* `request`
-* `response`
+~~~
+Vue.use(require('@websanova/vue-auth'), {
+    auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
+    http: require('@websanova/vue-auth/drivers/http/vue-resource.1.x.js'),
+    router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
+    ...
+});
+~~~
 
 
 
