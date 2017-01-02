@@ -92,6 +92,9 @@ Vue.use(require('../../src/index.js'), {
     http: require('../../drivers/http/vue-resource.1.x.js'),
     router: require('../../drivers/router/vue-router.2.x.js'),
     rolesVar: 'role',
+    refreshData: {
+        enabled: false
+    },
     facebookOauth2Data: {
         clientId: '196729390739201'
     },

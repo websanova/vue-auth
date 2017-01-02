@@ -31,7 +31,7 @@ module.exports = function () {
 
     function _routerBeforeEach(cb) {
 
-        if (this.options.tokenExpired.call(this)) {
+        if (this.options.refreshData.enabled && this.options.tokenExpired.call(this)) {
             this.options.refreshPerform.call(this, {});
         }
 
@@ -343,7 +343,7 @@ module.exports = function () {
         logoutData:         {url: 'auth/logout',       method: 'POST', redirect: '/', makeRequest: false},
         oauth1Data:         {url: 'auth/login',        method: 'POST'},
         fetchData:          {url: 'auth/user',         method: 'GET'},
-        refreshData:        {url: 'auth/refresh',      method: 'GET'},
+        refreshData:        {url: 'auth/refresh',      method: 'GET', enabled: true},
         loginOtherData:     {url: 'auth/login-other',  method: 'POST', redirect: '/'},
         logoutOtherData:    {url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false},
 

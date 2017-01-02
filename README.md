@@ -7,6 +7,7 @@ Note this is the new name for the formerly named `vue-jwt-auth`. Since it's like
 * [Install](https://github.com/websanova/vue-auth#install)
 * [Demo](https://github.com/websanova/vue-auth#demo)
 * [Auth Flow](https://github.com/websanova/vue-auth#auth-flow)
+* [Token Refresh](https://github.com/websanova/vue-auth#token-refresh)
 * [User Data](https://github.com/websanova/vue-auth#user-data)
 * [Authentication](https://github.com/websanova/vue-auth#authentication)
 * [Privileges](https://github.com/websanova/vue-auth#privileges)
@@ -129,7 +130,7 @@ The best way to see the code in action is to see the code samples in the `1.x.de
 
 * From the front end we can't really do any "real" authentication. It's simply a check to see it users role and the routes roles match up. From there we can allow the route to process or we can redirect accordingly.
 * This is done by intercepting each route and checking if the user is already logged in. This is done by simply checking if a token exists.
-* If a token exists a few things can happen. But by default there will be two requests sent. One is to refresh the token (this is based on best practice). Second is to fetch the user.
+* If a token exists a few things can happen. For one we would attempt to fetch the users data. The second part deals with refreshing the token which has a few strategies and is discussed in the next section.
 * Typically a user will be fetched each time to make sure we have the latest user data.
 * After the user is fetched the plugin will process into a "loaded" state. This should be checked via the "$auth.ready()" method. At this point we will know if we have a valid token and user.
 * From here we can use the `$auth.check()` function to show hide various parts of our interface.
@@ -140,6 +141,66 @@ The best way to see the code in action is to see the code samples in the `1.x.de
 * This parsing will be done on each `request` and `response` of your http (ajax) calls.
 * For the request it will simply append the auth data in the header or body (depending on your auth driver).
 * For the response it will parse the auth data from the header or response data (depending on your auth driver).
+
+
+
+## Token Refresh
+
+Dealing with the toen refresh is the tricker part in the authentication auth flow. It helps to review what is actually happening here first.
+
+* A user logs in and gets a token. this token is valid for a certain period of time.
+* Let's say the user gets a token that is always valid. This presents some security issues in case a device is lost or compromised.
+* We can therefore limit access to the app by setting the tokens expiration to something like one or two weeks.
+* Now there is an expiration so if the users device is compromised we are at least limiting the potential damage.
+* However as long as the user keeps using the app we should keep them logged in by continually re-issuing new tokens.
+
+This is where the issue lies with JWT and token based authentication. The question is what kind of refresh strategy do we want to employ?
+
+Currently, there doesn't seem to be any official way to do this. With only a few "best practices" which are personal opinions at best.
+
+A few notes:
+
+**NOTE:** We need to make sure our old token lives slightly longer pass the expiration. Since multiple calls to the server at the same time would then be using expired tokens depending on which request expired the token first.
+
+**NOTE:** The plugin will automatically pick up the token wherever it's set based on the driver used.
+
+A few strategies:
+
+**> Set a new token with each request (with old tokens living slightly longer in case of async requests).**
+
+It would depend on the app, but this one can be a bit overkill.
+
+**> Set a timer or counter for a token refresh request.**
+
+This is actually not a bad strategy. But again might be a bit overkill.
+
+**> Check the tokens expiration date before or after each request.**
+
+This was actually previously implemented in the plugin. It was removed because of the overhead since it requires a base64 encode/decode. It would be best suited as a separate custom authentication driver.
+
+**> Set the user token and refresh token time to same time length and call refresh with each reload of the app.**
+
+This relies on the token being set once at login and then a separate refresh on each page reload.
+
+* This is the default behavior of the plugin.
+* The tokens are the same time length so there is no worry about a mismatch on timing.
+* They would also both expire at the same time if the app is unused.
+* There is also the benefit of no timer overlaps so async requests don't needed extended life on expired tokens.
+
+Because different apps have different strategies and requirements an option has been added to disable fresh.
+
+~~~
+refreshData: {
+    enabled: false // true by default.
+}
+~~~
+
+The refresh request could done be done manually via the `refresh` method.
+
+~~~
+this.$auth.refresh();
+~~~
+
 
 
 

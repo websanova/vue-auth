@@ -64,6 +64,9 @@
             setTimeout(function () {
                 _this.loaded = true;
             }, 500);
+
+            // Test manual refresh on boot (instead of via plugin).
+            this.$auth.refresh();
         },
 
         methods: {
