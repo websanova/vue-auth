@@ -770,6 +770,13 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 ## Change Log
 
+### v2.3.x-beta
+
+* Fix for 401 auth auto redirect when invalid token.
+* An option for `refreshData.enabled` has been added to disable refresh.
+* Updated docs.
+* Updated 2.x demo to use latest Vue version.
+
 ### v2.2.x-beta
 
 Vue has been in such a volatile state, especially between versions and 1 and 2. There have been many breaking changes as well as [removing vue-resource as the officially recommended package](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4) for Vue.

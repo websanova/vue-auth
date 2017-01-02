@@ -20,7 +20,7 @@ module.exports = {
 
     _invalidToken: function (res) {
         if (res.status === 401) {
-            this.logout();
+            this.options.logoutProcess.call(this, res, {redirect: this.options.authRedirect});
         }
     },
 
