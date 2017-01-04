@@ -772,6 +772,7 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 ### v2.3.x-beta
 
+* Fix for checking that a user is authenticated when checking invalid token function (401).
 * Fix for 401 auth auto redirect when invalid token.
 * An option for `refreshData.enabled` has been added to disable refresh.
 * Updated docs.
