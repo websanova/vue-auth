@@ -27,6 +27,16 @@ module.exports = function () {
         _auth.options[methodName + 'Perform'].call(_auth, _auth.options.router._bindData.call(_auth, data, this));
     }
 
+    function __setTransitionState(state) {
+        if ( ! this.watch.transition.to) {
+            this.watch.transition.to = state;
+        }
+        else {
+            this.watch.transition.from = this.watch.transition.to;
+            this.watch.transition.to = state;
+        }
+    }
+
     // Overrideable
 
     function _routerBeforeEach(cb) {
@@ -57,19 +67,24 @@ module.exports = function () {
 
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array)) {
             if ( ! this.check()) {
+                __setTransitionState.call(this, 'logged-out-hidden');
                 cb.call(this, this.options.authRedirect);
             }
             else if (routeAuth.constructor === Array && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
+                __setTransitionState.call(this, 'logged-in-forbidden');
                 cb.call(this, this.options.forbiddenRedirect);
             }
             else {
+                __setTransitionState.call(this, 'logged-in-visible');
                 return cb();
             }
         }
         else if (routeAuth === false && this.check()) {
+            __setTransitionState.call(this, 'logged-in-hidden');
             cb.call(this, this.options.notFoundRedirect);
         }
         else {
+            __setTransitionState.call(this, 'logged-out-visible');
             return cb();
         }
     }
@@ -415,6 +430,7 @@ module.exports = function () {
                 return {
                     data: null,
                     loaded: false,
+                    transition: {from: null, to: null},
                     authenticated: null
                 };
             }
@@ -443,6 +459,10 @@ module.exports = function () {
 
     Auth.prototype.ready = function () {
         return this.watch.loaded;
+    };
+
+    Auth.prototype.transition = function () {
+        return this.watch.transition;
     };
 
     Auth.prototype.user = function (data) {
@@ -509,7 +529,7 @@ module.exports = function () {
 
     Auth.prototype.oauth2 = function (data) {
         __bindContext.call(this, 'oauth2', data);
-    }
+    }    
 
     return Auth;
 };

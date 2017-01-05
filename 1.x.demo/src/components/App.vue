@@ -66,7 +66,19 @@
             }, 500);
 
             // Test manual refresh on boot (instead of via plugin).
-            this.$auth.refresh();
+            if (this.$auth.token()) {
+                this.$auth.refresh();
+            }
+
+            // Check for redirects.
+            this.$router.beforeEach(function (transition, location, next) {
+                 if (_this.$auth.transition().from === 'logged-out-hidden') {
+                    _this.$router.go({path: '/login', query: {redirect_url: _this.$route.path}});
+                 }
+                 else {
+                    transition.next();
+                 }
+            });
         },
 
         methods: {

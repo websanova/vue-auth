@@ -770,6 +770,10 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 ## Change Log
 
+### v2.4.x-beta
+
+* Add transition tracking (useful for url redirects on login).
+
 ### v2.3.x-beta
 
 * Fix for checking that a user is authenticated when checking invalid token function (401).
