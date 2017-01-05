@@ -437,6 +437,36 @@ These are all methods available in the vue app via `$auth`.
 </div>
 ~~~
 
+### transition
+
+* Fetch the state of the transition as vue-auth sees it.
+* Useful for doing redirects when accessing restricted routes.
+
+The transitions come in five states:
+
+* **logged-out-hidden** - The user is logged out and accessing a log in required page.
+* **logged-out-visible** - The user is logged out and accessing a public page.
+* **logged-in-forbidden** - Logged in but without access to that page.
+* **logged-in-visible** - Logged in and accessing a page visible to any logged in user.
+* **logged-in-hidden** - Logged in and accessing a hidden page, for instance the login page while logged in.
+
+The function is primarily useful for setting a redirect url if trying to access a private page when logged out.
+
+In the root component (1.x example):
+
+~~~
+ready() {
+    this.$router.beforeEach(function (transition) {
+         if (_this.$auth.transition().from === 'logged-out-hidden') {
+            _this.$router.go({path: '/login', query: {redirect_url: _this.$route.path}});
+         }
+         else {
+            transition.next();
+         }
+    });
+}
+~~~
+
 ### user
 
 * Returns the currently stored users data.
