@@ -3,6 +3,8 @@
         <div v-if="$auth.ready() && loaded">
             <div style="text-align:center;">
                 <router-link :to="{name: 'default'}">home</router-link> &bull;
+                
+                <router-link :to="{name: 'async'}">async</router-link> &bull;
 
                 <span v-show="!$auth.check()">
                     <router-link :to="{name: 'login'}">login</router-link> &bull;

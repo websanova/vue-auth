@@ -40,6 +40,10 @@ Vue.router.map({
         name: 'account',
         component: require('./components/pages/Account.vue')
     },
+    '/async': {
+        name: 'async',
+        component: function(resolve) { require(['./components/pages/Async.vue'], resolve); }
+    },
     '/admin': {
         auth: 'admin',
         name: 'admin',

@@ -4,6 +4,10 @@
             <div style="text-align:center;">
                 <a v-link="{name: 'default'}">home</a> &bull;
 
+                <span>
+                    <a v-link="{name: 'async'}">async</a> &bull;
+                </span>
+
                 <span v-show="!$auth.check()">
                     <a v-link="{name: 'login'}">login</a> &bull;
                     <a v-link="{name: 'register'}">register</a> &bull;
