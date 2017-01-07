@@ -724,11 +724,11 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 * Default oauth1 request data and redirect.
 
-### fetchData: `{url: 'auth/user', method: 'GET'}`
+### fetchData: `{url: 'auth/user', method: 'GET', enabled: true}`
 
 * Default user fetch request data and redirect.
 
-### refreshData: `{url: 'auth/refresh', method: 'GET', atInit: true}`
+### refreshData: `{url: 'auth/refresh', method: 'GET', enabled: true}`
 
 * Default refresh request data and redirect.
 
@@ -799,6 +799,14 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 
 ## Change Log
+
+### v2.6.x-beta
+
+* Add enabled option for `fetchData` useful in case we need a preset before auth. For instance when fetching properties from server.
+
+### v2.5.x-beta
+
+* Update default webpack setup to use Vue 2.x.
 
 ### v2.4.x-beta
 

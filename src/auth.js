@@ -55,7 +55,9 @@ module.exports = function () {
             }
 
             this.watch.authenticated = false
-            this.options.fetchPerform.call(this, {success: cb, error: cb});
+            if (this.options.fetchData.enabled) {
+                this.options.fetchPerform.call(this, {success: cb, error: cb});
+            }
         } else {
             this.watch.loaded = true;
             return cb.call(this);
@@ -357,7 +359,7 @@ module.exports = function () {
         loginData:          {url: 'auth/login',        method: 'POST', redirect: '/', fetchUser: true},
         logoutData:         {url: 'auth/logout',       method: 'POST', redirect: '/', makeRequest: false},
         oauth1Data:         {url: 'auth/login',        method: 'POST'},
-        fetchData:          {url: 'auth/user',         method: 'GET'},
+        fetchData:          {url: 'auth/user',         method: 'GET', enabled: true},
         refreshData:        {url: 'auth/refresh',      method: 'GET', enabled: true},
         loginOtherData:     {url: 'auth/login-other',  method: 'POST', redirect: '/'},
         logoutOtherData:    {url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false},
