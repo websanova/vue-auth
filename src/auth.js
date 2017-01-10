@@ -27,11 +27,21 @@ module.exports = function () {
         _auth.options[methodName + 'Perform'].call(_auth, _auth.options.router._bindData.call(_auth, data, this));
     }
 
+    function __setTransitionState(state) {
+        if ( ! this.watch.transition.to) {
+            this.watch.transition.to = state;
+        }
+        else {
+            this.watch.transition.from = this.watch.transition.to;
+            this.watch.transition.to = state;
+        }
+    }
+
     // Overrideable
 
     function _routerBeforeEach(cb) {
 
-        if (this.options.tokenExpired.call(this)) {
+        if (this.options.refreshData.enabled && this.options.tokenExpired.call(this)) {
             this.options.refreshPerform.call(this, {});
         }
 
@@ -45,7 +55,9 @@ module.exports = function () {
             }
 
             this.watch.authenticated = false
-            this.options.fetchPerform.call(this, {success: cb, error: cb});
+            if (this.options.fetchData.enabled) {
+                this.options.fetchPerform.call(this, {success: cb, error: cb});
+            }
         } else {
             this.watch.loaded = true;
             return cb.call(this);
@@ -57,19 +69,24 @@ module.exports = function () {
 
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array)) {
             if ( ! this.check()) {
+                __setTransitionState.call(this, 'logged-out-hidden');
                 cb.call(this, this.options.authRedirect);
             }
             else if (routeAuth.constructor === Array && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
+                __setTransitionState.call(this, 'logged-in-forbidden');
                 cb.call(this, this.options.forbiddenRedirect);
             }
             else {
+                __setTransitionState.call(this, 'logged-in-visible');
                 return cb();
             }
         }
         else if (routeAuth === false && this.check()) {
+            __setTransitionState.call(this, 'logged-in-hidden');
             cb.call(this, this.options.notFoundRedirect);
         }
         else {
+            __setTransitionState.call(this, 'logged-out-visible');
             return cb();
         }
     }
@@ -87,7 +104,7 @@ module.exports = function () {
     function _responseIntercept(res) {
         var token;
 
-        if (this.options.http._invalidToken) {
+        if (this.watch.authenticated && this.options.http._invalidToken) {
             this.options.http._invalidToken.call(this, res);
         }
 
@@ -342,8 +359,8 @@ module.exports = function () {
         loginData:          {url: 'auth/login',        method: 'POST', redirect: '/', fetchUser: true},
         logoutData:         {url: 'auth/logout',       method: 'POST', redirect: '/', makeRequest: false},
         oauth1Data:         {url: 'auth/login',        method: 'POST'},
-        fetchData:          {url: 'auth/user',         method: 'GET'},
-        refreshData:        {url: 'auth/refresh',      method: 'GET'},
+        fetchData:          {url: 'auth/user',         method: 'GET', enabled: true},
+        refreshData:        {url: 'auth/refresh',      method: 'GET', enabled: true},
         loginOtherData:     {url: 'auth/login-other',  method: 'POST', redirect: '/'},
         logoutOtherData:    {url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false},
 
@@ -415,6 +432,7 @@ module.exports = function () {
                 return {
                     data: null,
                     loaded: false,
+                    transition: {from: null, to: null},
                     authenticated: null
                 };
             }
@@ -443,6 +461,10 @@ module.exports = function () {
 
     Auth.prototype.ready = function () {
         return this.watch.loaded;
+    };
+
+    Auth.prototype.transition = function () {
+        return this.watch.transition;
     };
 
     Auth.prototype.user = function (data) {
@@ -509,7 +531,7 @@ module.exports = function () {
 
     Auth.prototype.oauth2 = function (data) {
         __bindContext.call(this, 'oauth2', data);
-    }
+    }    
 
     return Auth;
 };

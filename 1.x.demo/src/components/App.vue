@@ -4,6 +4,10 @@
             <div style="text-align:center;">
                 <a v-link="{name: 'default'}">home</a> &bull;
 
+                <span>
+                    <a v-link="{name: 'async'}">async</a> &bull;
+                </span>
+
                 <span v-show="!$auth.check()">
                     <a v-link="{name: 'login'}">login</a> &bull;
                     <a v-link="{name: 'register'}">register</a> &bull;
@@ -64,6 +68,21 @@
             setTimeout(function () {
                 _this.loaded = true;
             }, 500);
+
+            // Test manual refresh on boot (instead of via plugin).
+            if (this.$auth.token()) {
+                this.$auth.refresh();
+            }
+
+            // Check for redirects.
+            this.$router.beforeEach(function (transition, location, next) {
+                 if (_this.$auth.transition().from === 'logged-out-hidden') {
+                    _this.$router.go({path: '/login', query: {redirect_url: _this.$route.path}});
+                 }
+                 else {
+                    transition.next();
+                 }
+            });
         },
 
         methods: {

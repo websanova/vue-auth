@@ -38,6 +38,10 @@ Vue.router = new VueRouter({
         component: require('./components/pages/Account.vue'),
         meta: {auth: true}
     }, {
+        path: '/async',
+        name: 'async',
+        component: function(resolve) { require(['./components/pages/Async.vue'], resolve); }
+    }, {
         path: '/admin',
         name: 'admin',
         component: require('./components/pages/Admin.vue'),

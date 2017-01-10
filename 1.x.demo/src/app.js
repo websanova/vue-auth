@@ -40,6 +40,10 @@ Vue.router.map({
         name: 'account',
         component: require('./components/pages/Account.vue')
     },
+    '/async': {
+        name: 'async',
+        component: function(resolve) { require(['./components/pages/Async.vue'], resolve); }
+    },
     '/admin': {
         auth: 'admin',
         name: 'admin',
@@ -92,6 +96,9 @@ Vue.use(require('../../src/index.js'), {
     http: require('../../drivers/http/vue-resource.1.x.js'),
     router: require('../../drivers/router/vue-router.2.x.js'),
     rolesVar: 'role',
+    refreshData: {
+        enabled: false
+    },
     facebookOauth2Data: {
         clientId: '196729390739201'
     },

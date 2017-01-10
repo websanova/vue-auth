@@ -4,17 +4,18 @@ Vue.js token based authentication plugin. Supports simple token based and JSON W
 
 Note this is the new name for the formerly named `vue-jwt-auth`. Since it's likely this package will expand with potentially more authentication options.
 
-* [Install](https://github.com/websanova/vue-auth#install)
-* [Demo](https://github.com/websanova/vue-auth#demo)
-* [Auth Flow](https://github.com/websanova/vue-auth#auth-flow)
-* [User Data](https://github.com/websanova/vue-auth#user-data)
-* [Authentication](https://github.com/websanova/vue-auth#authentication)
-* [Privileges](https://github.com/websanova/vue-auth#privileges)
-* [Routes](https://github.com/websanova/vue-auth#routes)
-* [Methods](https://github.com/websanova/vue-auth#methods)
-* [Options](https://github.com/websanova/vue-auth#options)
-* [Drivers](https://github.com/websanova/vue-auth#drivers)
-* [Change Log](https://github.com/websanova/vue-auth#change-log)
+* [Install](#install)
+* [Demo](#demo)
+* [Auth Flow](#auth-flow)
+* [Token Refresh](#token-refresh)
+* [User Data](#user-data)
+* [Authentication](#authentication)
+* [Privileges](#privileges)
+* [Routes](#routes)
+* [Methods](#methods)
+* [Options](#options)
+* [Drivers](#drivers)
+* [Change Log](#change-log)
 
 
 
@@ -129,7 +130,7 @@ The best way to see the code in action is to see the code samples in the `1.x.de
 
 * From the front end we can't really do any "real" authentication. It's simply a check to see it users role and the routes roles match up. From there we can allow the route to process or we can redirect accordingly.
 * This is done by intercepting each route and checking if the user is already logged in. This is done by simply checking if a token exists.
-* If a token exists a few things can happen. But by default there will be two requests sent. One is to refresh the token (this is based on best practice). Second is to fetch the user.
+* If a token exists a few things can happen. For one we would attempt to fetch the users data. The second part deals with refreshing the token which has a few strategies and is discussed in the next section.
 * Typically a user will be fetched each time to make sure we have the latest user data.
 * After the user is fetched the plugin will process into a "loaded" state. This should be checked via the "$auth.ready()" method. At this point we will know if we have a valid token and user.
 * From here we can use the `$auth.check()` function to show hide various parts of our interface.
@@ -140,6 +141,66 @@ The best way to see the code in action is to see the code samples in the `1.x.de
 * This parsing will be done on each `request` and `response` of your http (ajax) calls.
 * For the request it will simply append the auth data in the header or body (depending on your auth driver).
 * For the response it will parse the auth data from the header or response data (depending on your auth driver).
+
+
+
+## Token Refresh
+
+Dealing with the toen refresh is the tricker part in the authentication auth flow. It helps to review what is actually happening here first.
+
+* A user logs in and gets a token. this token is valid for a certain period of time.
+* Let's say the user gets a token that is always valid. This presents some security issues in case a device is lost or compromised.
+* We can therefore limit access to the app by setting the tokens expiration to something like one or two weeks.
+* Now there is an expiration so if the users device is compromised we are at least limiting the potential damage.
+* However as long as the user keeps using the app we should keep them logged in by continually re-issuing new tokens.
+
+This is where the issue lies with JWT and token based authentication. The question is what kind of refresh strategy do we want to employ?
+
+Currently, there doesn't seem to be any official way to do this. With only a few "best practices" which are personal opinions at best.
+
+A few notes:
+
+**NOTE:** We need to make sure our old token lives slightly longer pass the expiration. Since multiple calls to the server at the same time would then be using expired tokens depending on which request expired the token first.
+
+**NOTE:** The plugin will automatically pick up the token wherever it's set based on the driver used.
+
+A few strategies:
+
+**> Set a new token with each request (with old tokens living slightly longer in case of async requests).**
+
+It would depend on the app, but this one can be a bit overkill.
+
+**> Set a timer or counter for a token refresh request.**
+
+This is actually not a bad strategy. But again might be a bit overkill.
+
+**> Check the tokens expiration date before or after each request.**
+
+This was actually previously implemented in the plugin. It was removed because of the overhead since it requires a base64 encode/decode. It would be best suited as a separate custom authentication driver.
+
+**> Set the user token and refresh token time to same time length and call refresh with each reload of the app.**
+
+This relies on the token being set once at login and then a separate refresh on each page reload.
+
+* This is the default behavior of the plugin.
+* The tokens are the same time length so there is no worry about a mismatch on timing.
+* They would also both expire at the same time if the app is unused.
+* There is also the benefit of no timer overlaps so async requests don't needed extended life on expired tokens.
+
+Because different apps have different strategies and requirements an option has been added to disable fresh.
+
+~~~
+refreshData: {
+    enabled: false // true by default.
+}
+~~~
+
+The refresh request could done be done manually via the `refresh` method.
+
+~~~
+this.$auth.refresh();
+~~~
+
 
 
 
@@ -374,6 +435,36 @@ These are all methods available in the vue app via `$auth`.
 <div v-if="!$auth.ready()">
     Site loading...
 </div>
+~~~
+
+### transition
+
+* Fetch the state of the transition as vue-auth sees it.
+* Useful for doing redirects when accessing restricted routes.
+
+The transitions come in five states:
+
+* **logged-out-hidden** - The user is logged out and accessing a log in required page.
+* **logged-out-visible** - The user is logged out and accessing a public page.
+* **logged-in-forbidden** - Logged in but without access to that page.
+* **logged-in-visible** - Logged in and accessing a page visible to any logged in user.
+* **logged-in-hidden** - Logged in and accessing a hidden page, for instance the login page while logged in.
+
+The function is primarily useful for setting a redirect url if trying to access a private page when logged out.
+
+In the root component (1.x example):
+
+~~~
+ready() {
+    this.$router.beforeEach(function (transition) {
+         if (_this.$auth.transition().from === 'logged-out-hidden') {
+            _this.$router.go({path: '/login', query: {redirect_url: _this.$route.path}});
+         }
+         else {
+            transition.next();
+         }
+    });
+}
 ~~~
 
 ### user
@@ -633,11 +724,11 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 * Default oauth1 request data and redirect.
 
-### fetchData: `{url: 'auth/user', method: 'GET'}`
+### fetchData: `{url: 'auth/user', method: 'GET', enabled: true}`
 
 * Default user fetch request data and redirect.
 
-### refreshData: `{url: 'auth/refresh', method: 'GET', atInit: true}`
+### refreshData: `{url: 'auth/refresh', method: 'GET', enabled: true}`
 
 * Default refresh request data and redirect.
 
@@ -708,6 +799,26 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 
 ## Change Log
+
+### v2.6.x-beta
+
+* Add enabled option for `fetchData` useful in case we need a preset before auth. For instance when fetching properties from server.
+
+### v2.5.x-beta
+
+* Update default webpack setup to use Vue 2.x.
+
+### v2.4.x-beta
+
+* Add transition tracking (useful for url redirects on login).
+
+### v2.3.x-beta
+
+* Fix for checking that a user is authenticated when checking invalid token function (401).
+* Fix for 401 auth auto redirect when invalid token.
+* An option for `refreshData.enabled` has been added to disable refresh.
+* Updated docs.
+* Updated 2.x demo to use latest Vue version.
 
 ### v2.2.x-beta
 

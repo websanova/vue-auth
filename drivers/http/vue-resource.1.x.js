@@ -1,4 +1,10 @@
 module.exports = {
+
+    _init: function () {
+        if ( ! this.options.Vue.http) {
+            return 'vue-resource.1.x.js : Vue.http must be set.';
+        }
+    },
     
     _interceptor: function (req, res) {
         var _this = this;
@@ -14,7 +20,7 @@ module.exports = {
 
     _invalidToken: function (res) {
         if (res.status === 401) {
-            this.logout();
+            this.options.logoutProcess.call(this, res, {redirect: this.options.authRedirect});
         }
     },
 
