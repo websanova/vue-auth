@@ -802,6 +802,7 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 ### v2.6.x-beta
 
+* Add check for missing token when authenticated (should auto logout).
 * Add enabled option for `fetchData` useful in case we need a preset before auth. For instance when fetching properties from server.
 
 ### v2.5.x-beta
