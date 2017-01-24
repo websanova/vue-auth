@@ -51,11 +51,14 @@
             clearToken() {
                 localStorage.removeItem('other-auth-token');
                 localStorage.removeItem('default-auth-token');
+
+                console.log('Tokens removed');
             },
 
             networkDrop() {
-                console.log(this.$auth.token());
+                Vue.http.options.root = 'https://does.not.exist.com//api/v1';
 
+                console.log('http.options.root changed to https://does.not.exist.com/api/v1');
             }
         }
     }

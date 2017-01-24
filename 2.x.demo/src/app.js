@@ -79,12 +79,15 @@ Vue.router = new VueRouter({
         path: '/403',
         name: 'error-403',
         component: require('./components/pages/403.vue')
+    }, {
+        path: '/502',
+        name: 'error-502',
+        component: require('./components/pages/502.vue')
     }]
 });
 
 // Http 
-Vue.http.options.root = 'https://hs.api.laravel-demo.com//api/v1';
-// Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
+Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
 
 // Vue Auth
 Vue.use(require('../../src/index.js'), {

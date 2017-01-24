@@ -68,6 +68,18 @@
             }, 500);
         },
 
+        created() {
+            var _this = this;
+
+            Vue.http.interceptors.push(function (req, next) {
+                next(function (res) {
+                    if ( ! res.ok) {
+                        _this.$router.push({name: 'error-502'})
+                    }
+                });
+            });
+        },
+
         methods: {
             logout() {
                 this.$auth.logout({
