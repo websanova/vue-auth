@@ -83,7 +83,8 @@ Vue.router = new VueRouter({
 });
 
 // Http 
-Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
+Vue.http.options.root = 'https://hs.api.laravel-demo.com//api/v1';
+// Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
 
 // Vue Auth
 Vue.use(require('../../src/index.js'), {

@@ -25,6 +25,13 @@
             <li><a v-on:click="setToken('other')" href="javascript:void(0);">Test other token</a></li>
             <li><a v-on:click="setToken('default')" href="javascript:void(0);">Test admin token</a></li>
         </ul>
+
+        <h3>Test Network</h3>
+
+        <ul>
+            <li><a v-on:click="clearToken()" href="javascript:void(0);">Test cache clear</a></li>
+            <li><a v-on:click="networkDrop('other')" href="javascript:void(0);">Test network drop</a></li>
+        </ul>
     </div>
 </template>
 
@@ -39,6 +46,16 @@
         methods: {
             setToken(name) {
                 this.token = this.$auth.token(name);
+            },
+
+            clearToken() {
+                localStorage.removeItem('other-auth-token');
+                localStorage.removeItem('default-auth-token');
+            },
+
+            networkDrop() {
+                console.log(this.$auth.token());
+
             }
         }
     }

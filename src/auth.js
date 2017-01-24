@@ -40,6 +40,9 @@ module.exports = function () {
     // Overrideable
 
     function _routerBeforeEach(cb) {
+        if (this.watch.authenticated && !__token.get.call(this)) {
+            this.options.logoutProcess.call(this, null, {});
+        }
 
         if (this.options.refreshData.enabled && this.options.tokenExpired.call(this)) {
             this.options.refreshPerform.call(this, {});
