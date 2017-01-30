@@ -40,27 +40,46 @@ module.exports = function () {
     // Overrideable
 
     function _routerBeforeEach(cb) {
-
         if (this.options.refreshData.enabled && this.options.tokenExpired.call(this)) {
-            this.options.refreshPerform.call(this, {});
-        }
+            this.options.refreshPerform.call(this, {
+                success: function() {
+                    if (this.options.fetchData.enabled) {
+                        this.watch.authenticated = false
+                        this.options.fetchPerform.call(this, {success: cb, error: cb});
+                    } else {
+                        this.watch.authenticated = true;
+                        return cb.call(this);
+                    }
+                },
+                error: function() {
+                    this.options.logoutProcess.call(this, null, {});
 
-        if (this.watch.authenticated === null && __token.get.call(this)) {
-            if ( ! __cookie.exists.call(this)) {
-                this.options.logoutProcess.call(this, null, {});
+                    this.watch.loaded = true
 
-                this.watch.loaded = true
+                    return cb.call(this);
+                }
+          });
+        } else {
+            if (this.watch.authenticated === null && __token.get.call(this)) {
+                if ( ! __cookie.exists.call(this)) {
+                    this.options.logoutProcess.call(this, null, {});
 
+                    this.watch.loaded = true
+
+                    return cb.call(this);
+                }
+
+                if (this.options.fetchData.enabled) {
+                    this.watch.authenticated = false
+                    this.options.fetchPerform.call(this, {success: cb, error: cb});
+                } else {
+                    this.watch.authenticated = true;
+                    return cb.call(this);
+                }
+            } else {
+                this.watch.loaded = true;
                 return cb.call(this);
             }
-
-            this.watch.authenticated = false
-            if (this.options.fetchData.enabled) {
-                this.options.fetchPerform.call(this, {success: cb, error: cb});
-            }
-        } else {
-            this.watch.loaded = true;
-            return cb.call(this);
         }
     }
 
@@ -348,7 +367,7 @@ module.exports = function () {
 
         rolesVar:          'roles',
         tokenName:         'auth-token',
-        
+
         // Objects
 
         authRedirect:       {path: '/login'},
@@ -421,7 +440,7 @@ module.exports = function () {
 
     function Auth(Vue, options) {
         var i, ii, msg, drivers = ['auth', 'http', 'router'];
-        
+
         this.currentToken = null;
 
         this.options = __utils.extend(defaultOptions, [options || {}]);
@@ -531,7 +550,7 @@ module.exports = function () {
 
     Auth.prototype.oauth2 = function (data) {
         __bindContext.call(this, 'oauth2', data);
-    }    
+    }
 
     return Auth;
 };
