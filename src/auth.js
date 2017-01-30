@@ -1,6 +1,7 @@
 var __utils  = require('./lib/utils.js'),
     __token  = require('./lib/token.js'),
-    __cookie = require('./lib/cookie.js')
+    __cookie = require('./lib/cookie.js'),
+    he       = require('he');
 
 module.exports = function () {
 
@@ -316,7 +317,8 @@ module.exports = function () {
 
             try {
                 if (data.query.state) {
-                    state = JSON.parse(decodeURIComponent(data.query.state));
+                    var stateString = he.decode(decodeURIComponent(data.query.state));
+                    state = JSON.parse(stateString);
                 }
             }
             catch (e) {
