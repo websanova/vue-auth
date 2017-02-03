@@ -41,22 +41,23 @@ module.exports = function () {
 
     function _routerBeforeEach(cb) {
         if (this.options.refreshData.enabled && this.options.tokenExpired.call(this)) {
+            var _this = this;
             this.options.refreshPerform.call(this, {
                 success: function() {
-                    if (this.options.fetchData.enabled) {
-                        this.watch.authenticated = false
-                        this.options.fetchPerform.call(this, {success: cb, error: cb});
+                    if (_this.options.fetchData.enabled) {
+                        _this.watch.authenticated = false
+                        _this.options.fetchPerform.call(_this, {success: cb, error: cb});
                     } else {
-                        this.watch.authenticated = true;
-                        return cb.call(this);
+                        _this.watch.authenticated = true;
+                        return cb.call(_this);
                     }
                 },
                 error: function() {
-                    this.options.logoutProcess.call(this, null, {});
+                    _this.options.logoutProcess.call(_this, null, {});
 
-                    this.watch.loaded = true
+                    _this.watch.loaded = true
 
-                    return cb.call(this);
+                    return cb.call(_this);
                 }
           });
         } else {
