@@ -61,6 +61,27 @@ Vue.use(require('@websanova/vue-auth'), {
 });
 ~~~
 
+### Install with Vue-Axios
+
+~~~
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import VueAuth from '@websanova/vue-auth'
+
+Vue.use(VueAxios, axios)
+Vue.use(VueAuth, {
+    auth: AuthBearer,
+    http: require('@websanova/vue-auth/drivers/http/axios.js'),
+    router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js')
+    ...
+});
+
+// access axios with Vue or use the 'this' reference in components
+Vue.axios.post(...).then(res => {
+    console.log('RES', res);
+});
+~~~
+
 
 
 ## Install 1.x

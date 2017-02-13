@@ -14,7 +14,7 @@
   
   "main": "src/index.js",
   
-  "version": "2.6.1-beta",
+  "version": "2.7.2-beta",
   
   "repository": {
     "type": "git",
@@ -24,7 +24,9 @@
   "licenses": "MIT, GPL",
   
   "dependencies": {
-    "@websanova/vue-auth": "2.6.1-beta"
+    "axios": "0.15.3",
+    "vue-axios": "1.2.2",
+    "@websanova/vue-auth": "2.7.2-beta"
   },
   
   "devDependencies": {
