@@ -122,6 +122,10 @@ module.exports = function () {
         return data.data;
     }
 
+    function _parseOauthState(data) {
+        return JSON.parse(decodeURIComponent(data));
+    }
+
     function _check(role) {
         if (this.watch.authenticated === true) {
             if (role) {
@@ -319,7 +323,7 @@ module.exports = function () {
 
             try {
                 if (data.query.state) {
-                    state = JSON.parse(decodeURIComponent(data.query.state));
+                    state = this.options.parseOauthState(data.query.state);
                 }
             }
             catch (e) {
@@ -388,6 +392,7 @@ module.exports = function () {
         getUrl:             _getUrl,
         cookieDomain:       _cookieDomain,
         parseUserData:      _parseUserData,
+        parseOauthState:    _parseOauthState,
         tokenExpired:       _tokenExpired,
         check:              _check,
 
