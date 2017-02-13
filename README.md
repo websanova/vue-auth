@@ -790,6 +790,10 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 * Set what data is stored from the user from the response data.
 
+### parseOauthState: `_parseOauthState`
+
+* Set how the oauth state data from the returned url will get parsed.
+
 ### tokenExpired: `_tokenExpired`
 
 * Hook for checking if a token refresh should occur or not. Set this to return `false` when creating a custom solution.
