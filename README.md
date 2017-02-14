@@ -825,6 +825,11 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 ## Change Log
 
+### v2.7.x-beta
+
+* Added  axios driver.
+* Addded `parseOauthState` option.
+
 ### v2.6.x-beta
 
 * Add check for missing token when authenticated (should auto logout).
