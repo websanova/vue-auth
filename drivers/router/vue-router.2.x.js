@@ -14,7 +14,11 @@ module.exports = {
         error = data.error;
         success = data.success;
 
-        data.query = ctx.$route.query || {};
+        try {
+          data.query = ctx.$route.query || {};
+        } catch(error) {
+          data.query = {};
+        }
 
         if (data.success) { data.success = function (res) { success.call(ctx, res); } }
         if (data.error) { data.error = function (res) { error.call(ctx, res); } }

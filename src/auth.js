@@ -43,9 +43,8 @@ module.exports = function () {
                 return cb.call(this);
             }
 
-            this.watch.authenticated = false;
-
             if (this.options.fetchData.enabled) {
+                this.watch.authenticated = false;
                 this.options.fetchPerform.call(this, {
                     success: cb,
                     error: cb,
@@ -128,7 +127,7 @@ module.exports = function () {
         if (req.impersonating === false && this.impersonating()) {
             tokenName = this.options.tokenDefaultName;
         }
-        
+
         token = __token.get.call(this, tokenName);
 
         if (token) {
@@ -273,7 +272,7 @@ module.exports = function () {
     function _fetchProcess(res, data) {
         this.watch.authenticated = true;
         this.watch.data = this.options.parseUserData.call(this, this.options.http._httpData.call(this, res));
-        
+
         this.watch.loaded = true;
 
         if (this.options.fetchData.success) { this.options.fetchData.success.call(this, res); }
@@ -702,7 +701,7 @@ module.exports = function () {
         if (this.impersonating()) {
             this.currentToken = this.options.tokenDefaultName;
         }
-    }; 
+    };
 
     return Auth;
 };
