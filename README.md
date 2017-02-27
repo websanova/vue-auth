@@ -460,7 +460,7 @@ These are all methods available in the vue app via `$auth`.
 
 ### redirect
 
-* Returns either an object if a redirect occurred or null.
+* Returns either an object if a redirect occurred or `null`.
 * The object is in the form `{type: <string>, from: <object>, to: <object>}` Where `type` is one of `401`, `403`, `404` and the `from` and `to` objects are just copies of the route transitions.
 
 ~~~
