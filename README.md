@@ -458,34 +458,17 @@ These are all methods available in the vue app via `$auth`.
 </div>
 ~~~
 
-### transition
+### redirect
 
-* Fetch the state of the transition as vue-auth sees it.
-* Useful for doing redirects when accessing restricted routes.
-
-The transitions come in five states:
-
-* **logged-out-hidden** - The user is logged out and accessing a log in required page.
-* **logged-out-visible** - The user is logged out and accessing a public page.
-* **logged-in-forbidden** - Logged in but without access to that page.
-* **logged-in-visible** - Logged in and accessing a page visible to any logged in user.
-* **logged-in-hidden** - Logged in and accessing a hidden page, for instance the login page while logged in.
-
-The function is primarily useful for setting a redirect url if trying to access a private page when logged out.
-
-In the root component (1.x example):
+* Returns either an object if a redirect occurred or null.
+* The object is in the form `{type: <string>, from: <object>, to: <object>}` Where `type` is one of `401`, `403`, `404` and the `from` and `to` objects are just copies of the route transitions.
 
 ~~~
-ready() {
-    this.$router.beforeEach(function (transition) {
-         if (_this.$auth.transition().from === 'logged-out-hidden') {
-            _this.$router.go({path: '/login', query: {redirect_url: _this.$route.path}});
-         }
-         else {
-            transition.next();
-         }
-    });
-}
+var redirect = this.$auth.redirect();
+
+this.$auth.login({
+    redirect: {name: redirect ? redirect.from.name : 'account'},
+});
 ~~~
 
 ### user
@@ -824,6 +807,11 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 
 ## Change Log
+
+### v2.8.x-beta
+
+* Removed `transition` method, replaced with `redirect`.
+* Added `redirect` method for easy access to check for redirects from auth.
 
 ### v2.7.x-beta
 

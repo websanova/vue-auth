@@ -46,12 +46,20 @@
             };
         },
 
+        mounted() {
+            console.log(this.$auth.redirect());
+
+            // Can set query parameter here for auth redirect or just do it silently in login redirect.
+        },
+
         methods: {
             login() {
+                var redirect = this.$auth.redirect();
+
                 this.$auth.login({
                     body: this.data.body,
                     rememberMe: this.data.rememberMe,
-                    redirect: {name: 'account'},
+                    redirect: {name: redirect ? redirect.from.name : 'account'},
                     success() {
                         console.log('success ' + this.context);
                     },

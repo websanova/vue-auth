@@ -51,7 +51,7 @@
                 this.$auth.login({
                     body: this.data.body,
                     rememberMe: this.data.rememberMe,
-                    redirect: this.$route.query.redirect_url || {name: 'account'},
+                    redirect: {name: 'account'},
                     success() {
                         console.log('success ' + this.context);
                     },

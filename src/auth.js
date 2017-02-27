@@ -6,6 +6,10 @@ module.exports = function () {
 
     // Private (used double underscore __).
 
+    var __transitionPrev = null,
+        __transitionThis = null,
+        __transitionRedirecType = null;
+
     function __duckPunch(methodName, data) {
         var _this = this,
             success = data.success;
@@ -25,16 +29,6 @@ module.exports = function () {
         var _auth = this.$auth;
 
         _auth.options[methodName + 'Perform'].call(_auth, _auth.options.router._bindData.call(_auth, data, this));
-    }
-
-    function __setTransitionState(state) {
-        if ( ! this.watch.transition.to) {
-            this.watch.transition.to = state;
-        }
-        else {
-            this.watch.transition.from = this.watch.transition.to;
-            this.watch.transition.to = state;
-        }
     }
 
     // Overrideable
@@ -67,29 +61,36 @@ module.exports = function () {
         }
     }
 
-    function _transitionEach(routeAuth, cb) {
+    function _transitionEach(transition, routeAuth, cb) {
         routeAuth = __utils.toArray(routeAuth);
-
+        
+        __transitionPrev = __transitionThis;
+        __transitionThis = transition;
+        
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array)) {
             if ( ! this.check()) {
-                __setTransitionState.call(this, 'logged-out-hidden');
+                __transitionRedirecType = 401;
                 cb.call(this, this.options.authRedirect);
             }
             else if (routeAuth.constructor === Array && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
-                __setTransitionState.call(this, 'logged-in-forbidden');
+                __transitionRedirecType = 403;
                 cb.call(this, this.options.forbiddenRedirect);
             }
             else {
-                __setTransitionState.call(this, 'logged-in-visible');
+                this.watch.redirect = __transitionRedirecType ? {type: __transitionRedirecType, from: __transitionPrev, to: __transitionThis} : null;
+                __transitionRedirecType = null;
+
                 return cb();
             }
         }
         else if (routeAuth === false && this.check()) {
-            __setTransitionState.call(this, 'logged-in-hidden');
+            __transitionRedirecType = 404;
             cb.call(this, this.options.notFoundRedirect);
         }
         else {
-            __setTransitionState.call(this, 'logged-out-visible');
+            this.watch.redirect = __transitionRedirecType ? {type: __transitionRedirecType, from: __transitionPrev, to: __transitionThis} : null;
+            __transitionRedirecType = null;
+
             return cb();
         }
     }
@@ -440,7 +441,7 @@ module.exports = function () {
                 return {
                     data: null,
                     loaded: false,
-                    transition: {from: null, to: null},
+                    redirect: null,
                     authenticated: null
                 };
             }
@@ -471,8 +472,8 @@ module.exports = function () {
         return this.watch.loaded;
     };
 
-    Auth.prototype.transition = function () {
-        return this.watch.transition;
+    Auth.prototype.redirect = function () {
+        return this.watch.redirect;
     };
 
     Auth.prototype.user = function (data) {

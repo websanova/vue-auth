@@ -42,7 +42,7 @@ module.exports = {
                     }
                 }
 
-                transitionEach.call(_this, auth, function (redirect) {
+                transitionEach.call(_this, transition, auth, function (redirect) {
                     if (!redirect) {
                         (next || transition.next)();
                         return;
