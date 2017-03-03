@@ -9,7 +9,7 @@ module.exports = (function (){
     }
 
     function toArray(val) {
-        return val === undefined || (typeof val) === 'string' || (typeof val) === 'number' ? [val] : val;
+        return (typeof val) === 'string' || (typeof val) === 'number' ? [val] : val;
     }
 
     function extend(mainObj, appendObj) {
@@ -54,7 +54,7 @@ module.exports = (function (){
         one = toArray(one);
         two = toArray(two);
 
-        if (one.constructor !== Array || two.constructor !== Array) {
+        if (!one || !two || one.constructor !== Array || two.constructor !== Array) {
             return false;
         }
 
