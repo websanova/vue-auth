@@ -120,7 +120,7 @@ module.exports = function () {
     }
 
     function _parseUserData(data) {
-        return data.data;
+        return data.data || {};
     }
 
     function _parseOauthState(data) {

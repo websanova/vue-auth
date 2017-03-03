@@ -810,6 +810,7 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 ### v2.8.x-beta
 
+* Fix for `loginData.fetchUser` when set to `false`.
 * Removed `transition` method, replaced with `redirect`.
 * Added `redirect` method for easy access to check for redirects from auth.
 

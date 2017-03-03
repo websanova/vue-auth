@@ -9,7 +9,7 @@ module.exports = (function (){
     }
 
     function toArray(val) {
-        return (typeof val) === 'string' || (typeof val) === 'number' ? [val] : val;
+        return val === undefined || (typeof val) === 'string' || (typeof val) === 'number' ? [val] : val;
     }
 
     function extend(mainObj, appendObj) {
