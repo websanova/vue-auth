@@ -167,7 +167,7 @@ The best way to see the code in action is to see the code samples in the `1.x.de
 
 ## Token Refresh
 
-Dealing with the toen refresh is the tricker part in the authentication auth flow. It helps to review what is actually happening here first.
+Dealing with the token refresh is the tricker part in the authentication auth flow. It helps to review what is actually happening here first.
 
 * A user logs in and gets a token. this token is valid for a certain period of time.
 * Let's say the user gets a token that is always valid. This presents some security issues in case a device is lost or compromised.
