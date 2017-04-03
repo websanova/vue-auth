@@ -37,7 +37,7 @@ Early support for Vue 2.0 is now available also but may still be a bit unstable 
 ## Install 2.x
 
 ~~~
-> sudo npm install @websanova/vue-auth
+> npm install @websanova/vue-auth
 ~~~    
 
 The `router` and `http` drivers MUST be set. The drivers are quite small so can be replaced or overridden as necessary.
