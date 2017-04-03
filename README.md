@@ -87,7 +87,7 @@ Vue.axios.post(...).then(res => {
 ## Install 1.x
 
 ~~~
-> sudo npm install @websanova/vue-auth
+> npm install @websanova/vue-auth
 ~~~    
 
 ~~~
@@ -123,9 +123,9 @@ To run the front end part of the demo just install and run. The demo runs on a p
 * Change the http options root in the `app.js` demo file to a different server for personal testing.
 
 ~~~
-> sudo npm install
-> sudo npm run 1.x.demo
-> sudo npm run 2.x.demo
+> npm install
+> npm run 1.x.demo
+> npm run 2.x.demo
 ~~~
 
 Note: For Vue 2 demo there is a separate package.json. Unfortunately there is no really great way to run both at the same time.
@@ -136,7 +136,7 @@ If a different path is required it must be set in the `demo/app.js` file.
 To run the build:
 
 ~~~
-> sudo webpack
+> webpack
 ~~~
 
 
