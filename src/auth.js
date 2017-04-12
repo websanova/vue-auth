@@ -217,15 +217,17 @@ module.exports = function () {
 
         this.authenticated = null;
 
-        this.options.fetchPerform.call(this, {
-            success: function () {
-                if (data.success) { data.success.call(this, res); }
+        if (data.fetchUser) {
+            this.options.fetchPerform.call(this, {
+                success: function () {
+                    if (data.success) { data.success.call(this, res); }
 
-                if (data.redirect && _this.options.check.call(_this)) {
-                    _this.options.router._routerGo.call(_this, data.redirect);
+                    if (data.redirect && _this.options.check.call(_this)) {
+                        _this.options.router._routerGo.call(_this, data.redirect);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     function _logoutPerform(data) {
