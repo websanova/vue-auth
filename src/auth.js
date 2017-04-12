@@ -38,16 +38,19 @@ module.exports = function () {
             if ( ! __cookie.exists.call(this)) {
                 this.options.logoutProcess.call(this, null, {});
 
-                this.watch.loaded = true
+                this.options.readyCallback();
+                this.watch.loaded = true;
 
                 return cb.call(this);
             }
 
-            this.watch.authenticated = false
+            this.watch.authenticated = false;
+
             if (this.options.fetchData.enabled) {
                 this.options.fetchPerform.call(this, {success: cb, error: cb});
             }
         } else {
+            this.options.readyCallback();
             this.watch.loaded = true;
             return cb.call(this);
         }
@@ -170,6 +173,7 @@ module.exports = function () {
             error = data.error;
 
         data.error = function (res) {
+            this.options.readyCallback();
             _this.watch.loaded = true;
 
             if (error) { error.call(_this, res); }
@@ -186,6 +190,8 @@ module.exports = function () {
     function _fetchProcess(res, data) {
         this.watch.authenticated = true;
         this.watch.data = this.options.parseUserData.call(this, this.options.http._httpData.call(this, res));
+        
+        this.options.readyCallback();
         this.watch.loaded = true;
 
         if (data.success) { data.success.call(this, res); }
@@ -371,6 +377,9 @@ module.exports = function () {
         rolesVar:          'roles',
         tokenName:         'auth-token',
         
+        // Misc
+        readyCallback:      function () {},
+
         // Objects
 
         authRedirect:       {path: '/login'},
@@ -493,8 +502,18 @@ module.exports = function () {
         this.options.http._interceptor.call(this, this.options.requestIntercept, this.options.responseIntercept);
     }
 
-    Auth.prototype.ready = function () {
-        return this.watch.loaded;
+    Auth.prototype.ready = function (cb) {
+        var _this = this;
+
+        if (cb) {
+            this.$auth.options.readyCallback = function () { 
+                if (_this.$auth.watch.loaded === false) {
+                    cb.call(_this);
+                }
+            };
+        }
+
+        return this.$auth.watch.loaded;
     };
 
     Auth.prototype.redirect = function () {

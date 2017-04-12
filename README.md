@@ -808,6 +808,11 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 ## Change Log
 
+### v2.9.x-beta
+
+* Fix refresh / user fetch on app reload (browser refresh). It will now run sequentially in case the token is expired forcing a refresh first.
+* Add refresh `refreshData.interval` property for automatic refresh fetches. Default to 30s. Set to 0 for none.
+
 ### v2.8.x-beta
 
 * Fix for `loginData.fetchUser` when set to `false`.

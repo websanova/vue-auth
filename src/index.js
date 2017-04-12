@@ -6,6 +6,7 @@ module.exports = (function () {
         
         var auth = new Auth(Vue, options);
 
+        var ready = auth.ready;
         var login = auth.login;
         var fetch = auth.fetch;
         var logout = auth.logout;
@@ -18,6 +19,7 @@ module.exports = (function () {
         Object.defineProperties(Vue.prototype, {
             $auth: {
                 get: function () {
+                    auth.ready = ready.bind(this);
                     auth.login = login.bind(this);
                     auth.fetch = fetch.bind(this);
                     auth.logout = logout.bind(this);
