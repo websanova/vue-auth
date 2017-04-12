@@ -37,7 +37,7 @@ Early support for Vue 2.0 is now available also but may still be a bit unstable 
 ## Install 2.x
 
 ~~~
-> sudo npm install @websanova/vue-auth
+> npm install @websanova/vue-auth
 ~~~    
 
 The `router` and `http` drivers MUST be set. The drivers are quite small so can be replaced or overridden as necessary.
@@ -87,7 +87,7 @@ Vue.axios.post(...).then(res => {
 ## Install 1.x
 
 ~~~
-> sudo npm install @websanova/vue-auth
+> npm install @websanova/vue-auth
 ~~~    
 
 ~~~
@@ -123,9 +123,9 @@ To run the front end part of the demo just install and run. The demo runs on a p
 * Change the http options root in the `app.js` demo file to a different server for personal testing.
 
 ~~~
-> sudo npm install
-> sudo npm run 1.x.demo
-> sudo npm run 2.x.demo
+> npm install
+> npm run 1.x.demo
+> npm run 2.x.demo
 ~~~
 
 Note: For Vue 2 demo there is a separate package.json. Unfortunately there is no really great way to run both at the same time.
@@ -136,7 +136,7 @@ If a different path is required it must be set in the `demo/app.js` file.
 To run the build:
 
 ~~~
-> sudo webpack
+> webpack
 ~~~
 
 
@@ -167,7 +167,7 @@ The best way to see the code in action is to see the code samples in the `1.x.de
 
 ## Token Refresh
 
-Dealing with the toen refresh is the tricker part in the authentication auth flow. It helps to review what is actually happening here first.
+Dealing with the token refresh is the tricker part in the authentication auth flow. It helps to review what is actually happening here first.
 
 * A user logs in and gets a token. this token is valid for a certain period of time.
 * Let's say the user gets a token that is always valid. This presents some security issues in case a device is lost or compromised.
