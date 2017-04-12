@@ -256,7 +256,7 @@ If a different format is needed simply override this function in the options.
 
 ~~~
 Vue.use(require('vue-auth'), {
-    _parseUserData: function (data) {
+    parseUserData: function (data) {
         return data.whatever;
     }
 });
