@@ -33,15 +33,7 @@ module.exports = function () {
 
     // Overrideable
 
-    function _routerBeforeEach(cb) {
-        if (this.watch.authenticated && !__token.get.call(this)) {
-            this.options.logoutProcess.call(this, null, {});
-        }
-
-        if (this.options.refreshData.enabled && this.options.tokenExpired.call(this)) {
-            this.options.refreshPerform.call(this, {});
-        }
-
+    function _checkAuthenticated(cb) {
         if (this.watch.authenticated === null && __token.get.call(this)) {
             if ( ! __cookie.exists.call(this)) {
                 this.options.logoutProcess.call(this, null, {});
@@ -59,6 +51,26 @@ module.exports = function () {
             this.watch.loaded = true;
             return cb.call(this);
         }
+    }
+
+    function _routerBeforeEach(cb) {
+        var _this = this;
+
+        if (this.watch.authenticated && !__token.get.call(this)) {
+            this.options.logoutProcess.call(this, null, {});
+        }
+
+        if (this.options.refreshData.enabled && this.options.tokenExpired.call(this)) {
+            this.options.refreshPerform.call(this, {
+                success: function () {
+                    this.options.checkAuthenticated.call(_this, cb);
+                }
+            });
+
+            return;
+        }
+
+        _checkAuthenticated.call(this, cb);
     }
 
     function _transitionEach(transition, routeAuth, cb) {
@@ -398,6 +410,7 @@ module.exports = function () {
         parseOauthState:    _parseOauthState,
         tokenExpired:       _tokenExpired,
         check:              _check,
+        checkAuthenticated: _checkAuthenticated,
 
         transitionEach:     _transitionEach,
         routerBeforeEach:   _routerBeforeEach,
