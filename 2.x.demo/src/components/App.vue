@@ -71,10 +71,6 @@
         created() {
             var _this = this;
 
-            this.$auth.ready(function () {
-                console.log(this.context + ' auth is ready!!!');
-            });
-
             Vue.http.interceptors.push(function (req, next) {
                 next(function (res) {
                     if ( ! res.ok) {

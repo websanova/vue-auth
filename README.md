@@ -445,10 +445,9 @@ These are all methods available in the vue app via `$auth`.
 
 * All `success` and `error` functions will receive proper context from currently called component.
 
-### ready(cb)
+### ready
 
 * Fires once on the initial app load to pre-load users (if set).
-* Can optionally set a callback to be called when auth is "ready".
 
 ~~~
 <div v-if="$auth.ready()">
@@ -457,14 +456,6 @@ These are all methods available in the vue app via `$auth`.
 <div v-if="!$auth.ready()">
     Site loading...
 </div>
-~~~
-
-~~~
-created() {
-    this.$auth.ready((res) => {
-        console.log('ready!!!');
-    });
-}
 ~~~
 
 ### redirect
@@ -822,7 +813,6 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 * Fix refresh / user fetch on app reload (browser refresh). It will now run sequentially in case the token is expired forcing a refresh first.
 * Add refresh `refreshData.interval` property for automatic refresh fetches. Default to 30s. Set to 0 for none.
-* Can now optionally set a callback when calling `$auth.ready()`. It will only set one callback, will use the current context and is only called once when `loaded` is set from `false` to `true`.
 
 ### v2.8.x-beta
 

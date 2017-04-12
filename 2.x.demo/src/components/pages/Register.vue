@@ -50,10 +50,6 @@
             };
         },
 
-        mounted() {
-            console.log('ready');
-        },
-
         methods: {
             register() {
                 this.$auth.register({
