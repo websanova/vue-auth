@@ -382,7 +382,7 @@ module.exports = function () {
         logoutData:         {url: 'auth/logout',       method: 'POST', redirect: '/', makeRequest: false},
         oauth1Data:         {url: 'auth/login',        method: 'POST'},
         fetchData:          {url: 'auth/user',         method: 'GET', enabled: true},
-        refreshData:        {url: 'auth/refresh',      method: 'GET', enabled: true},
+        refreshData:        {url: 'auth/refresh',      method: 'GET', enabled: true, interval: 1},
         loginOtherData:     {url: 'auth/login-other',  method: 'POST', redirect: '/'},
         logoutOtherData:    {url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false},
 
@@ -462,6 +462,7 @@ module.exports = function () {
             }
         });
 
+        // Check drivers.
         for (i = 0, ii = drivers.length; i < ii; i++) {
             if ( ! this.options[drivers[i]]) {
                 console.error('Error (@websanova/vue-auth): "' + drivers[i] + '" driver must be set.');
@@ -476,6 +477,15 @@ module.exports = function () {
                     return;
                 }
             }
+        }
+
+        // Set refresh interval.
+        if (this.options.refreshData.interval && this.options.refreshData.interval > 0) {
+            setInterval(function () {
+                if (this.options.refreshData.enabled && !this.options.tokenExpired.call(this)) {
+                    this.options.refreshPerform.call(this, {});
+                }
+            }.bind(this), this.options.refreshData.interval * 1000 * 60); // In minutes.
         }
 
         // Init interceptors.
