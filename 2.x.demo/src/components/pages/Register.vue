@@ -8,6 +8,9 @@
 
         <form v-on:submit.prevent="register()">
             <table><tr>
+                <td>Avatar</td>
+                <td><input v-on:change="setAvatar" type="file" /></td>
+            <tr>
                 <td>Username:</td>
                 <td><input v-model="data.body.username" /></td>
             </tr><tr>
@@ -40,20 +43,44 @@
                 data: {
                     body: {
                         username: '',
-                        password: ''
+                        password: '',
+                        avatar: null
                     },
                     autoLogin: false,
                     rememberMe: false
                 },
+
+                formData: new FormData(),
 
                 error: null
             };
         },
 
         methods: {
+            setAvatar(e) {
+                var _this = this,
+                    file = (e.target.files || e.dataTransfer.files)[0],
+                    reader = new FileReader();
+
+                reader.onload = (e) => {
+                    _this.data.body.avatar = e.target.result;
+                };
+      
+                reader.readAsDataURL(file);
+            },
+
             register() {
+                var formData = new FormData();
+
+                if (this.data.body.avatar) {
+                    formData.append('avatar', this.data.body.avatar);
+                }
+
+                formData.append('username', this.data.body.username);
+                formData.append('password', this.data.body.password);
+
                 this.$auth.register({
-                    body: this.data.body,
+                    body: formData,
                     autoLogin: this.data.autoLogin,
                     rememberMe: this.data.rememberMe,
                     success: function () {

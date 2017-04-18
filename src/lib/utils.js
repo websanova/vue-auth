@@ -16,7 +16,7 @@ module.exports = (function (){
         var i, ii, key, data = {};
 
         for (key in mainObj) {
-            if (isObject(mainObj[key])) {
+            if (isObject(mainObj[key]) && mainObj[key].constructor.name !== 'FormData') {
                 data[key] = extend(mainObj[key], {});
             }
             else {
@@ -26,7 +26,7 @@ module.exports = (function (){
 
         for (i = 0, ii = appendObj.length; i < ii; i++) {
             for (key in appendObj[i]) {
-                if (isObject(appendObj[i][key])) {
+                if (isObject(appendObj[i][key]) && appendObj[i][key].constructor.name !== 'FormData') {
                     data[key] = extend(mainObj[key] || {}, [appendObj[i][key]]);
                 }
                 else  {
