@@ -46,7 +46,11 @@ module.exports = function () {
             this.watch.authenticated = false;
 
             if (this.options.fetchData.enabled) {
-                this.options.fetchPerform.call(this, {success: cb, error: cb});
+                this.options.fetchPerform.call(this, {
+                    success: cb,
+                    error: cb,
+                    enabled: true
+                });
             }
         } else {
             this.watch.loaded = true;
@@ -176,7 +180,7 @@ module.exports = function () {
             if (error) { error.call(_this, res); }
         };
 
-        if (this.watch.authenticated !== true && !data.fetchUser) {
+        if (this.watch.authenticated !== true && !data.enabled) {
             _fetchProcess.call(this, {}, data);
         }
         else {
@@ -232,7 +236,7 @@ module.exports = function () {
         this.authenticated = null;
 
         this.options.fetchPerform.call(this, {
-            fetchUser: data.fetchUser,
+            enabled: data.fetchUser,
             success: function () {
                 if (data.success) { data.success.call(this, res); }
 
@@ -294,6 +298,7 @@ module.exports = function () {
         var _this = this;
 
         this.options.fetchPerform.call(this, {
+            enabled: true,
             success: function () {
                 if (data.success) { data.success.call(this, res); }
 
@@ -319,6 +324,7 @@ module.exports = function () {
         __token.delete.call(this, 'other');
 
         this.options.fetchPerform.call(this, {
+            enabled: true,
             success: function () {
                 if (data.success) { data.success.call(this, res, data); }
 
