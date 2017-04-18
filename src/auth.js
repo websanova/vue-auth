@@ -176,7 +176,7 @@ module.exports = function () {
             if (error) { error.call(_this, res); }
         };
 
-        if (this.watch.authenticated !== true && !this.options.loginData.fetchUser) {
+        if (this.watch.authenticated !== true && !data.fetchUser) {
             _fetchProcess.call(this, {}, data);
         }
         else {
@@ -231,17 +231,16 @@ module.exports = function () {
 
         this.authenticated = null;
 
-        if (data.fetchUser) {
-            this.options.fetchPerform.call(this, {
-                success: function () {
-                    if (data.success) { data.success.call(this, res); }
+        this.options.fetchPerform.call(this, {
+            fetchUser: data.fetchUser,
+            success: function () {
+                if (data.success) { data.success.call(this, res); }
 
-                    if (data.redirect && _this.options.check.call(_this)) {
-                        _this.options.router._routerGo.call(_this, data.redirect);
-                    }
+                if (data.redirect && _this.options.check.call(_this)) {
+                    _this.options.router._routerGo.call(_this, data.redirect);
                 }
-            });
-        }
+            }
+        });
     }
 
     function _logoutPerform(data) {

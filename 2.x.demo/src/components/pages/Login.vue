@@ -18,6 +18,9 @@
                 <td><label><input v-model="data.rememberMe" type="checkbox" /> Remember Me</label></td>
             </tr><tr>
                 <td></td>
+                <td><label><input v-model="data.fetchUser" type="checkbox" /> Fetch User (test)</label></td>
+            </tr<tr>
+                <td></td>
                 <td><button type="submit">Login</button></td>
             </tr></table>
 
@@ -39,7 +42,8 @@
                         username: 'admin',
                         password: 'secret'
                     },
-                    rememberMe: false
+                    rememberMe: false,
+                    fetchUser: true
                 },
 
                 error: null
@@ -60,6 +64,7 @@
                     body: this.data.body,
                     rememberMe: this.data.rememberMe,
                     redirect: {name: redirect ? redirect.from.name : 'account'},
+                    fetchUser: this.data.fetchUser,
                     success() {
                         console.log('success ' + this.context);
                     },
