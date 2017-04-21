@@ -52,6 +52,10 @@ module.exports = function () {
                     enabled: true
                 });
             }
+            else {
+                this.options.fetchProcess.call(this, {}, {});
+                return cb.call(this);
+            }
         } else {
             this.watch.loaded = true;
             return cb.call(this);

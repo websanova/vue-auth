@@ -811,6 +811,7 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 ### v2.9.x-beta
 
+* Fix issues with refresh not authenticating when globally setting `fetchData.enabled` to `false`.
 * Fix using `loginData.fetchUser` to still authenticate without user.
 * Fix refresh / user fetch on app reload (browser refresh). It will now run sequentially in case the token is expired forcing a refresh first.
 * Add refresh `refreshData.interval` property for automatic refresh fetches. Default to 30s. Set to 0 for none.
