@@ -1,11 +1,11 @@
 module.exports = {
-    tokens: ['Token-Type', 'Access-Token', 'Client', 'Uid', 'Expiry'],
+    tokens: ['token-type', 'access-token', 'client', 'uid', 'expiry'],
 
     request: function (req, token) {
         var headers = {},
             tokens = token.split(';');
 
-        this.options.deviseAuth.tokens.forEach(function (tokenName, index) {
+        this.options.auth.tokens.forEach(function (tokenName, index) {
             if (tokens[index]) {
                 headers[tokenName] = tokens[index];
             }
@@ -18,8 +18,8 @@ module.exports = {
         var token = [],
             headers = this.options.http._getHeaders.call(this, res);
         
-        if (headers['Access-Token']) {
-            this.options.deviseAuth.tokens.forEach(function (tokenName) {
+        if (headers['access-token']) {
+            this.options.auth.tokens.forEach(function (tokenName) {
                 if (headers[tokenName]) {
                     token.push(headers[tokenName]);
                 }
