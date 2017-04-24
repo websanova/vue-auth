@@ -6,7 +6,8 @@ module.exports = {
         var headers = {},
             tokens = token.split(';');
 
-        this.options.auth.tokens.forEach(function (tokenName, index) {
+        var auth =  this.options.deviseAuth || this.options.auth;
+        auth.tokens.forEach(function (tokenName, index) {
             if (tokens[index]) {
                 headers[tokenName] = tokens[index];
             }
