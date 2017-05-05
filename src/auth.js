@@ -235,7 +235,7 @@ module.exports = function () {
     function _loginProcess(res, data) {
         var _this = this;
 
-        __cookie.set.call(this, data.rememberMe);
+        __cookie.remember.call(this, data.rememberMe);
 
         this.authenticated = null;
 
@@ -380,7 +380,7 @@ module.exports = function () {
         // Variables
 
         rolesVar:          'roles',
-        tokenName:         'auth-token',
+        tokenName:         'auth_token',
 
         // Objects
 

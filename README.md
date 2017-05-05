@@ -690,7 +690,7 @@ Pretty much all methods are overrideable now in case there any specific issues w
 * Set of method for fetching the token from the response. It will attempt each until a token is found and stop there.
 * For sending requests it will by default use the method in the first position.
 
-### tokenName: `'auth-token'`
+### tokenName: `'auth_token'`
 
 * The name of the token stored in local storage.
 
@@ -808,6 +808,11 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 
 ## Change Log
+
+### v2.11.x-beta
+
+* Update so support fall back for token to be stored in cookie if `localStorage` is not supported. Note that the cookie is used as a dud and not meant to be used by server or back-end as part of authentication scheme.
+* Update token name to underscores `auth_token` instead of `auth-token`.
 
 ### v2.10.x-beta
 

@@ -36,6 +36,8 @@
 </template>
 
 <script>
+    import cookie from '../../../../src/lib/cookie.js'
+
     export default {
         data() {
             return {
@@ -49,8 +51,10 @@
             },
 
             clearToken() {
-                localStorage.removeItem('other-auth-token');
-                localStorage.removeItem('default-auth-token');
+                localStorage.removeItem('other_auth_token');
+                localStorage.removeItem('default_auth_token');
+                cookie.delete.call(this.$auth, 'other_auth_token');
+                cookie.delete.call(this.$auth, 'default_auth_token');
 
                 console.log('Tokens removed');
             },
