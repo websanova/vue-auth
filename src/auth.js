@@ -129,7 +129,7 @@ module.exports = function () {
     function _responseIntercept(res) {
         var token;
 
-        if (this.watch.authenticated && this.options.http._invalidToken) {
+        if (this.options.http._invalidToken) {
             this.options.http._invalidToken.call(this, res);
         }
 

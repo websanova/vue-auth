@@ -813,6 +813,7 @@ If you are creating a driver a method named `_init` which will receive the curre
 
 * Update so support fall back for token to be stored in cookie if `localStorage` is not supported. Note that the cookie is used as a dud and not meant to be used by server or back-end as part of authentication scheme.
 * Update token name to underscores `auth_token` instead of `auth-token`.
+* Fix issue with invalid token on refresh not firing off `_invalidToken` token call.
 
 ### v2.10.x-beta
 
