@@ -12,6 +12,8 @@ module.exports = {
       this.options.Vue.axios.interceptors.request.use(function (request) {
         req.call(_this, request);
         return request;
+      }, function (error) {
+        return Promise.reject(error);
       })
     }
 
@@ -19,6 +21,8 @@ module.exports = {
       this.options.Vue.axios.interceptors.response.use(function (response) {
         res.call(_this, response);
         return response;
+      }, function (error) {
+        return Promise.reject(error);
       })
     }
   },
