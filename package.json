@@ -14,7 +14,7 @@
 
   "main": "src/index.js",
 
-  "version": "2.11.0-beta",
+  "version": "2.11.1-beta",
 
   "repository": {
     "type": "git",
@@ -48,7 +48,7 @@
     "copy-webpack-plugin": "3.0.1",
     "replace-webpack-plugin": "0.1.2",
 
-    "@websanova/vue-auth": "2.11.0-beta",
+    "@websanova/vue-auth": "2.11.1-beta",
     "axios": "^0.16.1",
     "vue-axios": "^2.0.2"
   },
