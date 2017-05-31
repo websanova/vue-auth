@@ -451,7 +451,11 @@ module.exports = function () {
         logoutOtherPerform: _logoutOtherPerform,
         logoutOtherProcess: _logoutOtherProcess,
 
-        oauth2Perform:      _oauth2Perform
+        oauth2Perform:      _oauth2Perform,
+
+        defaultHttpErrorHandler: function _defaultHttpErrorHandler(err) {
+            console.error(err)
+        }
     };
 
     function Auth(Vue, options) {
