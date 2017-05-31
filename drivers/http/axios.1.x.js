@@ -38,7 +38,11 @@ module.exports = {
   },
 
   _http: function (data) {
-    this.options.Vue.axios(data).then(data.success, data.error);
+    if (data.error) {
+        this.options.Vue.axios(data).then(data.success, data.error);
+    } else {
+        this.options.Vue.axios(data).then(data.success, this.options.defaultHttpErrorHandler);
+    }
   },
 
   _getHeaders: function (res) {
