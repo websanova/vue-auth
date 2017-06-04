@@ -61,7 +61,9 @@
                 var redirect = this.$auth.redirect();
 
                 this.$auth.login({
-                    data: this.data.body,
+                    body: this.data.body,
+                    // for the axios driver instead 'body' should be used 'data' parameter
+                    // data: this.data.body,
                     rememberMe: this.data.rememberMe,
                     redirect: {name: redirect ? redirect.from.name : 'account'},
                     fetchUser: this.data.fetchUser,
