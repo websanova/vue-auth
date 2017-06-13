@@ -3,6 +3,10 @@ module.exports = {
       if ( ! this.options.Vue.axios) {
           return 'axios.js : Vue.axios must be set.'
       }
+
+    this.options.Vue.axios.defaults.validateStatus = function (status) {
+      return status >= 200 && status < 300 || status === 401;
+    }
   },
 
   _interceptor: function (req, res) {
@@ -29,7 +33,7 @@ module.exports = {
 
   _invalidToken: function (res) {
     if (res.status === 401) {
-      this.logout();
+      this.options.logoutProcess.call(this, res, {redirect: this.options.authRedirect});
     }
   },
 
