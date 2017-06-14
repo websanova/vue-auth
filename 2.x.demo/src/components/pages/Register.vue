@@ -80,7 +80,8 @@
                 formData.append('password', this.data.body.password);
 
                 this.$auth.register({
-                    body: formData,
+                    body: formData, // Vue-resoruce
+                    data: formData, // Axios
                     autoLogin: this.data.autoLogin,
                     rememberMe: this.data.rememberMe,
                     success: function () {

@@ -61,7 +61,8 @@
                 var redirect = this.$auth.redirect();
 
                 this.$auth.login({
-                    body: this.data.body,
+                    body: this.data.body, // Vue-resource
+                    data: this.data.body, // Axios
                     rememberMe: this.data.rememberMe,
                     redirect: {name: redirect ? redirect.from.name : 'account'},
                     fetchUser: this.data.fetchUser,
