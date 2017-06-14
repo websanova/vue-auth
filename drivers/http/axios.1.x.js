@@ -13,6 +13,7 @@ module.exports = {
         req.call(_this, request);
         return request;
       }, function (error) {
+        req.call(_this, error.request);
         return Promise.reject(error);
       })
     }
@@ -22,6 +23,7 @@ module.exports = {
         res.call(_this, response);
         return response;
       }, function (error) {
+        res.call(_this, error.response);
         return Promise.reject(error);
       })
     }
