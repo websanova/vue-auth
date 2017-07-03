@@ -474,12 +474,18 @@ this.$auth.login({
 ### user
 
 * Returns the currently stored users data.
+* Update the current user by passing in an object.
 
 ~~~
 <div>
     {{ $auth.user().email }}
 </div>
 ~~~
+
+~~~
+this.$auth.user(userObject);
+~~~
+
 
 ### check
 
