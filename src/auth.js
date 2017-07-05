@@ -542,7 +542,11 @@ module.exports = function () {
         }
     };
 
-    Auth.prototype.token = function (name) {
+    Auth.prototype.token = function (name, token) {
+        if (token) {
+            __token.set.call(this, name, token);
+        }
+
         return __token.get.call(this, name);
     };
 

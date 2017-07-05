@@ -527,13 +527,20 @@ this.$auth.enableOther();
 ### token
 
 * Returns the currently activated token if none are specified.
-* Can also specify a specific token, but only `other` and `default` will actually return anything.
+* Can also specify a specific token, but only `other` and `default` will actually return anything unless setting your own token.
+* Can set a token with optional second argument, set null to use default naming conventions.
 
 ~~~
 var token = this.$auth.token();
 var token = this.$auth.token('other');
 var token = this.$auth.token('default');
+
+this.$auth.token(null, token);
+this.$auth.token('test', token);
+
+var token = this.$auth.token('test');
 ~~~
+
 
 ### fetch
 
