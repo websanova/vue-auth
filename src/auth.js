@@ -215,7 +215,7 @@ module.exports = function () {
 
     function _registerProcess(res, data) {
         if (data.autoLogin === true) {
-            data = __utils.extend(data, [this.options.loginData]);
+            data = __utils.extend(data, [this.options.loginData, {redirect: data.redirect || this.options.loginData.redirect}]);
 
             this.options.loginPerform.call(this, data);
         }
