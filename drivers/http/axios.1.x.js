@@ -23,7 +23,10 @@ module.exports = {
         res.call(_this, response);
         return response;
       }, function (error) {
-        res.call(_this, error.response);
+        if (error && error.response) {
+          res.call(_this, error.response);
+        }
+        
         return Promise.reject(error);
       })
     }
