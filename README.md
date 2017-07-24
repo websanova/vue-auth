@@ -278,10 +278,10 @@ The current `bearer` driver is quite simple and looks like this:
 ~~~
 bearerAuth: {
     request: function (req, token) {
-        this.options._setHeaders.call(this, req, {Authorization: 'Bearer ' + token});
+        this.options.http._setHeaders.call(this, req, {Authorization: 'Bearer ' + token});
     },
     response: function (res) {
-        var token = this.options._getHeaders.call(this, res).Authorization;
+        var token = this.options.http._getHeaders.call(this, res).Authorization;
 
         if (token) {
             token = token.split('Bearer ');
@@ -326,7 +326,7 @@ custom2Auth: {
     request: function (req, token) {
         token = token.split(';');
 
-        this.options._setHeaders.call(this, req {
+        this.options.http._setHeaders.call(this, req {
             header1: token[0],
             header2: token[1],
             header3: token[2],
@@ -334,7 +334,7 @@ custom2Auth: {
         });
     },
     response: function (res) {
-        var headers = this.options._getHeaders.call(this, res);
+        var headers = this.options.http._getHeaders.call(this, res);
 
         if (headers.header1 && headers.header2 && headers.header3 && headers.header4) {
             return headers.header1 + ';' + headers.header2 + ';' + headers.header3 + ';' + headers.header4;
