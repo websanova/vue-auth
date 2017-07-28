@@ -60,6 +60,7 @@
 
   "scripts": {
     "1.x.demo": "webpack-dev-server --host=0.0.0.0 --https --port=8001 --content-base=1.x.demo/public/ --config=1.x.demo/webpack.config.js",
-    "2.x.demo": "webpack-dev-server --host=0.0.0.0 --https --port=8002 --content-base=2.x.demo/public/ --config=2.x.demo/webpack.config.js"
+    "2.x.demo": "webpack-dev-server --host=0.0.0.0 --https --port=8002 --content-base=2.x.demo/public/ --config=2.x.demo/webpack.config.js",
+    "ssr.demo": "webpack-dev-server --host=0.0.0.0 --https --port=8003 --content-base=ssr.demo/public/ --config=ssr.demo/webpack.config.js"
   }
 }
