@@ -6,19 +6,16 @@ To run the front end part of the demo just install and run. The demo runs on a p
 * Demo server on GitHub https://github.com/websanova/laravel-api-demo
 * Change the http options root in the `app.js` demo file to a different server for personal testing.
 
+The demos are in separate folders to make it simpler to test standalone side by side.
+
 ~~~
+> cd demos/2.x
 > npm install
-> npm run 1.x.demo
-> npm run 2.x.demo
+> npm run demo
 ~~~
 
-Note: For Vue 2 demo there is a separate package.json. Unfortunately there is no really great way to run both at the same time.
-
-
-If a different path is required it must be set in the `demo/app.js` file.
-
-To run the build:
-
 ~~~
-> webpack
+> cd demos/1.x
+> npm install
+> npm run demo
 ~~~
