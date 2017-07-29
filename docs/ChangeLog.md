@@ -1,7 +1,23 @@
 # Change Log
 
+### v2.14.x-beta
+
+* Update demos to standalone installs.
+* Separate docs.
+
+### v2.13.x-beta
+
+* Fix to check if error contains response in axios driver.
+* Fix for redirect being ignored when using autoLogin on register.
+* Add ability to manually set tokens (for static/dynamic pages).
+
+### v2.12.x-beta
+
+* Fix invalidToken logout call for axios driver (to match vue-resource driver update).
+
 ### v2.11.x-beta
 
+* Fix axios driver error response intercept.
 * Update so support fall back for token to be stored in cookie if `localStorage` is not supported. Note that the cookie is used as a dud and not meant to be used by server or back-end as part of authentication scheme.
 * Update token name to underscores `auth_token` instead of `auth-token`.
 * Fix issue with invalid token on refresh not firing off `_invalidToken` token call.
