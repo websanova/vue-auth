@@ -1,5 +1,7 @@
 # FAQ
 
+## General
+
 ### I'm getting an error that `router` is not found.
 
 This is a particular issue of using `vue-resource` that requires `Vue.router` to be set before the plugin is initialized.
@@ -27,3 +29,11 @@ The token can be supplied anywhere in your app response. The provided [auth](htt
 ### My app has 2 or more fields required for authentication.
 
 In this case write a custom [auth](https://github.com/websanova/vue-auth/tree/master/drivers/auth) and simply append the fields together using some kind of separator such as a pipe (`|`), semicolon (`;`), etc.
+
+
+
+## Axios
+
+### I only see `Error: Request failed with status code 400...` text when I print out the error.
+
+The response from axios is contained within the response object. You should try to `console(res.response)`.
