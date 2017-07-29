@@ -1,5 +1,8 @@
 {
-  
+  "dependencies": {
+    "@websanova/vue-auth": "2.13.2-beta"
+  },
+
   "devDependencies": {
     "babel-core": "6.9.1",
     "babel-loader": "6.2.4",
@@ -17,5 +20,9 @@
     "webpack-stream": "3.2.0",
     "copy-webpack-plugin": "3.0.1",
     "replace-webpack-plugin": "0.1.2"
+  },
+
+  "scripts": {
+    "demo": "webpack-dev-server --host=0.0.0.0 --https --port=8001"
   }
 }

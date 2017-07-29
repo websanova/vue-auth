@@ -3,24 +3,24 @@ var webpack           = require("webpack"),
     CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: ['./2.x.demo/src/app.js'],
+  entry: ['./src/app.js'],
   
   output: {
-    path: __dirname + '2.x.demo/public',
+    path: __dirname + '1.x.demo/public',
     filename: 'app.min.js'
   },
 
   plugins: [
     new CopyWebpackPlugin([
-      {from: '2.x.demo/src/assets/js', to: 'js'},
+      {from: 'src/assets/js', to: 'js'},
     ], {
       ignore: ['*.txt', '.gitkeep']
     }),
 
     new ReplacePlugin({
-      entry: '2.x.demo/src/index.html',
+      entry: 'src/index.html',
       hash: '[hash]',
-      output: '/2.x.demo/public/index.html'
+      output: '/public/index.html'
     })
   ],
 
@@ -37,6 +37,7 @@ module.exports = {
   },
 
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
+    contentBase: __dirname + '/public'
   }
 }
