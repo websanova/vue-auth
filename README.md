@@ -3,7 +3,6 @@
 A simple authentication library for Vue.js
 
 * [FAQ](https://github.com/websanova/vue-auth/blob/master/docs/Faq.md)
-* [Known Issues](https://github.com/websanova/vue-auth/blob/master/docs/KnownIssues.md)
 * [Installation](https://github.com/websanova/vue-auth/blob/master/docs/Installation.md)
 * [Demo](https://github.com/websanova/vue-auth/blob/master/docs/Demo.md)
 * [Lifecycle](https://github.com/websanova/vue-auth/blob/master/docs/Lifecycle.md)
