@@ -12,10 +12,32 @@ The demos are in separate folders to make it simpler to test standalone side by 
 > cd demos/2.x
 > npm install
 > npm run demo
+
+https://192.168.10.10:8002
 ~~~
 
 ~~~
 > cd demos/1.x
 > npm install
 > npm run demo
+
+https://192.168.10.10:8001
 ~~~
+
+**Note:** By default the config for the demos is assuming that it's running on a virtual box on host `0.0.0.0`.
+
+To connect to the demos you would connect to that boxes IP address followed by the port.
+
+
+
+## Changing Local Path of Demo App
+
+The `npm run demo` is just a short cut to a command in the `scripts` section of the `package.json`.
+
+~~~
+"scripts": {
+    "demo": "webpack-dev-server --https --host=0.0.0.0 --port=8002"
+  }
+~~~
+
+This command can be run directly with whatever parameters are required locally.
