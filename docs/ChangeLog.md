@@ -4,6 +4,7 @@
 
 * Update demos to standalone installs.
 * Separate docs.
+* Add Vue.auth object (with no context, for use in interceptors).
 
 ### v2.13.x-beta
 
