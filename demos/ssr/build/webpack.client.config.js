@@ -38,7 +38,7 @@ if (config.isProduction) {
 			compress: {
 				warnings: false
 			}
-		})
+		}),
 	)
 }
 

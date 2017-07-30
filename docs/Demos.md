@@ -1,4 +1,4 @@
-# Demo
+# Demos
 
 To run the front end part of the demo just install and run. The demo runs on a publicly available server so just the front end needs run.
 
@@ -22,6 +22,14 @@ https://192.168.10.10:8002
 > npm run demo
 
 https://192.168.10.10:8001
+~~~
+
+~~~
+> cd demos/ssr
+> npm install
+> npm run demo
+
+https://192.168.10.10:8003
 ~~~
 
 **Note:** By default the config for the demos is assuming that it's running on a virtual box on host `0.0.0.0`.
