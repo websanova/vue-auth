@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+dist/
+npm-debug.log
+selenium-debug.log
+test/e2e/reports
+test/unit/coverage
+phantomjsdriver.log

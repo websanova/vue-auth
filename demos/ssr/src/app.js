@@ -1,124 +1,38 @@
-var Vue = require('vue');
-var VueRouter = require('vue-router');
-// var App = require('./components/App.vue');
+import Vue from "vue"
+import { sync } from "vuex-router-sync"
 
-(function () {
+import { createStore } from "./store"
+import { createRouter } from "./router"
 
-// Router
-Vue.router = new VueRouter({
-    hashbang: false,
-    linkActiveClass: 'active',
-    mode: 'history',
-    base: __dirname,
-    routes: [{
-        path: '/',
-        name: 'default',
-        component: require('./components/pages/Home.vue')
-    }]
-    // }, {
-    //     path: '/login',
-    //     name: 'login',
-    //     component: require('./components/pages/Login.vue'),
-    //     meta: {auth: false}
-    // }, {
-    //     path: '/login/:type',
-    //     name: 'oauth2-type',
-    //     component: require('./components/pages/Oauth2.vue')
-    // }, {
-    //     path: '/register',
-    //     name: 'register',
-    //     component: require('./components/pages/Register.vue'),
-    //     meta: {auth: false}
-    // }, {
-    //     path: '/oauth1',
-    //     name: 'oauth1',
-    //     component: require('./components/pages/Oauth1.vue')
-    // }, {
-    //     path: '/oauth2',
-    //     name: 'oauth2',
-    //     component: require('./components/pages/Oauth2.vue')
-    // }, {
-    //     path: '/account',
-    //     name: 'account',
-    //     component: require('./components/pages/Account.vue'),
-    //     meta: {auth: true}
-    // }, {
-    //     path: '/async',
-    //     name: 'async',
-    //     component: function(resolve) { require(['./components/pages/Async.vue'], resolve); }
-    // }, {
-    //     path: '/admin',
-    //     name: 'admin',
-    //     component: require('./components/pages/Admin.vue'),
-    //     meta: {auth: 'admin'},
-    //     children: [{
-    //         path: 'products',
-    //         name: 'admin-products',
-    //         component: require('./components/pages/admin/Products.vue'),
-    //         children: [{
-    //             path: ':product_id',
-    //             name: 'admin-product',
-    //             component: require('./components/pages/admin/Product.vue'),
-    //             children: [{
-    //                 path: 'info',
-    //                 name: 'admin-product-info',
-    //                 component: require('./components/pages/admin/ProductInfo.vue'),
-    //                 meta: {auth: undefined}
-    //             }, {
-    //                 path: 'media',
-    //                 name: 'admin-product-media',
-    //                 component: require('./components/pages/admin/ProductMedia.vue')
-    //             }]
-    //         }]
-    //     }]
-    // }, {
-    //     path: '/users',
-    //     name: 'users',
-    //     component: require('./components/pages/Users.vue'),
-    //     meta: {auth: ['admin']}
-    // }, {
-    //     path: '/404',
-    //     name: 'error-404',
-    //     component: require('./components/pages/404.vue')
-    // }, {
-    //     path: '/403',
-    //     name: 'error-403',
-    //     component: require('./components/pages/403.vue')
-    // }, {
-    //     path: '/502',
-    //     name: 'error-502',
-    //     component: require('./components/pages/502.vue')
-    // }]
-});
+import App from "./App.vue"
 
-// import axios from 'axios';
-// import VueAxios from 'vue-axios';
-// Vue.use(VueAxios, axios);
-// Vue.axios.defaults.baseURL = 'https://api-demo.websanova.com/api/v1';
+import metaInfo from "./mixins/metaInfo"
+Vue.mixin(metaInfo)
 
-// Http 
-// Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
+// Expose a factory function that creates a fresh set of store, router,
+// app instances on each call (which is called for each SSR request)
+export function createApp(ssrContext) {
+	// create store and router instances
+	const store = createStore()
+	const router = createRouter()
 
-// Vue Auth
-// Vue.use(require('../../src/index.js'), {
-//     auth: require('../../drivers/auth/bearer.js'),
-//     http: require('../../drivers/http/vue-resource.1.x.js'),
-//     // http: require('../../drivers/http/axios.1.x.js'),
-//     router: require('../../drivers/router/vue-router.2.x.js'),
-//     rolesVar: 'role',
-//     facebookOauth2Data: {
-//         clientId: '196729390739201'
-//     },
-//     googleOauth2Data: {
-//         clientId: '337636458732-tatve7q4qo4gnpfcenbv3i47id4offbg.apps.googleusercontent.com'
-//     }
-// });
+	// sync the router with the vuex store.
+	// this registers `store.state.route`
+	sync(store, router)
 
-// Start
-var component = require('./components/App.vue');
+	// create the app instance.
+	// here we inject the router and store to all child components,
+	// making them available everywhere as `this.$router` and `this.$store`.
+	const app = new Vue({
+		router,
+		store,
+		ssrContext,
+		render: (h) => h(App)
+	})
 
-component.router = Vue.router;
+	// expose the app, the router and the store.
+	// note we are not mounting the app here, since bootstrapping will be
+	// different depending on whether we are in a browser or on the server.
+	return { app, router, store }
+}
 
-return new Vue(component);
-
-});
