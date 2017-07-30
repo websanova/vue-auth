@@ -25,11 +25,11 @@ Vue.mixin({
 const { app, router, store } = createApp()
 
 Vue.router = router
-import VueAuth from "@websanova/vue-auth"
+import VueAuth from "../../../src/index.js"
 Vue.use(VueAuth, {
-	auth: require("@websanova/vue-auth/drivers/auth/bearer.js"),
-	http: require("@websanova/vue-auth/drivers/http/axios.1.x.js"),
-	router: require("@websanova/vue-auth/drivers/router/vue-router.2.x.js")
+	auth: require("../../../drivers/auth/bearer.js"),
+	http: require("../../../drivers/http/axios.1.x.js"),
+	router: require("../../../drivers/router/vue-router.2.x.js")
 })
 
 // prime the store with server-initialized state.
