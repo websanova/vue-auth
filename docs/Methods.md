@@ -125,7 +125,7 @@ this.$auth.fetch({
 
 ~~~
 this.$auth.refresh({
-    params: {},
+    params: {}, // data: {} in axios
     success: function () {},
     error: function () {},
     // etc...
@@ -142,7 +142,7 @@ this.$auth.refresh({
 
 ~~~
 this.$auth.register({
-    params: {},
+    params: {}, // data: {} in axios
     success: function () {},
     error: function () {},
     autoLogin: true,
@@ -161,7 +161,7 @@ this.$auth.register({
 
 ~~~
 this.$auth.login({
-    params: {},
+    params: {}, // data: {} in axios
     success: function () {},
     error: function () {},
     rememberMe: true,
@@ -180,7 +180,7 @@ this.$auth.login({
 ~~~
 this.$auth.logout({
     makeRequest: true,
-    params: {},
+    params: {}, // data: {} in axios
     success: function () {},
     error: function () {},
     redirect: '/login',
@@ -195,7 +195,7 @@ this.$auth.logout({
 
 ~~~
 this.$auth.loginOther({
-    params: {},
+    params: {}, // data: {} in axios
     success: function () {},
     error: function () {},
     redirect: {name: 'account'},
@@ -212,7 +212,7 @@ this.$auth.loginOther({
 ~~~
 this.$auth.logoutOther({
     makeRequest: true,
-    params: {},
+    params: {}, // data: {} in axios
     success: function () {},
     error: function () {},
     redirect: {path: '/admin'},
@@ -235,7 +235,7 @@ if (this.$route.query.code) {
     this.$auth.oauth2({
         code: true,
         provider: 'facebook',
-        params: {
+        params: { // data: {} in axios
             code: this.code
         },
         success: function(res) {},
