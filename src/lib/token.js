@@ -26,40 +26,40 @@ module.exports = (function () {
         }
     }
 
+    function isCookieSupported() {
+        return true;
+    }
+
+    function processToken(action, name, token) {
+        var i, ii,
+            args = [tokenName.call(this, name)];
+
+        if (token) {
+            args.push(token);
+        }
+
+        for (i = 0, ii = this.options.tokenStore.length; i < ii; i++) {
+            if (this.options.tokenStore[i] === 'localStorage' && isLocalStorageSupported()) {
+                return localStorage[action + 'Item'](args[0], args[1]);
+            }
+
+            else if (this.options.tokenStore[i] === 'cookie' && isCookieSupported()) {
+                return __cookie[action].apply(this, args);
+            }
+        }
+    }
+
     return {
         get: function (name) {
-            name = tokenName.call(this, name);
-
-            if (isLocalStorageSupported()) {
-                return localStorage.getItem(name);
-            }
-            else {
-                return __cookie.get.call(this, name);
-            }
+            return processToken.call(this, 'get', name);
         },
 
         set: function (name, token) {
-            name = tokenName.call(this, name);
-
-            if (token) {
-                if (isLocalStorageSupported()) {
-                    localStorage.setItem(name, token);
-                }
-                else {
-                    __cookie.set.call(this, name, token);
-                }
-            }
+            return processToken.call(this, 'set', name, token);
         },
 
-        delete: function (name) {
-            name = tokenName.call(this, name);
-
-            if (isLocalStorageSupported()) {
-                localStorage.removeItem(name);
-            }
-            else {
-                __cookie.delete.call(this, name);
-            }
+        remove: function (name) {
+            return processToken.call(this, 'remove', name);
         },
 
         expiring: function () {

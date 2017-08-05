@@ -263,10 +263,10 @@ module.exports = function () {
     }
 
     function _logoutProcess(res, data) {
-        __cookie.delete.call(this, 'rememberMe');
+        __cookie.remove.call(this, 'rememberMe');
 
-        __token.delete.call(this, 'other');
-        __token.delete.call(this, 'default');
+        __token.remove.call(this, 'other');
+        __token.remove.call(this, 'default');
 
         this.watch.authenticated = false;
         this.watch.data = null;
@@ -381,6 +381,7 @@ module.exports = function () {
 
         rolesVar:          'roles',
         tokenName:         'auth_token',
+        tokenStore:        ['localStorage', 'cookie'],
 
         // Objects
 
