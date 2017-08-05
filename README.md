@@ -10,7 +10,6 @@ A simple authentication library for Vue.js
 * [User](https://github.com/websanova/vue-auth/blob/master/docs/User.md)
 * [Authentication](https://github.com/websanova/vue-auth/blob/master/docs/Authentication.md)
 * [Privileges](https://github.com/websanova/vue-auth/blob/master/docs/Privileges.md)
-* [Routing](https://github.com/websanova/vue-auth/blob/master/docs/Routing.md)
 * [Methods](https://github.com/websanova/vue-auth/blob/master/docs/Methods.md)
 * [Options](https://github.com/websanova/vue-auth/blob/master/docs/Options.md)
 * [Drivers](https://github.com/websanova/vue-auth/blob/master/docs/Drivers.md)
