@@ -25,7 +25,7 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 ### notFoundRedirect: `{path: '/404'}`
 
-* Redirect to use if route is not found (set the `false`).
+* Redirect to use if route is not found (set to `false`).
 
 ### registerData: `{url: 'auth/register', method: 'POST', redirect: '/login'}`
 
