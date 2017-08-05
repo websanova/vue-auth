@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@websanova/vue-auth": "2.15.2-beta",
+    "@websanova/vue-auth": "2.16.0-beta",
     "axios": "0.16.2",
     "vue-axios": "2.0.2"
   },
