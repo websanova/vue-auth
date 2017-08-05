@@ -11,6 +11,10 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 * The name of the token stored in local storage.
 
+### tokenStore: `['localStorage', 'cookie']`
+
+* Set storage method in order of importance and usage based on availability (from left to right).
+
 ### rolesVar: `'roles'`
 
 * Name of roles var in user object.

@@ -2,7 +2,7 @@
 
 ### v2.15.x-beta
 
-* Add `tokenStore` array for setting storage preferences `('localStorage', 'cookie'])`.
+* Add `tokenStore` array for setting storage preferences `(['localStorage', 'cookie'])`.
 * Fix removing `rememberMe` cookie on logout.
 * Fix register redirect to completely ignore login redirect.
 
