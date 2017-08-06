@@ -263,7 +263,7 @@ module.exports = function () {
     }
 
     function _logoutProcess(res, data) {
-        __cookie.remove.call(this, 'rememberMe');
+        __cookie.delete.call(this, 'rememberMe');
 
         __token.remove.call(this, 'other');
         __token.remove.call(this, 'default');
