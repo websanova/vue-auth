@@ -49,8 +49,8 @@
             clearToken() {
                 localStorage.removeItem('other_auth_token');
                 localStorage.removeItem('default_auth_token');
-                cookie.delete.call(this.$auth, 'other_auth_token');
-                cookie.delete.call(this.$auth, 'default_auth_token');
+                cookie.remove.call(this.$auth, 'other_auth_token');
+                cookie.remove.call(this.$auth, 'default_auth_token');
 
                 console.log('Tokens removed');
             },

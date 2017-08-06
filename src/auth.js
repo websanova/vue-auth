@@ -325,7 +325,7 @@ module.exports = function () {
     }
 
     function _logoutOtherProcess(res, data) {
-        __token.delete.call(this, 'other');
+        __token.remove.call(this, 'other');
 
         this.options.fetchPerform.call(this, {
             enabled: true,

@@ -45,7 +45,7 @@ module.exports = (function () {
             return document.cookie.match(/rememberMe/);
         },
 
-        delete: function(name) {
+        remove: function(name) {
             setCookie.call(this, name, '', -12096e5);
         }
     };
