@@ -8,10 +8,11 @@ There is a case where pages are fully pre-rendered in a traditional way. For ins
 
 In this case there is some manual intervention that would need to be taken to manually set the `vue-auth` user and loaded states.
 
+```javascript
 this.$auth.watch.data = {}; // user object
 this.$auth.watch.loaded = true;
 this.$auth.watch.authenticated = true;
-
+```
 
 
 ## Dealing with SSR
