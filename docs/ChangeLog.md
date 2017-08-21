@@ -2,6 +2,7 @@
 
 ### v2.15.x-beta
 
+* Update so that tokens can be fully named in options. Without additional appended parameters.
 * Add `tokenStore` array for setting storage preferences `(['localStorage', 'cookie'])`.
 * Fix removing `rememberMe` cookie on logout.
 * Fix register redirect to completely ignore login redirect.

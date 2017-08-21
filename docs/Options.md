@@ -7,9 +7,13 @@ Pretty much all methods are overrideable now in case there any specific issues w
 * Set of method for fetching the token from the response. It will attempt each until a token is found and stop there.
 * For sending requests it will by default use the method in the first position.
 
-### tokenName: `'auth_token'`
+### tokenOtherName: `'other_auth_token'`
 
-* The name of the token stored in local storage.
+* The name of the impersonating token stored in local storage.
+
+### tokenDefaultName: `'default_auth_token'`
+
+* The name of the default token stored in local storage.
 
 ### tokenStore: `['localStorage', 'cookie']`
 

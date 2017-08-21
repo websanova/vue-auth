@@ -265,8 +265,8 @@ module.exports = function () {
     function _logoutProcess(res, data) {
         __cookie.remove.call(this, 'rememberMe');
 
-        __token.remove.call(this, 'other');
-        __token.remove.call(this, 'default');
+        __token.remove.call(this, this.options.tokenOtherName);
+        __token.remove.call(this, this.options.tokenDefaultName);
 
         this.watch.authenticated = false;
         this.watch.data = null;
@@ -289,8 +289,8 @@ module.exports = function () {
         data.success = function () {
 
             // Reshuffle tokens here...
-            __token.set.call(this, 'other', this.token.call(this));
-            __token.set.call(this, 'default', token);
+            __token.set.call(this, this.options.tokenOtherName, this.token.call(this));
+            __token.set.call(this, this.options.tokenDefaultName, token);
 
             if (success) { success.call(this); }
         };
@@ -325,7 +325,7 @@ module.exports = function () {
     }
 
     function _logoutOtherProcess(res, data) {
-        __token.remove.call(this, 'other');
+        __token.remove.call(this, this.options.tokenOtherName);
 
         this.options.fetchPerform.call(this, {
             enabled: true,
@@ -380,7 +380,8 @@ module.exports = function () {
         // Variables
 
         rolesVar:          'roles',
-        tokenName:         'auth_token',
+        tokenOtherName:    'other_auth_token',
+        tokenDefaultName:  'default_auth_token',
         tokenStore:        ['localStorage', 'cookie'],
 
         // Objects
@@ -528,7 +529,7 @@ module.exports = function () {
     Auth.prototype.other = function () {
         this.watch.data; // To fire watch
 
-        return __token.get.call(this, 'other') ? true : false;
+        return __token.get.call(this, this.options.tokenOtherName) ? true : false;
     };
 
     Auth.prototype.enableOther = function (data) {
@@ -539,7 +540,7 @@ module.exports = function () {
 
     Auth.prototype.disableOther = function (data) {
         if (this.other()) {
-            this.currentToken = 'default';
+            this.currentToken = this.options.tokenDefaultName;
         }
     };
 

@@ -5,10 +5,15 @@ module.exports = (function () {
     function tokenName(name) {
         name = name || this.currentToken;
 
-        if ( ! name && this.other.call(this)) { name = 'other'; }
-        else if ( ! name || name === 'default') { name = 'default'; }
+        if (name) {
+            return name;
+        }
 
-        return name + '_' + this.options.tokenName;
+        if (this.other.call(this)) {
+            return this.options.tokenOtherName;
+        }
+
+        return this.options.tokenDefaultName;
     }
 
     function isLocalStorageSupported() {
