@@ -9,7 +9,9 @@ To run the front end part of the demo just install and run. The demo runs on a p
 The demos are in separate folders to make it simpler to test standalone side by side.
 
 ~~~
-> cd demos/2.x
+> cd vue-auth
+> npm install
+> cd vue-auth/demos/2.x
 > npm install
 > npm run demo
 
@@ -17,7 +19,9 @@ https://192.168.10.10:8002
 ~~~
 
 ~~~
-> cd demos/1.x
+> cd vue-auth
+> npm install
+> cd vue-auth/demos/1.x
 > npm install
 > npm run demo
 
@@ -25,7 +29,9 @@ https://192.168.10.10:8001
 ~~~
 
 ~~~
-> cd demos/ssr
+> cd vue-auth
+> npm install
+> cd vue-auth/demos/ssr
 > npm install
 > npm run demo
 
