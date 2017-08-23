@@ -9,7 +9,7 @@ Each request and response that is made to the server is intercepted internally b
 
 The current `bearer` driver is quite simple and looks like this:
 
-~~~
+```javascript
 bearerAuth: {
     request: function (req, token) {
         this.options.http._setHeaders.call(this, req, {Authorization: 'Bearer ' + token});
@@ -24,7 +24,7 @@ bearerAuth: {
         }
     }
 },
-~~~
+```
 
 The driver `request` method receives the `req` and `token` arguments. From there we use an internal `_setHeaders` method. However with the `req` object pretty much anything can be assembled.
 
@@ -36,7 +36,7 @@ To setup a custom driver we simply need to set the `authType` option and the nam
 
 Maybe the token is returned in a non standard way such as `{data: {token: 'abcd1234'}}`.
 
-~~~
+```javascript
 authType: 'custom1',
 
 custom1Auth: {
@@ -47,13 +47,13 @@ custom1Auth: {
         return (res.data.data || {}).token;
     }
 }
-~~~
+```
 
 **Example 2: Token with multiple parts** 
 
 Another common scenario may be a token with multiple data points that all need to be returned to the server.
 
-~~~
+```javascript
 authType: 'custom2',
 
 custom2Auth: {
@@ -75,4 +75,4 @@ custom2Auth: {
         }
     }
 }
-~~~
+```

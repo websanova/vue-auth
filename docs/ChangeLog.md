@@ -15,17 +15,17 @@
 
 ### v2.13.x-beta
 
-* Fix to check if error contains response in axios driver.
+* Fix to check if error contains response in Axios driver.
 * Fix for redirect being ignored when using autoLogin on register.
 * Add ability to manually set tokens (for static/dynamic pages).
 
 ### v2.12.x-beta
 
-* Fix invalidToken logout call for axios driver (to match vue-resource driver update).
+* Fix invalidToken logout call for Axios driver (to match vue-resource driver update).
 
 ### v2.11.x-beta
 
-* Fix axios driver error response intercept.
+* Fix Axios driver error response intercept.
 * Update so support fall back for token to be stored in cookie if `localStorage` is not supported. Note that the cookie is used as a dud and not meant to be used by server or back-end as part of authentication scheme.
 * Update token name to underscores `auth_token` instead of `auth-token`.
 * Fix issue with invalid token on refresh not firing off `_invalidToken` token call.
@@ -59,7 +59,7 @@
 
 ### v2.5.x-beta
 
-* Update default webpack setup to use Vue 2.x.
+* Update default Webpack setup to use Vue 2.x.
 
 ### v2.4.x-beta
 
@@ -124,15 +124,15 @@ We will see some ugly `require` code when including the plugin. But as a trade o
 * There is now a new `register` call with the option to auto login on success.
 * The `auth` parameter in routes and the `check()` method now support objects for checking more complicated roles.
 * Better handling for invalid tokens.
-* All functions are overrideable now.
-* There is a driver file for vue which supports the binding between the plugin and framework. This allows multiple drivers and overrides for any issues between versions in the future and allows full backward compatability.
+* All functions are overridable now.
+* There is a driver file for vue which supports the binding between the plugin and framework. This allows multiple drivers and overrides for any issues between versions in the future and allows full backward compatibility.
 * Reverted from using Vue in the base code and just went back to regular JavaScript (was not really a good idea).
 * Any functions, fields parameters that involve logging in a secondary user are called `other` now.
 * Actions can now be performed as "admin" user when logged in as "other" user by using `disabledOther` and `enableOther`.
 * The `login`, `oauth2`, etc all have their own default parameters now.
 * Removed `google` and `facebook` functions just use `oauth2` method now.
 * The `logout` method can now perform an api request if `makdeRequest` is set to true.
-* Switch to Vanilla JavaScriipt (for development). Had some issues with using fancy es6 syntax.
+* Switch to Vanilla Javascript (for development). Had some issues with using fancy ES6 syntax.
 * Support for drivers allowing more flexibility between different versions (this is still in development).
 * Two auth drivers which are named `bearer` and `basic`.
 * A fetch call has been added allowing the user to be reset.

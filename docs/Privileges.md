@@ -33,7 +33,7 @@ The `vue-auth` plugin works with the `vue-router` plugin. Setting an `auth` fiel
 
 **Vue 1.x**
 
-~~~
+```javascript
 Vue.router.map({
     '/admin': {
         auth: 'admin',
@@ -59,11 +59,11 @@ Vue.router.map({
         component: require('./Contact')
     }
 });
-~~~
+```
 
 **Vue 2.x**
 
-~~~
+```javascript
 Vue.router = new VueRouter({
     routes: [{
         path: '/admin',
@@ -90,4 +90,4 @@ Vue.router = new VueRouter({
         component: require('./Contact')
     }]
 });
-~~~
+```

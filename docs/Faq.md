@@ -36,7 +36,7 @@ In this case write a custom [auth](https://github.com/websanova/vue-auth/tree/ma
 
 ### I only see `Error: Request failed with status code 400...` text when I print out the error?
 
-The response from axios is contained within the response object. You should try to `console(res.response)`.
+The response from Axios is contained within the response object. You should try to `console(res.response)`.
 
 ### Why is the body param not sending my data?
 

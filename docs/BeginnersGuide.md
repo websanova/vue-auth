@@ -44,7 +44,7 @@ It's vital to realize that the object being passed into any method like `login` 
 
 For example:
 
-```
+```javascript
 $auth.login({
     rememberMe: true,
     body: {email: 'test@example.com', password: 'abcd1234'}
@@ -53,7 +53,7 @@ $auth.login({
 
 Is the same as calling:
 
-```
+```javascript
 $http({
     rememberMe: true,
     body: {email: 'test@example.com', password: 'abcd1234'}
@@ -61,7 +61,6 @@ $http({
 ```
 
 The only difference is that `vue-auth` adds some goodies by checking for properties such as `rememberMe` and perform some additional steps for us.
-
 
 
 ## Request Lifecycle
