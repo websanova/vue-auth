@@ -1,6 +1,6 @@
 # Options
 
-Pretty much all methods are overrideable now in case there any specific issues with a particular version of Vue.
+Pretty much all methods are overridable now in case there any specific issues with a particular version of Vue.
 
 ### token: `[{request: 'Authorization', response: 'Authorization', authType: 'bearer', foundIn: 'header'}, {request: 'token', response: 'token', authType: 'bearer', foundIn: 'response'}]`
 
@@ -80,7 +80,7 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 ### facebookOauth2Data: `{url: 'https://www.facebook.com/v2.5/dialog/oauth', redirect: function () { return this.options.getUrl() + '/login/facebook'; }, clientId: '', scope: 'email'}`
 
-* Default oauth2 data that ships with plugin.
+* Default Oauth2 data that ships with plugin.
 * These can be overridden when calling `oauth2()` method or in the plugin options on init.
 
 ### googleOauth2Data: `{url: 'https://accounts.google.com/o/oauth2/auth', redirect: function () { return this.options.getUrl() + '/login/google'; }, clientId: '', scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'}`
@@ -89,7 +89,7 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 ### getUrl: `_getUrl`
 
-* Returns the current sites url for use in oauth2 redirects back to the site.
+* Returns the current sites url for use in Oauth2 redirects back to the site.
 
 ### cookieDomain: `_cookieDomain`
 
@@ -101,7 +101,7 @@ Pretty much all methods are overrideable now in case there any specific issues w
 
 ### parseOauthState: `_parseOauthState`
 
-* Set how the oauth state data from the returned url will get parsed.
+* Set how the Oauth state data from the returned url will get parsed.
 
 ### tokenExpired: `_tokenExpired`
 

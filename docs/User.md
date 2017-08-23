@@ -6,7 +6,7 @@ Depending on what version of the `vue-resource` plugin you are using the respons
 
 Sample response.
 
-~~~
+```javascript
 {
     "status": "success",
     "data": {
@@ -15,22 +15,22 @@ Sample response.
         ...
     }    
 }
-~~~
+```
 
 The plugin has a function for parsing this user data when it receives it called `_parseUserData`. The `data` variable there is the `res.json()` or `res.data` object.
 
-~~~
+```javascript
 function _parseUserData(data) {
     return data.data;
 }
-~~~
+```
 
 If a different format is needed simply override this function in the options.
 
-~~~
+```javascript
 Vue.use(require('vue-auth'), {
     parseUserData: function (data) {
         return data.whatever;
     }
 });
-~~~
+```

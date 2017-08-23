@@ -35,7 +35,7 @@ Common issues here are just between using different drivers. Usually between `ax
 
 The simplest login example will likely send an email and password.
 
-```
+```javascript
 $auth.login({
    body: {email: 'email@example.com', password: 'abcd1234'}
 });
@@ -43,7 +43,7 @@ $auth.login({
 
 For `axios` it would be a data parameter.
 
-```
+```javascript
 $auth.register({
    data: {email: 'email@example.com', password: 'abcd1234'}
 });
