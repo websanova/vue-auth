@@ -54,7 +54,7 @@ this.$auth.user(userObject);
 ```html
 <a v-if="!$auth.check()" v-link="'/login'">login</a>
 <a v-if="$auth.check('admin')">admin</a>
-<a v-if="$auth.check(['admin', 'manager')]">manage</a>
+<a v-if="$auth.check(['admin', 'manager'])">manage</a>
 <a v-if="$auth.check()" v-on:click="$auth.logout()">logout</a>
 ```
 
