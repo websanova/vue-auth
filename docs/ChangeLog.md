@@ -1,5 +1,12 @@
 # Change Log
 
+### v2.16.x-beta
+
+* Removed `_invalidToken` check on `http` drivers. The method still exists but is empty.
+* Token names can be fully set, no behind the scenes pre-pending.
+* Fixed running demos
+* Updated docs.
+
 ### v2.15.x-beta
 
 * Update so that tokens can be fully named in options. Without additional appended parameters.

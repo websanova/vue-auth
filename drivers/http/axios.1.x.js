@@ -33,9 +33,11 @@ module.exports = {
   },
 
   _invalidToken: function (res) {
-    if (res.status === 401) {
-      this.options.logoutProcess.call(this, res, {redirect: this.options.authRedirect});
-    }
+
+    // Removed - should be handled by the app as there are too many considerations here for checking this.
+    // if (res.status === 401) {
+    //   this.options.logoutProcess.call(this, res, {redirect: this.options.authRedirect});
+    // }
   },
 
   _httpData: function (res) {
