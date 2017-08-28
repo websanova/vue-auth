@@ -54,12 +54,20 @@ Vue.use(require('@websanova/vue-auth'), {
 })
 ```
 
+**NOTE:** It could help to look at the 2.x demo [app.js](https://github.com/websanova/vue-auth/blob/master/demos/2.x/src/app.js) file.
+
 
 ## Select an Authentication Method
 
 Currently there are three authentication methods supported out of the box: [basic](https://github.com/websanova/vue-auth/blob/master/drivers/auth/basic.js), [bearer](https://github.com/websanova/vue-auth/blob/master/drivers/auth/bearer.js) and [devise](https://github.com/websanova/vue-auth/blob/master/drivers/auth/devise.js).
 
-Likely the most common is `bearer` but it's not too difficult to write a new one by following the existing format.
+Likely the most common is `bearer` but it's not too difficult to write a new one by following the existing format from the current three supported drivers.
+
+* [basic](https://github.com/websanova/vue-auth/blob/master/drivers/auth/basic.js)
+
+* [bearer](https://github.com/websanova/vue-auth/blob/master/drivers/auth/bearer.js)
+
+* [devise](https://github.com/websanova/vue-auth/blob/master/drivers/auth/devise.js)
 
 
 ## Checking for The "ready" State
@@ -83,6 +91,8 @@ In the main Vue component this should be checked.
     </div>
 </template>
 ```
+
+**NOTE:** It could help to look at the 2.x demo [App.vue](https://github.com/websanova/vue-auth/blob/master/demos/2.x/src/components/App.vue) file.
 
 
 ## Using Vue Auth
