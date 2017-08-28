@@ -64,9 +64,7 @@ Currently there are three authentication methods supported out of the box: [basi
 Likely the most common is `bearer` but it's not too difficult to write a new one by following the existing format from the current three supported drivers.
 
 * [basic](https://github.com/websanova/vue-auth/blob/master/drivers/auth/basic.js)
-
 * [bearer](https://github.com/websanova/vue-auth/blob/master/drivers/auth/bearer.js)
-
 * [devise](https://github.com/websanova/vue-auth/blob/master/drivers/auth/devise.js)
 
 
