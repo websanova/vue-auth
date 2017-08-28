@@ -117,8 +117,8 @@ This also means any response will be directly the response that comes from the `
 
 ## Common Gotchas
 
-A common issue is the Axios error response. When doing `console.log(error)` it will output the error string.
+* A common issue is the Axios error response. When doing `console.log(error)` it will output the error string. Use `console.log(error.resposne)` instead.
 
-**NOTE:** To get the response in the error `console.log(error.response)` must be used.
+* When making requests (typically) it should be a relative path without a `/` in front. For example `auth/user`, `products`, `items/123`.
 
 
