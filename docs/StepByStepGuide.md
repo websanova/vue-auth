@@ -34,12 +34,15 @@ Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
 
 Currently only support for the default Vue router exists.
 
-The router" driver requires that `Vue.router` is set.
+The router driver requires that `Vue.router` is set.
 
 ```javascript
 import router from './router'
 Vue.router = router
 ```
+
+
+## Install the Plugin
 
 The plugin can then be installed.
 
@@ -86,7 +89,7 @@ In the main Vue component this should be checked.
 
 At this point the plugin should be fully working.
 
-An important not to realize is that when making requests Vue Auth is heavily relying on the `http` driver.
+An important note to realize is that when making requests Vue Auth is heavily relying on the `http` driver.
 
 This means that when a request like `login` is made.
 
@@ -101,7 +104,7 @@ $auth.login({
 
 Even though there are some extra parameters like `rememberMe`, this object will still get passed directly into the auth driver.
 
-Essentially the plugin acts as an interceptor to do some work for us like setting a `rememberMe` cookie. But otherwise the request for the login would like this (if using Vue Resource).
+Essentially the plugin acts as an interceptor to do some work for us like setting a `rememberMe` cookie. But otherwise the request for the login would look like this (if using Vue Resource).
 
 ```javascript
 $http({
@@ -112,7 +115,7 @@ $http({
 });
 ```
 
-This also means any response will be directly the response that comes from the `auth` driver that is being used.
+This also means any response will be directly the response that comes from the `http` driver that is being used.
 
 
 ## Common Gotchas
