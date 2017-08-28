@@ -1,6 +1,6 @@
 # Getting Started
 
-For more details visit the [Beginners Guide]()
+For more details visit the [Beginners Guide](https://github.com/websanova/vue-auth/blob/master/docs/BeginnersGuide.md) and the [Step by Step Guide](https://github.com/websanova/vue-auth/blob/master/docs/StepByStepGuide.md)
 
 ## FAQ
 
