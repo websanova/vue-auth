@@ -395,7 +395,7 @@ module.exports = function () {
         logoutData:         {url: 'auth/logout',       method: 'POST', redirect: '/', makeRequest: false},
         oauth1Data:         {url: 'auth/login',        method: 'POST'},
         fetchData:          {url: 'auth/user',         method: 'GET', enabled: true},
-        refreshData:        {url: 'auth/refresh',      method: 'GET', enabled: true, interval: 30},
+        refreshData:        {url: 'auth/refresh',      method: 'GET', enabled: true, interval: 30, headers: {'Cache-Control': 'no-cache, no-store'}},
         loginOtherData:     {url: 'auth/login-other',  method: 'POST', redirect: '/'},
         logoutOtherData:    {url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false},
 
