@@ -7,7 +7,7 @@ Pretty much all methods are overridable now in case there any specific issues wi
 * Set of method for fetching the token from the response. It will attempt each until a token is found and stop there.
 * For sending requests it will by default use the method in the first position.
 
-### tokenOtherName: `'other_auth_token'`
+### tokenImpersonateName: `'impersonate_auth_token'`
 
 * The name of the impersonating token stored in local storage.
 
@@ -62,13 +62,13 @@ Pretty much all methods are overridable now in case there any specific issues wi
 * Default refresh request data and redirect.
 * Can set interval for auto refresh (in minutes). Default is `30`, set to `0` for none.
 
-### loginOtherData: `{url: 'auth/login-other', method: 'POST', redirect: '/'}`
+### impersonateData: `{url: 'auth/impersonate', method: 'POST', redirect: '/'}`
 
-* Default login as "other" request data and redirect.
+* Default impersonate request data and redirect.
 
-### logoutOtherData: `{url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false}`
+### unimpersonateData: `{url: 'auth/unimpersonate', method: 'POST', redirect: '/admin', makeRequest: false}`
 
-* Default logout as "other" request data and redirect.
+* Default unimpersonate request data and redirect.
 
 ### facebookData: `{url: 'auth/facebook', method: 'POST', redirect: '/'}`
 

@@ -8,7 +8,7 @@
             {{ user.username }}
             
             <span style="float:right;">
-                <a v-on:click="loginOther(user)" href="javascript:void(0);">login as</a>
+                <a v-on:click="impersonate(user)" href="javascript:void(0);">impersonate</a>
             </span>
         </div>
     </div>
@@ -42,8 +42,8 @@
                 });
             },
 
-            loginOther(user) {
-                this.$auth.loginOther({
+            impersonate(user) {
+                this.$auth.impersonate({
                     params: {
                         id: user.id
                     },

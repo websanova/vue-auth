@@ -9,8 +9,8 @@ module.exports = (function () {
             return name;
         }
 
-        if (this.other.call(this)) {
-            return this.options.tokenOtherName;
+        if (this.impersonating.call(this)) {
+            return this.options.tokenImpersonateName;
         }
 
         return this.options.tokenDefaultName;

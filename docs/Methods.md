@@ -58,41 +58,25 @@ this.$auth.user(userObject);
 <a v-if="$auth.check()" v-on:click="$auth.logout()">logout</a>
 ```
 
-### other
+### impersonating
 
-* Checks if secondary "other" user is logged in.
+* Checks if secondary user is logged in.
 
 ```html
-<a v-if="$auth.other()" v-on:click="logoutOther()">logout other</a>
+<a v-if="$auth.impersonating()" v-on:click="$auth.unimpersonate()">logout Imposter</a>
 ```
 
-### disableOther
-
-* Disables other using the default token until it is re-enabled (or logged out).
-* This allows you to login is as "another" user but still perform requests as an admin.
-
-```javascript
-this.$auth.disableOther();
-
-this.$http.get('users'); // Will run as admin.
-
-this.$auth.enableOther();
-```
-
-### enableOther
-
-* See disableOther.
 
 ### token
 
 * Returns the currently activated token if none are specified.
-* Can also specify a specific token, but only `other` and `default` will actually return anything unless setting your own token.
+* Can also specify a specific token, but only `impersonate` and `default` will actually return anything unless setting your own token.
 * Can set a token with optional second argument, set null to use default naming conventions.
 
 ```javascript
 var token = this.$auth.token();
-var token = this.$auth.token('other');
-var token = this.$auth.token('default');
+var token = this.$auth.token('impersonate_auth_token');
+var token = this.$auth.token('default_auth_token');
 
 this.$auth.token(null, token);
 this.$auth.token('test', token);
@@ -188,13 +172,13 @@ this.$auth.logout({
 });
 ```
 
-### loginOther
+### impersonate
 
 * Data object is passed directly to http method.
 * Accepts `redirect` parameter which is passed directly to router.
 
 ```javascript
-this.$auth.loginOther({
+this.$auth.impersonate({
     params: {}, // data: {} in axios
     success: function () {},
     error: function () {},
@@ -203,14 +187,14 @@ this.$auth.loginOther({
 });
 ```
 
-### logoutOther
+### unimpersonate
 
 * Data object is passed directly to http method.
 * Accepts `redirect` parameter which is passed directly to router.
 * Also accepts `makeRequest` parameter same as `logout` method.
 
 ```javascript
-this.$auth.logoutOther({
+this.$auth.unimpersonate({
     makeRequest: true,
     params: {}, // data: {} in axios
     success: function () {},

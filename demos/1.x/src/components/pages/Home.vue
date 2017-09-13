@@ -22,7 +22,7 @@
 
         <ul>
             <li><a v-on:click="setToken()" href="javascript:void(0);">Test default token</a></li>
-            <li><a v-on:click="setToken('other')" href="javascript:void(0);">Test other token</a></li>
+            <li><a v-on:click="setToken('impersonate')" href="javascript:void(0);">Test impersonate token</a></li>
             <li><a v-on:click="setToken('default')" href="javascript:void(0);">Test admin token</a></li>
         </ul>
     </div>

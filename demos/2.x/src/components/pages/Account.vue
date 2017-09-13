@@ -12,8 +12,8 @@
             <li><a v-on:click="fetch()" href="javascript:void(0);">Test fetch user</a></li>
             <li><a v-on:click="fetchIgnore()" href="javascript:void(0);">Test fetch user ignore</a></li>
             <li><a v-on:click="refresh()" href="javascript:void(0);">Test refresh token</a></li>
-            <li v-if="$auth.other()"><a v-on:click="getUsers()" href="javascript:void(0);">Test fetching users (as user via user)</a></li>
-            <li v-if="$auth.other()"><a v-on:click="getUsers(true)" href="javascript:void(0);">Test fetching users (as user via admin)</a></li>
+            <li v-if="$auth.impersonating()"><a v-on:click="getUsers()" href="javascript:void(0);">Test fetching users (as user via user)</a></li>
+            <li v-if="$auth.impersonating()"><a v-on:click="getUsers(true)" href="javascript:void(0);">Test fetching users (as user via admin)</a></li>
         </ul>
     </div>
 </template>
@@ -59,22 +59,16 @@
             },
 
             getUsers(asAdmin) {
-
-                if (asAdmin === true) {
-                    this.$auth.disableOther();
-                }
-
                 this.$http({
                     url: 'users',
-                    method: 'GET'
+                    method: 'GET',
+                    asAdmin: asAdmin
                 })
                 .then((res) => {
                     console.log('success ' + this.context);
                 }, (res) => {
                     console.log('error ' + this.context);
                 });
-
-                this.$auth.enableOther();
             }
         }
     }

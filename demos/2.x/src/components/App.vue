@@ -23,9 +23,9 @@
                     <a v-on:click="logout()" href="javascript:void(0);">logout</a>
                 </span>
 
-                <span v-show="$auth.other()">
+                <span v-show="$auth.impersonating()">
                     &bull;
-                    <a v-on:click="logoutOther()" href="javascript:void(0);">(logout {{ $auth.user().username }})</a>
+                    <a v-on:click="unimpersonate()" href="javascript:void(0);">(logout {{ $auth.user().username }})</a>
                 </span>
             </div>
 
@@ -93,8 +93,8 @@
                 });
             },
 
-            logoutOther() {
-                this.$auth.logoutOther({
+            unimpersonate() {
+                this.$auth.unimpersonate({
                     success() {
                         console.log('success ' + this.context);
                     },

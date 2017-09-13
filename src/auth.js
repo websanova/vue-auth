@@ -279,7 +279,7 @@ module.exports = function () {
     function _logoutProcess(res, data) {
         __cookie.remove.call(this, 'rememberMe');
 
-        __token.remove.call(this, this.options.tokenOtherName);
+        __token.remove.call(this, this.options.tokenImpersonateName);
         __token.remove.call(this, this.options.tokenDefaultName);
 
         this.watch.authenticated = false;
@@ -292,7 +292,7 @@ module.exports = function () {
         }
     }
 
-    function _loginOtherPerform(data) {
+    function _impersonatePerform(data) {
         var success,
             token = this.token.call(this); // (admin) token
 
@@ -303,16 +303,16 @@ module.exports = function () {
         data.success = function () {
 
             // Reshuffle tokens here...
-            __token.set.call(this, this.options.tokenOtherName, this.token.call(this));
+            __token.set.call(this, this.options.tokenImpersonateName, this.token.call(this));
             __token.set.call(this, this.options.tokenDefaultName, token);
 
             if (success) { success.call(this); }
         };
 
-        __duckPunch.call(this, 'loginOther', data);
+        __duckPunch.call(this, 'impersonate', data);
     }
 
-    function _loginOtherProcess(res, data) {
+    function _impersonateProcess(res, data) {
         var _this = this;
 
         this.options.fetchPerform.call(this, {
@@ -327,19 +327,19 @@ module.exports = function () {
         });
     }
 
-    function _logoutOtherPerform(data) {
-        data = __utils.extend(this.options.logoutOtherData, [data || {}]);
+    function _unimpersonatePerform(data) {
+        data = __utils.extend(this.options.unimpersonateData, [data || {}]);
 
         if (data.makeRequest) {
-            __duckPunch.call(this, 'logoutOther', data);
+            __duckPunch.call(this, 'unimpersonate', data);
         }
         else {
-            this.options.logoutOtherProcess.call(this, null, data);
+            this.options.unimpersonateProcess.call(this, null, data);
         }
     }
 
-    function _logoutOtherProcess(res, data) {
-        __token.remove.call(this, this.options.tokenOtherName);
+    function _unimpersonateProcess(res, data) {
+        __token.remove.call(this, this.options.tokenImpersonateName);
 
         this.options.fetchPerform.call(this, {
             enabled: true,
@@ -393,10 +393,10 @@ module.exports = function () {
 
         // Variables
 
-        rolesVar:          'roles',
-        tokenOtherName:    'other_auth_token',
-        tokenDefaultName:  'default_auth_token',
-        tokenStore:        ['localStorage', 'cookie'],
+        rolesVar:             'roles',
+        tokenImpersonateName: 'impersonate_auth_token',
+        tokenDefaultName:     'default_auth_token',
+        tokenStore:           ['localStorage', 'cookie'],
 
         // Objects
 
@@ -404,17 +404,17 @@ module.exports = function () {
         forbiddenRedirect:  {path: '/403'},
         notFoundRedirect:   {path: '/404'},
 
-        registerData:       {url: 'auth/register',     method: 'POST', redirect: '/login'},
-        loginData:          {url: 'auth/login',        method: 'POST', redirect: '/', fetchUser: true},
-        logoutData:         {url: 'auth/logout',       method: 'POST', redirect: '/', makeRequest: false},
-        oauth1Data:         {url: 'auth/login',        method: 'POST'},
-        fetchData:          {url: 'auth/user',         method: 'GET', enabled: true},
-        refreshData:        {url: 'auth/refresh',      method: 'GET', enabled: true, interval: 30},
-        loginOtherData:     {url: 'auth/login-other',  method: 'POST', redirect: '/'},
-        logoutOtherData:    {url: 'auth/logout-other', method: 'POST', redirect: '/admin', makeRequest: false},
+        registerData:       {url: 'auth/register',      method: 'POST', redirect: '/login'},
+        loginData:          {url: 'auth/login',         method: 'POST', redirect: '/', fetchUser: true},
+        logoutData:         {url: 'auth/logout',        method: 'POST', redirect: '/', makeRequest: false},
+        oauth1Data:         {url: 'auth/login',         method: 'POST'},
+        fetchData:          {url: 'auth/user',          method: 'GET', enabled: true},
+        refreshData:        {url: 'auth/refresh',       method: 'GET', enabled: true, interval: 30},
+        impersonateData:    {url: 'auth/impersonate',   method: 'POST', redirect: '/'},
+        unimpersonateData:  {url: 'auth/unimpersonate', method: 'POST', redirect: '/admin', makeRequest: false},
 
-        facebookData:       {url: 'auth/facebook',     method: 'POST', redirect: '/'},
-        googleData:         {url: 'auth/google',       method: 'POST', redirect: '/'},
+        facebookData:       {url: 'auth/facebook',      method: 'POST', redirect: '/'},
+        googleData:         {url: 'auth/google',        method: 'POST', redirect: '/'},
 
         facebookOauth2Data: {
             url: 'https://www.facebook.com/v2.5/dialog/oauth',
@@ -461,11 +461,11 @@ module.exports = function () {
         refreshPerform:     _refreshPerform,
         refreshProcess:     _refreshProcess,
 
-        loginOtherPerform:  _loginOtherPerform,
-        loginOtherProcess:  _loginOtherProcess,
+        impersonatePerform:  _impersonatePerform,
+        impersonateProcess:  _impersonateProcess,
 
-        logoutOtherPerform: _logoutOtherPerform,
-        logoutOtherProcess: _logoutOtherProcess,
+        unimpersonatePerform: _unimpersonatePerform,
+        unimpersonateProcess: _unimpersonateProcess,
 
         oauth2Perform:      _oauth2Perform
     };
@@ -540,23 +540,25 @@ module.exports = function () {
         return this.options.check.call(this, role);
     };
 
-    Auth.prototype.other = function () {
+    Auth.prototype.impersonating = function () {
         this.watch.data; // To fire watch
 
-        return __token.get.call(this, this.options.tokenOtherName) ? true : false;
+        return __token.get.call(this, this.options.tokenImpersonateName) ? true : false;
     };
 
-    Auth.prototype.enableOther = function (data) {
-        if (this.other()) {
-            this.currentToken = null;
-        }
-    };
+    // // Deprecated
+    // Auth.prototype.enableOther = function (data) {
+    //     if (this.other()) {
+    //         this.currentToken = null;
+    //     }
+    // };
 
-    Auth.prototype.disableOther = function (data) {
-        if (this.other()) {
-            this.currentToken = this.options.tokenDefaultName;
-        }
-    };
+    // // Deprecated
+    // Auth.prototype.disableOther = function (data) {
+    //     if (this.other()) {
+    //         this.currentToken = this.options.tokenDefaultName;
+    //     }
+    // };
 
     Auth.prototype.token = function (name, token) {
         if (token) {
@@ -586,12 +588,12 @@ module.exports = function () {
         __bindContext.call(this, 'logout', data);
     };
 
-    Auth.prototype.loginOther = function (data) {
-        __bindContext.call(this, 'loginOther', data);
+    Auth.prototype.impersonate = function (data) {
+        __bindContext.call(this, 'impersonate', data);
     };
 
-    Auth.prototype.logoutOther = function (data) {
-        __bindContext.call(this, 'logoutOther', data);
+    Auth.prototype.unimpersonate = function (data) {
+        __bindContext.call(this, 'unimpersonate', data);
     };
 
     Auth.prototype.oauth2 = function (data) {

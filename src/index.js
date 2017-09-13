@@ -12,8 +12,8 @@ module.exports = (function () {
         var oauth2 = auth.oauth2;
         var refresh = auth.refresh;
         var register = auth.register;
-        var loginOther = auth.loginOther;
-        var logoutOther = auth.logoutOther;
+        var impersonate = auth.impersonate;
+        var unimpersonate = auth.unimpersonate;
 
         Vue.auth = auth;
 
@@ -26,8 +26,8 @@ module.exports = (function () {
                     auth.oauth2 = oauth2.bind(this);
                     auth.refresh = refresh.bind(this);
                     auth.register = register.bind(this);
-                    auth.loginOther = loginOther.bind(this);
-                    auth.logoutOther = logoutOther.bind(this);
+                    auth.impersonate = impersonate.bind(this);
+                    auth.unimpersonate = unimpersonate.bind(this);
 
                     return auth;
                 }
