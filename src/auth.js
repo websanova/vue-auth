@@ -121,7 +121,13 @@ module.exports = function () {
     }
 
     function _requestIntercept(req) {
-        var token = __token.get.call(this);
+        var token;
+
+        if (req.ignoreVueAuth) {
+            return req;
+        }
+
+        token = __token.get.call(this);
 
         if (token) {
             this.options.auth.request.call(this, req, token);
@@ -130,8 +136,12 @@ module.exports = function () {
         return req;
     }
 
-    function _responseIntercept(res) {
+    function _responseIntercept(res, req) {
         var token;
+
+        if (req && req.ignoreVueAuth) {
+            return;
+        }
 
         if (this.options.http._invalidToken) {
             this.options.http._invalidToken.call(this, res);

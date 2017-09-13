@@ -13,7 +13,7 @@ module.exports = {
             if (req) { req.call(_this, request); }
             
             next(function (response) {
-                if (res) { res.call(_this, response); }
+                if (res) { res.call(_this, response, request); }
             });
         });
     },
