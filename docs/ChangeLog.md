@@ -1,5 +1,11 @@
 # Change Log
 
+### v2.17.0-beta
+
+* Change "other" to "impersonate" keyword (and all accompanying functions).
+* Add `ignoreVueAuth` field that can be set on requests to prevent setting headers or tokens on requests.
+* Add `impersonating` field that can be set to `false` to run that request with "default" token (not impersonating).
+
 ### v2.16.x-beta
 
 * Removed `_invalidToken` check on `http` drivers. The method still exists but is empty.
