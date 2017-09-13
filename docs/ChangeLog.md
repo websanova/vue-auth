@@ -1,6 +1,6 @@
 # Change Log
 
-### v2.17.0-beta
+### v2.18.0-beta
  
  * Add ability to set callback function using `$auth.ready(callback)`.
 
