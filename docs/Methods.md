@@ -6,7 +6,8 @@ These are all methods available in the vue app via `$auth`.
 
 ### ready
 
-* Fires once on the initial app load to pre-load users (if set).
+* Get binded ready property to know when user is fully loaded and checked.
+* Can also set a single callback which will fire once (on refresh or entry).
 
 ```html
 <div v-if="$auth.ready()">
@@ -16,6 +17,16 @@ These are all methods available in the vue app via `$auth`.
     Site loading...
 </div>
 ```
+
+```js
+created() {
+    this.$auth.ready(function () {
+        console.log(this); // Will be proper context.
+    });
+}
+```
+
+
 
 ### redirect
 

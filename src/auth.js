@@ -444,6 +444,8 @@ module.exports = function () {
         check:              _check,
         checkAuthenticated: _checkAuthenticated,
 
+        readyCallback:      null,
+
         transitionEach:     _transitionEach,
         routerBeforeEach:   _routerBeforeEach,
         requestIntercept:   _requestIntercept,
@@ -476,7 +478,10 @@ module.exports = function () {
     };
 
     function Auth(Vue, options) {
-        var i, ii, msg, drivers = ['auth', 'http', 'router'];
+        var i, ii,
+            msg,
+            _this = this,
+            drivers = ['auth', 'http', 'router'];
 
         this.options = __utils.extend(defaultOptions, [options || {}]);
         this.options.Vue = Vue;
@@ -489,6 +494,14 @@ module.exports = function () {
                     redirect: null,
                     authenticated: null
                 };
+            },
+
+            watch: {
+                loaded(val) {
+                    if (val === true && _this.options.readyCallback) {
+                        _this.options.readyCallback();
+                    }
+                }
             }
         });
 
@@ -524,7 +537,11 @@ module.exports = function () {
     }
 
     Auth.prototype.ready = function (cb) {
-        return this.watch.loaded;
+        if (cb !== undefined) {
+            this.$auth.options.readyCallback = cb.bind(this);
+        }
+
+        return this.$auth.watch.loaded;
     };
 
     Auth.prototype.redirect = function () {
