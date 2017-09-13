@@ -83,19 +83,23 @@ module.exports = function () {
     }
 
     function _transitionEach(transition, routeAuth, cb) {
-        routeAuth = __utils.toArray(routeAuth);
+        var authRedirect = (routeAuth || '').redirect || this.options.authRedirect,
+            forbiddenRedirect = (routeAuth || '').forbiddenRedirect || (routeAuth || '').redirect || this.options.forbiddenRedirect,
+            notFoundRedirect = (routeAuth || '').redirect || this.options.notFoundRedirect;
+
+        routeAuth = __utils.toArray((routeAuth || '').roles || routeAuth);
         
         __transitionPrev = __transitionThis;
         __transitionThis = transition;
-        
+
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array)) {
             if ( ! this.check()) {
                 __transitionRedirecType = 401;
-                cb.call(this, this.options.authRedirect);
+                cb.call(this, authRedirect);
             }
             else if (routeAuth.constructor === Array && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
                 __transitionRedirecType = 403;
-                cb.call(this, this.options.forbiddenRedirect);
+                cb.call(this, forbiddenRedirect);
             }
             else {
                 this.watch.redirect = __transitionRedirecType ? {type: __transitionRedirecType, from: __transitionPrev, to: __transitionThis} : null;
@@ -106,7 +110,7 @@ module.exports = function () {
         }
         else if (routeAuth === false && this.check()) {
             __transitionRedirecType = 404;
-            cb.call(this, this.options.notFoundRedirect);
+            cb.call(this, notFoundRedirect);
         }
         else {
             this.watch.redirect = __transitionRedirecType ? {type: __transitionRedirecType, from: __transitionPrev, to: __transitionThis} : null;

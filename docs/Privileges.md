@@ -29,6 +29,26 @@ The `vue-auth` plugin works with the `vue-router` plugin. Setting an `auth` fiel
 * An object must also be used when using `$auth.check({some: 'name'})` where the value can be a `String` or `Array`.
 
 
+### Redirects
+
+Each individual route can also define it's own specific redirect.
+
+**NOTE:** If not set the redirects will still default to the global `authRedirect`, `forbiddenRedirect` and `notFoundRedirect`.
+
+To set the `redirect` field the format of the `auth` parameter in the routes must change to the form below.
+
+```
+auth: {roles: 'admin', redirect: '/login'}
+```
+
+In this case `roles` will follow the same rules as `auth` would regularly and `redirect` will follow same rules for route provider.
+
+There is also a secondary `redirectForbidden` field that can be set for situations where a user is logged in but privilege check fails.
+
+```
+auth: {roles: 'admin', redirect: '/admin/login', forbiddenRedirect: '/admin/403'}
+```
+
 ## Examples
 
 **Vue 1.x**
@@ -36,7 +56,11 @@ The `vue-auth` plugin works with the `vue-router` plugin. Setting an `auth` fiel
 ```javascript
 Vue.router.map({
     '/admin': {
-        auth: 'admin',
+        auth: {
+            roles: 'admin',
+            redirect: {name: 'admin'},
+            forbiddenRedirect: '/admin/403'
+        },
         component: require('./Admin')
     },
     '/manage': {
@@ -67,7 +91,13 @@ Vue.router.map({
 Vue.router = new VueRouter({
     routes: [{
         path: '/admin',
-        meta: {auth: 'admin'},
+        meta: {
+            auth: {
+                roles: 'admin',
+                redirect: {name: 'admin'},
+                forbiddenRedirect: '/admin/403'
+            }
+        },
         component: require('./Admin')
     }, {
         path: '/manage',
