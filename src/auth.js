@@ -121,13 +121,18 @@ module.exports = function () {
     }
 
     function _requestIntercept(req) {
-        var token;
+        var token,
+            tokenName;
 
         if (req.ignoreVueAuth) {
             return req;
         }
 
-        token = __token.get.call(this);
+        if (req.impersonating === false && this.impersonating()) {
+            tokenName = this.options.tokenDefaultName;
+        }
+        
+        token = __token.get.call(this, tokenName);
 
         if (token) {
             this.options.auth.request.call(this, req, token);
@@ -472,8 +477,6 @@ module.exports = function () {
 
     function Auth(Vue, options) {
         var i, ii, msg, drivers = ['auth', 'http', 'router'];
-        
-        this.currentToken = null;
 
         this.options = __utils.extend(defaultOptions, [options || {}]);
         this.options.Vue = Vue;
@@ -545,20 +548,6 @@ module.exports = function () {
 
         return __token.get.call(this, this.options.tokenImpersonateName) ? true : false;
     };
-
-    // // Deprecated
-    // Auth.prototype.enableOther = function (data) {
-    //     if (this.other()) {
-    //         this.currentToken = null;
-    //     }
-    // };
-
-    // // Deprecated
-    // Auth.prototype.disableOther = function (data) {
-    //     if (this.other()) {
-    //         this.currentToken = this.options.tokenDefaultName;
-    //     }
-    // };
 
     Auth.prototype.token = function (name, token) {
         if (token) {

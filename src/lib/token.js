@@ -3,8 +3,6 @@ var __cookie = require('./cookie.js');
 module.exports = (function () {
 
     function tokenName(name) {
-        name = name || this.currentToken;
-
         if (name) {
             return name;
         }
