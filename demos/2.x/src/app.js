@@ -45,7 +45,7 @@ Vue.router = new VueRouter({
         path: '/admin',
         name: 'admin',
         component: require('./components/pages/Admin.vue'),
-        meta: {auth: {roles: 'admin', redirect: {name: 'login'}}},
+        meta: {auth: {roles: 'admin', redirect: {name: 'login'}, forbiddenRedirect: '/403'}},
         children: [{
             path: 'products',
             name: 'admin-products',
