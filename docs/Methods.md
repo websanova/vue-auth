@@ -113,9 +113,9 @@ this.$auth.fetch({
 ### refresh
 
 * Manually refresh the token.
-* The refresh will always fire on boot, to disable this override the `expiredToken` option method.
-* Can be used in conjunction with `expiredToken` and `token` to write custom refreshes.
-* If any custom expiration custom logic needs to be done (for instance decoding and checking expiration date in jwt token) override the `expiredToken` method and return `boolean`.
+* The refresh will always fire on boot, to disable this override the `tokenExpired` option method.
+* Can be used in conjunction with `tokenExpired` and `token` to write custom refreshes.
+* If any custom expiration custom logic needs to be done (for instance decoding and checking expiration date in jwt token) override the `tokenExpired` method and return `boolean`.
 * Data object is passed directly to http method.
 
 ```javascript
