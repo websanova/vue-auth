@@ -1,10 +1,11 @@
 # Change Log
 
-### v2.18.0-beta
+### v2.18.x-beta
  
  * Add ability to set callback function using `$auth.ready(callback)`.
+ * Restore enable/disable other as `disableImpersonate` and `enableImpersonate`.
 
-### v2.17.0-beta
+### v2.17.x-beta
 
 * Change "other" to "impersonate" keyword (and all accompanying functions).
 * Add `ignoreVueAuth` field that can be set on requests to prevent setting headers or tokens on requests.

@@ -483,6 +483,8 @@ module.exports = function () {
             _this = this,
             drivers = ['auth', 'http', 'router'];
 
+        this.currentToken = null;
+
         this.options = __utils.extend(defaultOptions, [options || {}]);
         this.options.Vue = Vue;
 
@@ -604,7 +606,19 @@ module.exports = function () {
 
     Auth.prototype.oauth2 = function (data) {
         __bindContext.call(this, 'oauth2', data);
-    }    
+    }
+
+    Auth.prototype.enableImpersonate = function () {
+        if (this.impersonating()) {
+            this.currentToken = null;
+        }
+    };
+
+    Auth.prototype.disableImpersonate = function () {
+        if (this.impersonating()) {
+            this.currentToken = this.options.tokenDefaultName;
+        }
+    }; 
 
     return Auth;
 };

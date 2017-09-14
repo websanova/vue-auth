@@ -215,6 +215,24 @@ this.$auth.unimpersonate({
 });
 ```
 
+### disableImpersonate
+
+* Disables impersonating user using the default token until it is re-enabled (or logged out).
+* This allows you to login is as "another" user but still perform requests as an admin.
+
+```javascript
+this.$auth.disableImpersonate();
+
+this.$http.get('users'); // Will run as default token (admin).
+
+this.$auth.enableImpersonate();
+```
+
+### enableImpersonate
+
+* See disableImpersonate.
+
+
 ### oauth2
 
 * Convenience method for OAuth2.
