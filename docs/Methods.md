@@ -161,7 +161,7 @@ this.$auth.login({
     error: function () {},
     rememberMe: true,
     redirect: '/account',
-    fetchUser: true
+    fetchUser: true,
     // etc...
 });
 ```
@@ -234,14 +234,14 @@ if (this.$route.query.code) {
             code: this.code
         },
         success: function(res) {},
-        error: function (res) {}
+        error: function (res) {},
         redirect: {path: '/account'},
         // etc
     });
 }
 else {
     this.$auth.oauth2({
-        provider: 'facebook'
+        provider: 'facebook',
     });
 }
 ```
