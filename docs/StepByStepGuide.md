@@ -126,6 +126,37 @@ $http({
 This also means any response will be directly the response that comes from the `http` driver that is being used.
 
 
+## Handling Errors
+
+There is not really any standard default way to handle an error as a simple status code like `401` can mean different things depending on usage. It would typically need to be accompanied by some internal code.
+
+For this reason the implementation of errors should be handled separately by the app. It's likely there will be some global handler for this anyway.
+
+```javascript
+Vue.http.interceptors.push(function(request, next) {
+    next(function (res) {
+
+        // Unauthorized Access
+        
+        if (
+            res.status === 401 &&
+            ['UnauthorizedAccess', 'InvliadToken'].indexOf(res.data.code) > -1
+        ) {
+            Vue.auth.logout({
+                redirect: {name: 'auth-login'}
+            });
+        }
+        
+        // System Error
+
+        else if (res.status === 500) {
+            Vue.router.push({name: 'error-500'});
+        }
+    });
+});
+```
+
+
 ## Common Gotchas
 
 * A common issue is the Axios error response. When doing `console.log(error)` it will output the error string. Use `console.log(error.resposne)` instead.
