@@ -2,6 +2,8 @@
 
 ### v2.18.x-beta
  
+ * Update 2.x demo to include 401 redirect.
+ * Add ability to set `response_type` for oauth2.
  * Add ability to set callback function using `$auth.ready(callback)`.
  * Restore enable/disable other as `disableImpersonate` and `enableImpersonate`.
 
