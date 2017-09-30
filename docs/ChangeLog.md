@@ -2,6 +2,7 @@
 
 ### v2.18.x-beta
  
+ * Fix compile issue when using `function` shorthand.
  * Update 2.x demo to include 401 redirect.
  * Add ability to set `response_type` for oauth2.
  * Add ability to set callback function using `$auth.ready(callback)`.
