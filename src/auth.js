@@ -500,7 +500,7 @@ module.exports = function () {
             },
 
             watch: {
-                loaded(val) {
+                loaded: function (val) {
                     if (val === true && _this.options.readyCallback) {
                         _this.options.readyCallback();
                     }
