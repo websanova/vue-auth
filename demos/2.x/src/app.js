@@ -94,6 +94,14 @@ Vue.router = new VueRouter({
 // Http 
 Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
 
+Vue.http.interceptors.push(function(request, next) {
+    next(function (res) {
+        if (res.status === 401) {
+            Vue.auth.logout();
+        }
+    });
+});
+
 // Vue Auth
 Vue.use(require('../../../src/index.js'), {
     auth: require('../../../drivers/auth/bearer.js'),
