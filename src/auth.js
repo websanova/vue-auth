@@ -387,8 +387,9 @@ module.exports = function () {
 
             data.state = data.state || {};
             data.state.rememberMe = data.rememberMe === true;
+            data.response_type = data.response_type || 'code';
 
-            params = '?client_id=' + data.clientId + '&redirect_uri=' + data.redirect + '&scope=' + data.scope + '&response_type=code&state=' + encodeURIComponent(JSON.stringify(data.state));
+            params = '?client_id=' + data.clientId + '&redirect_uri=' + data.redirect + '&scope=' + data.scope + '&response_type=' + data.response_type + '&state=' + encodeURIComponent(JSON.stringify(data.state));
 
             window.location = data.url + params;
         }
