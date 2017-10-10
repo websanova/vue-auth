@@ -28,7 +28,10 @@ module.exports = {
                 }
             });
             
-            return token.join(';');
+            // Check if access-token more recent than last one
+            if (!this.token() || parseInt(token[4], 10) >= parseInt(this.token().split(';')[4], 10)) {
+                return token.join(';');
+            }
         }
     }
 };
