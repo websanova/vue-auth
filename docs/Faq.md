@@ -22,7 +22,7 @@ By default the plugin will look for a token in `Authorization` header. This is c
 
 ### How can I authenticate without using the `Authorization` header?
 
-The token can be supplied anywhere in your app response. The provided [auth](https://github.com/websanova/vue-auth/tree/master/drivers/auth) drivers are common methods for authenticating users in single page apps. Simply view any of the [auth]https://github.com/websanova/vue-auth/tree/master/drivers/auth) drivers as a guide to write your own custom driver.
+The token can be supplied anywhere in your app response. The provided [auth](https://github.com/websanova/vue-auth/tree/master/drivers/auth) drivers are common methods for authenticating users in single page apps. Simply view any of the [auth](https://github.com/websanova/vue-auth/tree/master/drivers/auth) drivers as a guide to write your own custom driver.
 
 
 
