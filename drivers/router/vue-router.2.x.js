@@ -26,21 +26,10 @@ module.exports = {
         var _this = this;
 
         this.options.Vue.router.beforeEach(function (transition, location, next) {
+            _this.options.setTransitions.call(this, transition);
+            
             routerBeforeEach.call(_this, function () {
-                var auth;
-
-                if (transition.to) {
-                    auth = transition.to.auth;
-                } else {
-                    var authRoutes = transition.matched.filter(function (route) {
-                        return route.meta.hasOwnProperty('auth');
-                    });
-
-                    // matches the nested route, the last one in the list
-                    if (authRoutes.length) {
-                        auth = authRoutes[authRoutes.length - 1].meta.auth;
-                    }
-                }
+                var auth = _this.options.getAuthMeta(transition);
 
                 transitionEach.call(_this, transition, auth, function (redirect) {
                     if (!redirect) {

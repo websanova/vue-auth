@@ -45,7 +45,7 @@ Vue.router = new VueRouter({
         path: '/admin',
         name: 'admin',
         component: require('./components/pages/Admin.vue'),
-        meta: {auth: {roles: 'admin', redirect: {name: 'login'}, forbiddenRedirect: '/403'}},
+        meta: {auth: {roles: 'admin', redirect: {name: 'default'}, forbiddenRedirect: '/403'}},
         children: [{
             path: 'products',
             name: 'admin-products',
@@ -93,14 +93,6 @@ Vue.router = new VueRouter({
 
 // Http 
 Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
-
-Vue.http.interceptors.push(function(request, next) {
-    next(function (res) {
-        if (res.status === 401) {
-            Vue.auth.logout();
-        }
-    });
-});
 
 // Vue Auth
 Vue.use(require('../../../src/index.js'), {

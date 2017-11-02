@@ -21,6 +21,7 @@
         <div style="word-wrap:break-word;">{{ token === '' ? 'select token' : (token ? token : 'no token set') }}</div>
 
         <ul>
+            <li><a v-on:click="fetchUser()" href="javascript:void(0);">Test fetch user</a></li>
             <li><a v-on:click="setToken()" href="javascript:void(0);">Test default token</a></li>
             <li><a v-on:click="setToken('impersonate')" href="javascript:void(0);">Test impersonate token</a></li>
             <li><a v-on:click="setToken('default')" href="javascript:void(0);">Test admin token</a></li>
@@ -42,6 +43,17 @@
         },
 
         methods: {
+            fetchUser() {
+                this.$auth.fetch({
+                    success() {
+                        console.log('success ' + this.context);
+                    },
+                    error() {
+                        console.log('error ' + this.context);
+                    }
+                });
+            },
+
             setToken(name) {
                 this.token = this.$auth.token(name);
             },

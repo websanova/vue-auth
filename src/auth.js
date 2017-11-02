@@ -88,9 +88,6 @@ module.exports = function () {
             notFoundRedirect = (routeAuth || '').redirect || this.options.notFoundRedirect;
 
         routeAuth = __utils.toArray((routeAuth || '').roles || routeAuth);
-        
-        __transitionPrev = __transitionThis;
-        __transitionThis = transition;
 
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array)) {
             if ( ! this.check()) {
@@ -148,9 +145,7 @@ module.exports = function () {
             return;
         }
 
-        if (this.options.http._invalidToken) {
-            this.options.http._invalidToken.call(this, res);
-        }
+        _processInvalidToken.call(this, res, __transitionThis);
 
         token = this.options.auth.response.call(this, res);
 
@@ -191,6 +186,54 @@ module.exports = function () {
         var port = window.location.port
 
         return window.location.protocol + '//' + window.location.hostname + (port ? ':' + port : '')
+    }
+
+    function _getAuthMeta (transition) {
+        var auth,
+            authRoutes;
+
+        if (transition.to) {
+            auth = transition.to.auth;
+        } else {
+            authRoutes = transition.matched.filter(function (route) {
+                return route.meta.hasOwnProperty('auth');
+            });
+
+            // matches the nested route, the last one in the list
+            if (authRoutes.length) {
+                auth = authRoutes[authRoutes.length - 1].meta.auth;
+            }
+        }
+
+        return auth;
+    }
+
+    function _setTransitions (transition) {
+        __transitionPrev = __transitionThis;
+        __transitionThis = transition;
+    }
+
+    function _processInvalidToken(res, transition) {
+        var auth,
+            redirect = transition.path;
+
+        if (!this.options.http._invalidToken) {
+            return;
+        }
+
+        if (!this.options.http._invalidToken.call(this, res)) {
+            return;
+        }
+
+        if (transition) {
+            auth = this.options.getAuthMeta(transition);
+        }
+
+        if (auth) {
+            redirect = auth.redirect || this.options.authRedirect;
+        }
+
+        this.options.logoutProcess.call(this, res, {redirect: redirect});
     }
 
     function _fetchPerform(data) {
@@ -444,6 +487,8 @@ module.exports = function () {
         tokenExpired:       _tokenExpired,
         check:              _check,
         checkAuthenticated: _checkAuthenticated,
+        getAuthMeta:        _getAuthMeta,
+        setTransitions:     _setTransitions,
 
         readyCallback:      null,
 
@@ -526,13 +571,13 @@ module.exports = function () {
         }
 
         // Set refresh interval.
-        if (this.options.refreshData.interval && this.options.refreshData.interval > 0) {
-            setInterval(function () {
-                if (this.options.refreshData.enabled && !this.options.tokenExpired.call(this)) {
-                    this.options.refreshPerform.call(this, {});
-                }
-            }.bind(this), this.options.refreshData.interval * 1000 * 60); // In minutes.
-        }
+        // if (this.options.refreshData.interval && this.options.refreshData.interval > 0) {
+        //     setInterval(function () {
+        //         if (this.options.refreshData.enabled && !this.options.tokenExpired.call(this)) {
+        //             this.options.refreshPerform.call(this, {});
+        //         }
+        //     }.bind(this), this.options.refreshData.interval * 1000 * 60); // In minutes.
+        // }
 
         // Init interceptors.
         this.options.router._beforeEach.call(this, this.options.routerBeforeEach, this.options.transitionEach);

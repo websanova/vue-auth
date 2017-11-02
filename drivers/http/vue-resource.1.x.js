@@ -18,12 +18,10 @@ module.exports = {
         });
     },
 
-    _invalidToken: function (res) {
-        
-        // Removed - should be handled by the app as there are too many considerations here for checking this.
-        // if (res.status === 401) {
-        //     this.options.logoutProcess.call(this, res, {redirect: this.options.authRedirect});
-        // }
+    _invalidToken: function (res, transition) {
+        if (res.status === 401) {
+            return true;
+        }
     },
 
     _httpData: function (res) {
