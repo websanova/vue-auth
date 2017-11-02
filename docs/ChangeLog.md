@@ -2,6 +2,8 @@
 
 ### v2.19.x-beta
 
+ * Restore auto refresh interval.
+ * Add support for promises.
  * Update to handle failed token redirects internally (rather than requiring additional interceptors).
 
 ### v2.18.x-beta

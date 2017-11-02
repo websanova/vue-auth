@@ -8,7 +8,7 @@ module.exports = function () {
 
     var __transitionPrev = null,
         __transitionThis = null,
-        __transitionRedirecType = null;
+        __transitionRedirectType = null;
 
     function __duckPunch(methodName, data) {
         var _this = this,
@@ -91,27 +91,27 @@ module.exports = function () {
 
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array)) {
             if ( ! this.check()) {
-                __transitionRedirecType = 401;
+                __transitionRedirectType = 401;
                 cb.call(this, authRedirect);
             }
             else if (routeAuth.constructor === Array && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
-                __transitionRedirecType = 403;
+                __transitionRedirectType = 403;
                 cb.call(this, forbiddenRedirect);
             }
             else {
-                this.watch.redirect = __transitionRedirecType ? {type: __transitionRedirecType, from: __transitionPrev, to: __transitionThis} : null;
-                __transitionRedirecType = null;
+                this.watch.redirect = __transitionRedirectType ? {type: __transitionRedirectType, from: __transitionPrev, to: __transitionThis} : null;
+                __transitionRedirectType = null;
 
                 return cb();
             }
         }
         else if (routeAuth === false && this.check()) {
-            __transitionRedirecType = 404;
+            __transitionRedirectType = 404;
             cb.call(this, notFoundRedirect);
         }
         else {
-            this.watch.redirect = __transitionRedirecType ? {type: __transitionRedirecType, from: __transitionPrev, to: __transitionThis} : null;
-            __transitionRedirecType = null;
+            this.watch.redirect = __transitionRedirectType ? {type: __transitionRedirectType, from: __transitionPrev, to: __transitionThis} : null;
+            __transitionRedirectType = null;
 
             return cb();
         }
