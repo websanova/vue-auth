@@ -140,7 +140,7 @@ Vue.http.interceptors.push(function(request, next) {
         
         if (
             res.status === 401 &&
-            ['UnauthorizedAccess', 'InvliadToken'].indexOf(res.data.code) > -1
+            ['UnauthorizedAccess', 'InvalidToken'].indexOf(res.data.code) > -1
         ) {
             Vue.auth.logout({
                 redirect: {name: 'auth-login'}
