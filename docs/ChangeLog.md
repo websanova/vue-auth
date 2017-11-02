@@ -1,9 +1,12 @@
 # Change Log
 
-### v2.19.x-beta
+### v2.20.x-beta
 
  * Restore auto refresh interval.
  * Add support for promises.
+
+### v2.19.x-beta
+
  * Update to handle failed token redirects internally (rather than requiring additional interceptors).
 
 ### v2.18.x-beta
