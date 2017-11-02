@@ -22,13 +22,13 @@ module.exports = function () {
             _this.options[methodName + 'Process'].call(_this, res, data);
         };
 
-        this.options.http._http.call(this, data);
+        return this.options.http._http.call(this, data);
     }
 
     function __bindContext(methodName, data) {
         var _auth = this.$auth;
 
-        _auth.options[methodName + 'Perform'].call(_auth, _auth.options.router._bindData.call(_auth, data, this));
+        return _auth.options[methodName + 'Perform'].call(_auth, _auth.options.router._bindData.call(_auth, data, this));
     }
 
     // Overrideable
@@ -250,7 +250,7 @@ module.exports = function () {
             _fetchProcess.call(this, {}, data);
         }
         else {
-            __duckPunch.call(this, 'fetch', data);
+            return __duckPunch.call(this, 'fetch', data);
         }
     }
 
@@ -264,7 +264,7 @@ module.exports = function () {
     }
 
     function _refreshPerform(data) {
-        __duckPunch.call(this, 'refresh', data);
+        return __duckPunch.call(this, 'refresh', data);
     }
 
     function _refreshProcess(res, data) {
@@ -272,7 +272,7 @@ module.exports = function () {
     }
 
     function _registerPerform(data) {
-        __duckPunch.call(this, 'register', data);
+        return __duckPunch.call(this, 'register', data);
     }
 
     function _registerProcess(res, data) {
@@ -291,7 +291,7 @@ module.exports = function () {
     }
 
     function _loginPerform(data) {
-        __duckPunch.call(this, 'login', data);
+        return __duckPunch.call(this, 'login', data);
     }
 
     function _loginProcess(res, data) {
@@ -317,7 +317,7 @@ module.exports = function () {
         data = __utils.extend(this.options.logoutData, [data || {}]);
 
         if (data.makeRequest) {
-            __duckPunch.call(this, 'logout', data);
+            return __duckPunch.call(this, 'logout', data);
         }
         else {
             this.options.logoutProcess.call(this, null, data);
@@ -357,7 +357,7 @@ module.exports = function () {
             if (success) { success.call(this); }
         };
 
-        __duckPunch.call(this, 'impersonate', data);
+        return __duckPunch.call(this, 'impersonate', data);
     }
 
     function _impersonateProcess(res, data) {
@@ -379,7 +379,7 @@ module.exports = function () {
         data = __utils.extend(this.options.unimpersonateData, [data || {}]);
 
         if (data.makeRequest) {
-            __duckPunch.call(this, 'unimpersonate', data);
+            return __duckPunch.call(this, 'unimpersonate', data);
         }
         else {
             this.options.unimpersonateProcess.call(this, null, data);
@@ -623,35 +623,35 @@ module.exports = function () {
     };
 
     Auth.prototype.fetch = function (data) {
-        __bindContext.call(this, 'fetch', data);
+        return __bindContext.call(this, 'fetch', data);
     };
 
     Auth.prototype.refresh = function (data) {
-        __bindContext.call(this, 'refresh', data);
+        return __bindContext.call(this, 'refresh', data);
     };
 
     Auth.prototype.register = function (data) {
-        __bindContext.call(this, 'register', data);
+        return __bindContext.call(this, 'register', data);
     };
 
     Auth.prototype.login = function (data) {
-        __bindContext.call(this, 'login', data);
+        return __bindContext.call(this, 'login', data);
     };
 
     Auth.prototype.logout = function (data) {
-        __bindContext.call(this, 'logout', data);
+        return __bindContext.call(this, 'logout', data);
     };
 
     Auth.prototype.impersonate = function (data) {
-        __bindContext.call(this, 'impersonate', data);
+        return __bindContext.call(this, 'impersonate', data);
     };
 
     Auth.prototype.unimpersonate = function (data) {
-        __bindContext.call(this, 'unimpersonate', data);
+        return __bindContext.call(this, 'unimpersonate', data);
     };
 
     Auth.prototype.oauth2 = function (data) {
-        __bindContext.call(this, 'oauth2', data);
+        return __bindContext.call(this, 'oauth2', data);
     }
 
     Auth.prototype.enableImpersonate = function () {

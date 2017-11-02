@@ -29,7 +29,7 @@ module.exports = {
     },
 
     _http: function (data) {
-        this.options.Vue.http(data).then(data.success, data.error);
+        return this.options.Vue.http(data).then(data.success, data.error);
     },
 
     _getHeaders: function (res) {

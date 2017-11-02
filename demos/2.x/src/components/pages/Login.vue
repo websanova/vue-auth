@@ -65,15 +65,14 @@
                     data: this.data.body, // Axios
                     rememberMe: this.data.rememberMe,
                     redirect: {name: redirect ? redirect.from.name : 'account'},
-                    fetchUser: this.data.fetchUser,
-                    success() {
-                        console.log('success ' + this.context);
-                    },
-                    error(res) {
-                        console.log('error ' + this.context);
+                    fetchUser: this.data.fetchUser
+                })
+                .then(() => {
+                    console.log('success ' + this.context);
+                }, (res) => {
+                    console.log('error ' + this.context);
 
-                        this.error = res.data;
-                    }
+                    this.error = res.data;
                 });
             }
         }
