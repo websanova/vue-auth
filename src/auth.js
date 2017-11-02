@@ -571,13 +571,13 @@ module.exports = function () {
         }
 
         // Set refresh interval.
-        // if (this.options.refreshData.interval && this.options.refreshData.interval > 0) {
-        //     setInterval(function () {
-        //         if (this.options.refreshData.enabled && !this.options.tokenExpired.call(this)) {
-        //             this.options.refreshPerform.call(this, {});
-        //         }
-        //     }.bind(this), this.options.refreshData.interval * 1000 * 60); // In minutes.
-        // }
+        if (this.options.refreshData.interval && this.options.refreshData.interval > 0) {
+            setInterval(function () {
+                if (this.options.refreshData.enabled && !this.options.tokenExpired.call(this)) {
+                    this.options.refreshPerform.call(this, {});
+                }
+            }.bind(this), this.options.refreshData.interval * 1000 * 60); // In minutes.
+        }
 
         // Init interceptors.
         this.options.router._beforeEach.call(this, this.options.routerBeforeEach, this.options.transitionEach);
