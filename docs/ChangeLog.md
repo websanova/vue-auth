@@ -1,5 +1,9 @@
 # Change Log
 
+### v2.19.x-beta
+
+ * Update to handle failed token redirects internally (rather than requiring additional interceptors).
+
 ### v2.18.x-beta
  
  * Fix compile issue when using `function` shorthand.
