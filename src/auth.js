@@ -214,8 +214,22 @@ module.exports = function () {
     }
 
     function _processInvalidToken(res, transition) {
-        var auth,
+        var i,
+            auth,
+            query = '',
             redirect = transition.path;
+
+        // Make sure we also attach any existing
+        // query parameters on the path.
+        if (redirect && transition.query) {
+            for (i in transition.query) {
+                if (transition.query[i]) {
+                    query += '&' + i + '=' + transition.query[i];
+                }
+            }
+
+            redirect += '?' + query.substring(1);
+        }
 
         if (!this.options.http._invalidToken) {
             return;
