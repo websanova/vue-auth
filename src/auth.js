@@ -341,6 +341,9 @@ module.exports = function () {
     function _logoutProcess(res, data) {
         __cookie.remove.call(this, 'rememberMe');
 
+        __cookie.remove.call(this, this.options.tokenImpersonateName);
+        __cookie.remove.call(this, this.options.tokenDefaultName);
+
         __token.remove.call(this, this.options.tokenImpersonateName);
         __token.remove.call(this, this.options.tokenDefaultName);
 
