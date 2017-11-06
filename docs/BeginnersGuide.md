@@ -74,7 +74,7 @@ For ALL http requests:
 
 If a request is made through a `vue-auth` method some additional steps may be carried out.
 
-* For instance `rememebrMe` when login or register is called.
+* For instance `rememberMe` when login or register is called.
 * Refer to each individual methods documentation for more properties that can be set.
 
 
