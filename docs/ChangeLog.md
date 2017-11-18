@@ -2,7 +2,6 @@
 
 ### v2.20.x-beta
 
- * Update google oauth2 to `google-plus` `googlePlus`.
  * Updated / consolidated documentation.
  * Restore auto refresh interval.
  * Add support for promises.
