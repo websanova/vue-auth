@@ -155,12 +155,3 @@ Vue.http.interceptors.push(function(request, next) {
     });
 });
 ```
-
-
-## Common Gotchas
-
-* A common issue is the Axios error response. When doing `console.log(error)` it will output the error string. Use `console.log(error.response)` instead.
-
-* When making requests (typically) it should be a relative path without a `/` in front. For example `auth/user`, `products`, `items/123`.
-
-

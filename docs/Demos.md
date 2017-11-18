@@ -43,7 +43,6 @@ https://192.168.10.10:8003
 To connect to the demos you would connect to that boxes IP address followed by the port.
 
 
-
 ## Changing Local Path of Demo App
 
 The `npm run demo` is just a short cut to a command in the `scripts` section of the `package.json`.

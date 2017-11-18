@@ -29,7 +29,34 @@ The `vue-auth` plugin works with the `vue-router` plugin. Setting an `auth` fiel
 * An object must also be used when using `$auth.check({some: 'name'})` where the value can be a `String` or `Array`.
 
 
-### Redirects
+## Default Redirects
+
+There are three main global redirects in the plugin.
+
+The can all be overridden during the plugin initialization.
+
+### authRedirect: `{path: '/login'}`
+
+Redirect to use if authentication is required on a route.
+
+Basically if auth is set to anything other than `undefined` or `false`.
+
+### forbiddenRedirect: `{path: '/403'}`
+
+Redirect to use if route is forbidden.
+
+Will trigger if the user object's role property does not match up with the auth value.
+
+### notFoundRedirect: `{path: '/404'}`
+
+Redirect to use if route is not found (set to `false`).
+
+Typically used to hide pages while logged in. For instance we don't want the user to access a login, register page while they are authenticated.
+
+So accessing it will be as if it's not there, hence a `404 Not Found`.
+
+
+## Route Redirects
 
 Each individual route can also define it's own specific redirect.
 
@@ -48,6 +75,7 @@ There is also a secondary `redirectForbidden` field that can be set for situatio
 ```
 auth: {roles: 'admin', redirect: '/admin/login', forbiddenRedirect: '/admin/403'}
 ```
+
 
 ## Examples
 

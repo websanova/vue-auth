@@ -2,6 +2,7 @@
 
 ### v2.20.x-beta
 
+ * Updated / consolidated documentation.
  * Restore auto refresh interval.
  * Add support for promises.
 
