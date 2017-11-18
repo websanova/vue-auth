@@ -480,7 +480,7 @@ module.exports = function () {
         unimpersonateData:  {url: 'auth/unimpersonate', method: 'POST', redirect: '/admin', makeRequest: false},
 
         facebookData:       {url: 'auth/facebook',      method: 'POST', redirect: '/'},
-        googleData:         {url: 'auth/google',        method: 'POST', redirect: '/'},
+        googlePlusData:         {url: 'auth/google-plus',        method: 'POST', redirect: '/'},
 
         facebookOauth2Data: {
             url: 'https://www.facebook.com/v2.5/dialog/oauth',
@@ -488,9 +488,9 @@ module.exports = function () {
             clientId: '',
             scope: 'email'
         },
-        googleOauth2Data: {
+        googlePlusOauth2Data: {
             url: 'https://accounts.google.com/o/oauth2/auth',
-            redirect: function () { return this.options.getUrl() + '/login/google'; },
+            redirect: function () { return this.options.getUrl() + '/login/google-plus'; },
             clientId: '',
             scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
         },
