@@ -69,7 +69,7 @@ module.exports = function () {
             this.options.logoutProcess.call(this, null, {});
         }
 
-        if (this.options.refreshData.enabled && this.options.tokenExpired.call(this)) {
+        if (this.options.refreshData.enabled && ! this.watch.loaded && __token.get.call(this)) {
             this.options.refreshPerform.call(this, {
                 success: function () {
                     this.options.checkAuthenticated.call(_this, cb);
@@ -175,7 +175,7 @@ module.exports = function () {
     }
 
     function _tokenExpired () {
-        return ! this.watch.loaded && __token.get.call(this);
+        return ! __token.get.call(this);
     }
 
     function _cookieDomain () {
