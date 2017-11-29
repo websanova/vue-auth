@@ -122,6 +122,17 @@ Vue.use(require('vue-auth'), {
 ```
 
 
+## Multiple Async Calls with Token Expired
+
+A common issue that comes up is with a token expiring during of many calls already made to a server api.
+
+There are a couple ways to handle it, but this is not really Vue / Auth issue.
+
+1) We can add an intercept to repeat the request. However this is a bit messy as even the repeat could potentially fail. It would also require reimplementation if we are building multiple apps for browser and mobile.
+
+2) Add a grace period to expired tokens on the server. Typically token based authentication like JWT will be setup to have expired tokens still be valid for a minute or two after being invalidated.
+
+
 ## Static Pages
 
 There is a case where pages are fully pre-rendered in a traditional way. For instance using Laravel that delivers a rendered html page.
