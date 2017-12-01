@@ -55,6 +55,6 @@ module.exports = {
   },
 
   _setHeaders: function (req, headers) {
-    req.headers.common = Object.assign(req.headers.common, headers);
+    req.headers.common = Object.assign({}, req.headers.common, headers);
   }
 }
