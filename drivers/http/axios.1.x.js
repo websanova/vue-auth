@@ -43,7 +43,11 @@ module.exports = {
   },
 
   _http: function (data) {
-    return this.options.Vue.axios(data).then(data.success, data.error);
+    var http = this.options.Vue.axios(data);
+
+    http.then(data.success, data.error);
+
+    return http;
   },
 
   _getHeaders: function (res) {
