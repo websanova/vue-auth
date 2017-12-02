@@ -1,5 +1,10 @@
 # Change Log
 
+### v2.21.x-beta
+ 
+ * Allow `params` attribute for oauth 2 url parameters (with full backwards compatibility).
+ * Fix proper promise return for Axios driver.
+
 ### v2.20.x-beta
 
  * Updated / consolidated documentation.

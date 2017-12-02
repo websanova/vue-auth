@@ -419,9 +419,11 @@ module.exports = function () {
     }
 
     function _oauth2Perform(data) {
-        var state = {},
-            params = '',
-            query = {};
+        var key,
+            state = {},
+            params = '';
+
+        data = data || {};
 
         if (data.code === true) {
             data = __utils.extend(this.options[data.provider + 'Data'], [data]);
@@ -441,17 +443,28 @@ module.exports = function () {
 
             this.options.loginPerform.call(this, data);
         } else {
+            data.params = __utils.extend(this.options[data.provider + 'Oauth2Data'].params, [data.params || {}]);
             data = __utils.extend(this.options[data.provider + 'Oauth2Data'], [data]);
 
-            data.redirect = data.redirect.call(this);
+            // Backwards compatibility.
+            data.params.redirect_uri = data.redirect || data.params.redirect_uri;
+            data.params.client_id = data.clientId || data.params.client_id;
+            data.params.response_type = data.response_type || data.params.response_type || 'code';
+            data.params.scope = data.scope || data.params.scope;
+            data.params.state = data.state || data.params.state || {};
 
-            data.state = data.state || {};
-            data.state.rememberMe = data.rememberMe === true;
-            data.response_type = data.response_type || 'code';
+            if (typeof data.params.redirect_uri === 'function') {
+                data.params.redirect_uri = data.params.redirect_uri.call(this);
+            }
 
-            params = '?client_id=' + data.clientId + '&redirect_uri=' + data.redirect + '&scope=' + data.scope + '&response_type=' + data.response_type + '&state=' + encodeURIComponent(JSON.stringify(data.state));
+            data.params.state.rememberMe = data.rememberMe === true;
+            data.params.state = encodeURIComponent(JSON.stringify(data.params.state));
 
-            window.location = data.url + params;
+            for (key in data.params) {
+                params += '&' + key + '=' + data.params[key];
+            }
+
+            window.location = data.url + '?' + params;
         }
     }
 
@@ -484,15 +497,19 @@ module.exports = function () {
 
         facebookOauth2Data: {
             url: 'https://www.facebook.com/v2.5/dialog/oauth',
-            redirect: function () { return this.options.getUrl() + '/login/facebook'; },
-            clientId: '',
-            scope: 'email'
+            params: {
+                client_id: '',
+                redirect_uri: function () { return this.options.getUrl() + '/login/facebook'; },
+                scope: 'email'
+            }
         },
         googleOauth2Data: {
             url: 'https://accounts.google.com/o/oauth2/auth',
-            redirect: function () { return this.options.getUrl() + '/login/google'; },
-            clientId: '',
-            scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
+            params: {
+                client_id: '',
+                redirect_uri: function () { return this.options.getUrl() + '/login/google'; },
+                scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
+            }
         },
 
         // Internal

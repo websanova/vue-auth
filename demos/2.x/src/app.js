@@ -89,7 +89,8 @@ Vue.router = new VueRouter({
 // import axios from 'axios';
 // import VueAxios from 'vue-axios';
 // Vue.use(VueAxios, axios);
-// Vue.axios.defaults.baseURL = 'https://api-demo.websanova.com/api/v1';
+// Vue.axios.defaults.baseURL = 'https://hs.api.laravel-demo.com/api/v1';
+// Vue.axios.defaults.headers.common['Test'] = 'text/html';
 
 // Http 
 Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
@@ -105,7 +106,7 @@ Vue.use(require('../../../src/index.js'), {
         clientId: '196729390739201'
     },
     googleOauth2Data: {
-        clientId: '337636458732-tatve7q4qo4gnpfcenbv3i47id4offbg.apps.googleusercontent.com'
+        clientId: '547886745924-4vrbhl09fr3t771drtupacct6f788566.apps.googleusercontent.com'
     }
 });
 

@@ -78,12 +78,12 @@ Pretty much all methods are overridable now in case there any specific issues wi
 
 * Default  request data and redirect.
 
-### facebookOauth2Data: `{url: 'https://www.facebook.com/v2.5/dialog/oauth', redirect: function () { return this.options.getUrl() + '/login/facebook'; }, clientId: '', scope: 'email'}`
+### facebookOauth2Data: `{url: 'https://www.facebook.com/v2.5/dialog/oauth', params: {redirect_uri: function () { return this.options.getUrl() + '/login/facebook'; }, client_id: '', scope: 'email'}}`
 
 * Default Oauth2 data that ships with plugin.
 * These can be overridden when calling `oauth2()` method or in the plugin options on init.
 
-### googleOauth2Data: `{url: 'https://accounts.google.com/o/oauth2/auth', redirect: function () { return this.options.getUrl() + '/login/google'; }, clientId: '', scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'}`
+### googleOauth2Data: `{url: 'https://accounts.google.com/o/oauth2/auth', params: {redirect_uri: function () { return this.options.getUrl() + '/login/google'; }, client_id: '', scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'}}`
 
 * Same as facebookOauth2Data.
 

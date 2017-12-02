@@ -260,6 +260,10 @@ if (this.$route.query.code) {
 else {
     this.$auth.oauth2({
         provider: 'facebook',
+        rememberMe: true,
+        params: {
+            // Any key/value pairs will be appended to url.
+        }
     });
 }
 ```
