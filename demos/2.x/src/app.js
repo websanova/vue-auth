@@ -89,8 +89,7 @@ Vue.router = new VueRouter({
 // import axios from 'axios';
 // import VueAxios from 'vue-axios';
 // Vue.use(VueAxios, axios);
-// Vue.axios.defaults.baseURL = 'https://hs.api.laravel-demo.com/api/v1';
-// Vue.axios.defaults.headers.common['Test'] = 'text/html';
+// Vue.axios.defaults.baseURL = 'https://api-demo.websanova.com/api/v1';
 
 // Http 
 Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
