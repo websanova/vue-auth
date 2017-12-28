@@ -23,7 +23,7 @@ So making a call like (with `vue-resource`):
 
 ```
 $auth.login({
-    body: {eemail: 'email@example.com', password: 'abcd1234'}
+    body: {email: 'email@example.com', password: 'abcd1234'}
 });
 ```
 
@@ -33,7 +33,7 @@ Is actually just forwarding to this:
 $http({
     method: 'get',
     url: 'auth/login',
-    body: {eemail: 'email@example.com', password: 'abcd1234'}
+    body: {email: 'email@example.com', password: 'abcd1234'}
 });
 ```
 
