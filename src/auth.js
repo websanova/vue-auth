@@ -89,12 +89,12 @@ module.exports = function () {
 
         routeAuth = __utils.toArray((routeAuth || '').roles || routeAuth);
 
-        if (routeAuth && (routeAuth === true || routeAuth.constructor === Array)) {
+        if (routeAuth && (routeAuth === true || routeAuth.constructor === Array || __utils.isObject(routeAuth))) {
             if ( ! this.check()) {
                 __transitionRedirectType = 401;
                 cb.call(this, authRedirect);
             }
-            else if (routeAuth.constructor === Array && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
+            else if ((routeAuth.constructor === Array || __utils.isObject(routeAuth)) && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
                 __transitionRedirectType = 403;
                 cb.call(this, forbiddenRedirect);
             }

@@ -70,6 +70,7 @@ module.exports = (function (){
     return {
         extend: extend,
         toArray: toArray,
+        isObject: isObject,
         compare: compare
     };
 })();

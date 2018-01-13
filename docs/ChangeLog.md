@@ -2,6 +2,7 @@
 
 ### v2.21.x-beta
  
+ * Fix bug with object compare for roles vars.
  * Allow `params` attribute for oauth 2 url parameters (with full backwards compatibility).
  * Fix proper promise return for Axios driver.
 
