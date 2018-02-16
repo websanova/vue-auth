@@ -2,6 +2,7 @@
 
 ### v2.21.x-beta
  
+ * Add localhost check for cookies (IE Fix).
  * Add frisbee driver.
  * Fix bug with object compare for roles vars.
  * Allow `params` attribute for oauth 2 url parameters (with full backwards compatibility).
