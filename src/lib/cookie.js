@@ -3,8 +3,12 @@ module.exports = (function () {
     function setCookie (name, value, timeOffset) {
         var domain = this.options.cookieDomain(),
             expires = (new Date((new Date()).getTime() + timeOffset)).toUTCString();
+        if (domain === 'localhost'){
+            document.cookie = name + '=' + value + '; Expires=' + expires + ';';
+        } else {
+            document.cookie = name + '=' + value + '; Expires=' + expires + '; Path=/; Domain=' + domain + ';';
+        }
 
-        document.cookie = name + '=' + value + '; Expires=' + expires + '; Path=/; Domain=' + domain + ';';
     }
 
     return {
