@@ -19,6 +19,7 @@ The `vue-auth` plugin works with the `vue-router` plugin. Setting an `auth` fiel
 
 ### auth: `Array` `String`
 
+* Must be an array of strings. For this to work both the checks need to be this way.
 * The user must be logged in. Additionally the string or array will be checked against the users roles.
 * Note that the users `roles` variable can be set in the options.
 
@@ -77,6 +78,22 @@ auth: {roles: 'admin', redirect: '/admin/login', forbiddenRedirect: '/admin/403'
 ```
 
 
+## Comparing Roles
+
+The following user `role` to `$auth.check` or `meta.auth` combinations should work.
+
+Note: An `Array` of `String` can be compared with a `String` and an `Object` with an `Object`. But not an `Array` of `Object`.
+
+```
+'user' => 'user'
+'user' => ['user']
+['user'] => 'user'
+{role: 'user'} => {role: 'user'}
+{role: 'user'} => {role: ['user']}
+{role: ['user']} => {role: 'user'}
+```
+
+
 ## Examples
 
 **Vue 1.x**
@@ -100,7 +117,7 @@ Vue.router.map({
         component: require('./Account')
     },
     '/private': {
-        auth: [{"people": "administrator", "people": "superadmin"}],
+        auth: {"people": "administrator", "products": "superadmin"},
         component: require('./Account')
     },
     '/login': {
@@ -137,7 +154,7 @@ Vue.router = new VueRouter({
         component: require('./Account')
     }, {
         path: '/private',
-        meta: {auth: [{"people": "administrator", "people": "superadmin"}]},
+        meta: {auth: {"people": "administrator", "products": "superadmin"}},
         component: require('./Account')
     }, {
         path: '/login',
