@@ -217,7 +217,7 @@ module.exports = function () {
         var i,
             auth,
             query = '',
-            redirect = transition.path;
+            redirect = transition && transition.path;
 
         // Make sure we also attach any existing
         // query parameters on the path.
