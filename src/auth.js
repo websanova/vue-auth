@@ -257,6 +257,8 @@ module.exports = function () {
         data.error = function (res) {
             _this.watch.loaded = true;
 
+            if (this.options.fetchData.error) { this.options.fetchData.error.call(this, res); }
+
             if (error) { error.call(_this, res); }
         };
 
@@ -273,6 +275,8 @@ module.exports = function () {
         this.watch.data = this.options.parseUserData.call(this, this.options.http._httpData.call(this, res));
         
         this.watch.loaded = true;
+
+        if (this.options.fetchData.success) { this.options.fetchData.success.call(this, res); }
 
         if (data.success) { data.success.call(this, res); }
     }
