@@ -32,3 +32,31 @@ The response from Axios is contained within the response object. You should try 
 ### Why is the body param not sending my data?
 
 Note that `vue-auth` simply forwards all the arguments into whatever http plugin/module you are using. So for `vue-axios` it will be a `data` parameter and for `vue-resource` it's a `body` parameter.
+
+
+## Manually Setting User
+
+Sometimes you may need to set your own user manually via some other method, perhaps from some token.
+
+
+~~~
+Vue.use(VueAuth, {
+
+    ...
+
+    loginData: {
+        fetchUser: false
+    },
+
+    fetchData: {
+        enabled: false,
+        success: function () {
+            var token = Vue.auth.token();
+            
+            Vue.auth.user(/* user object */);
+        }
+    },
+
+    ...
+});
+~~~
