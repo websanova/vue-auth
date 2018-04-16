@@ -84,15 +84,14 @@ The following user `role` to `$auth.check` or `meta.auth` combinations should wo
 
 Note: An `Array` of `String` can be compared with a `String` and an `Object` with an `Object`. But not an `Array` of `Object`.
 
-```
-'user' => 'user'
-'user' => ['user']
-['user'] => 'user'
-{role: 'user'} => {role: 'user'}
-{role: 'user'} => {role: ['user']}
-{role: ['user']} => {role: 'user'}
-```
-
+| Backend Response| Equal | Frontend  |
+| ------ | ------ | ------ |
+| 'user' |=| 'user' |
+| 'user' |=| ['user'] |
+| ['user'] |=| 'user' |
+| {role: 'user'} |=| {role: 'user'} |
+| {role: 'user'} |=| {role: ['user']} |
+| {role: ['user']} |=| {role: 'user'} |
 
 ## Examples
 
