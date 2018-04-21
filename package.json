@@ -14,7 +14,7 @@
 
   "main": "src/index.js",
 
-  "version": "2.21.6-beta",
+  "version": "2.21.7-beta",
 
   "repository": {
     "type": "git",
