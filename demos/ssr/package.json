@@ -44,7 +44,7 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
-    "@websanova/vue-auth": "2.21.7-beta",
+    "@websanova/vue-auth": "2.21.8-beta",
     "axios": "^0.16.2",
     "compression": "^1.6.2",
     "es6-promise": "^4.1.0",
