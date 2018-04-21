@@ -369,13 +369,13 @@ module.exports = function () {
 
         success = data.success;
 
-        data.success = function () {
+        data.success = function (res) {
 
             // Reshuffle tokens here...
             __token.set.call(this, this.options.tokenImpersonateName, this.token.call(this));
             __token.set.call(this, this.options.tokenDefaultName, token);
 
-            if (success) { success.call(this); }
+            if (success) { success.call(this, res); }
         };
 
         return __duckPunch.call(this, 'impersonate', data);
