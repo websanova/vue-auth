@@ -87,7 +87,7 @@ module.exports = function () {
             forbiddenRedirect = (routeAuth || '').forbiddenRedirect || (routeAuth || '').redirect || this.options.forbiddenRedirect,
             notFoundRedirect = (routeAuth || '').redirect || this.options.notFoundRedirect;
 
-        routeAuth = __utils.toArray((routeAuth || '').roles || routeAuth);
+        routeAuth = __utils.toArray((routeAuth || '').roles !== undefined ? routeAuth.roles : routeAuth);
 
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array || __utils.isObject(routeAuth))) {
             if ( ! this.check()) {
