@@ -257,7 +257,7 @@ module.exports = function () {
         data.error = function (res) {
             _this.watch.loaded = true;
 
-            if (this.options.fetchData.error) { this.options.fetchData.error.call(this, res); }
+            if (_this.options.fetchData.error) { _this.options.fetchData.error.call(_this, res); }
 
             if (error) { error.call(_this, res); }
         };
