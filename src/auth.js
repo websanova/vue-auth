@@ -317,7 +317,7 @@ module.exports = function () {
 
         __cookie.remember.call(this, data.rememberMe);
 
-        this.authenticated = null;
+        this.watch.authenticated = null;
 
         this.options.fetchPerform.call(this, {
             enabled: data.fetchUser,
