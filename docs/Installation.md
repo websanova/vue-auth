@@ -9,7 +9,7 @@
 
 The `router` and `http` drivers MUST be set. The drivers are quite small so can be replaced or overridden as necessary.
 
-**Note that the version in the driver file should denote the version it is compatible with. So `router.2x.` means it's for router 2.x.**
+**Note that the version in the driver file should denote the version it is compatible with. So `router.2.x.` means it's for router 2.x.**
 
 ```javascript
 Vue.http.options.root = 'https://api-demo.websanova.com/api/v1';
