@@ -468,7 +468,7 @@ module.exports = function () {
                 params += '&' + key + '=' + data.params[key];
             }
 
-            window.location = data.url + '?' + params;
+            window.location = data.url + '?' + params.substring(1);
         }
     }
 
