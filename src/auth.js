@@ -462,10 +462,10 @@ module.exports = function () {
             }
 
             data.params.state.rememberMe = data.rememberMe === true;
-            data.params.state = encodeURIComponent(JSON.stringify(data.params.state));
+            data.params.state = JSON.stringify(data.params.state);
 
             for (key in data.params) {
-                params += '&' + key + '=' + data.params[key];
+                params += '&' + key + '=' + encodeURIComponent(data.params[key]);
             }
 
             window.location = data.url + '?' + params.substring(1);
