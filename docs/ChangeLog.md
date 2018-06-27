@@ -2,6 +2,7 @@
 
 ### v2.21.x-beta
  
+ * Add optional key prameter for `$auth.check(data, key)`.
  * Add localhost check for cookies (IE Fix).
  * Add frisbee driver.
  * Fix bug with object compare for roles vars.

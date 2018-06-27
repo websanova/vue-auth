@@ -61,10 +61,12 @@ this.$auth.user(userObject);
 
 * Check to see if the user is logged in.
 * It also accepts arguments to check for a specific role or set of roles.
+* Accepts optional `key` parameter to use instead of the default `rolesVar`.
 
 ```html
 <a v-if="!$auth.check()" v-link="'/login'">login</a>
 <a v-if="$auth.check('admin')">admin</a>
+<a v-if="$auth.check('reports-post', 'perms')">reports</a>
 <a v-if="$auth.check(['admin', 'manager'])">manage</a>
 <a v-if="$auth.check()" v-on:click="$auth.logout()">logout</a>
 ```
