@@ -60,3 +60,16 @@ Vue.use(VueAuth, {
     ...
 });
 ~~~
+
+## Backend
+
+### Having issues with token not being set.
+
+A common issue is that the proper headers have not been set on the API.
+
+This will depend greatly on the setup, but some common/standard headers might look like this.
+
+~~~
+Access-Control-Allow-Headers: Authorization;
+Access-Control-Expose-Headers: Authorization;
+~~~

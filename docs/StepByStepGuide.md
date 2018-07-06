@@ -155,3 +155,15 @@ Vue.http.interceptors.push(function(request, next) {
     });
 });
 ```
+
+## Headers
+
+Make sure you are exposing the proper headers on the backend.
+
+In the case of using JTW `Authorization` header you might have some headers like so.
+
+```
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS;
+Access-Control-Allow-Headers: Authorization;
+Access-Control-Expose-Headers: Authorization;
+```
