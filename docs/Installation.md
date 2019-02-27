@@ -52,7 +52,7 @@ Vue.axios.post(...).then(res => {
 ## Install 1.x
 
 ```javascript
-> npm install @websanova/vue-auth
+> npm install @websanova/vue-auth --save
 ```
 
 ```javascript
