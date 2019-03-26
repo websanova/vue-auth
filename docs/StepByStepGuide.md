@@ -160,7 +160,7 @@ Vue.http.interceptors.push(function(request, next) {
 
 Make sure you are exposing the proper headers on the backend.
 
-In the case of using JTW `Authorization` header you might have some headers like so.
+In the case of using JWT `Authorization` header you might have some headers like so.
 
 ```
 Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS;
