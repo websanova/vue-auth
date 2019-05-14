@@ -89,6 +89,18 @@ module.exports = function () {
 
         routeAuth = __utils.toArray((routeAuth || '').roles !== undefined ? routeAuth.roles : routeAuth);
 
+        const params = {
+          $auth: this,
+          to: transition,
+          from: __transitionPrev,
+          next: cb,
+          user: this.watch.data,
+          routeAuth
+        }
+        if (transition.meta !== undefined && typeof transition.meta.checkPermissions === 'function') {
+          routeAuth = transition.meta.checkPermissions(params)
+        }
+
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array || __utils.isObject(routeAuth))) {
             if ( ! this.check()) {
                 __transitionRedirectType = 401;
@@ -128,7 +140,7 @@ module.exports = function () {
         if (req.impersonating === false && this.impersonating()) {
             tokenName = this.options.tokenDefaultName;
         }
-        
+
         token = __token.get.call(this, tokenName);
 
         if (token) {
@@ -273,7 +285,7 @@ module.exports = function () {
     function _fetchProcess(res, data) {
         this.watch.authenticated = true;
         this.watch.data = this.options.parseUserData.call(this, this.options.http._httpData.call(this, res));
-        
+
         this.watch.loaded = true;
 
         if (this.options.fetchData.success) { this.options.fetchData.success.call(this, res); }
@@ -702,7 +714,7 @@ module.exports = function () {
         if (this.impersonating()) {
             this.currentToken = this.options.tokenDefaultName;
         }
-    }; 
+    };
 
     return Auth;
 };
