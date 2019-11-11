@@ -56,6 +56,28 @@ Typically used to hide pages while logged in. For instance we don't want the use
 
 So accessing it will be as if it's not there, hence a `404 Not Found`.
 
+### Redirect callbacks
+
+All redirects can also accept a callback which is passed the transition object.
+One use case for this is transitioning to a catch-all error route. For example:
+
+```js
+forbiddenRedirect: transition => ({
+    name: 'httpError',
+    params: [transition.path],
+}),
+```
+
+Which is defined in `router.js` as:
+
+```js
+{
+  path: '*',
+  name: 'httpError',
+  component: () =>
+    import(/* webpackChunkName: 'httpError' */ './views/HttpError'),
+},
+```
 
 ## Route Redirects
 

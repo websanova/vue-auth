@@ -92,10 +92,18 @@ module.exports = function () {
         if (routeAuth && (routeAuth === true || routeAuth.constructor === Array || __utils.isObject(routeAuth))) {
             if ( ! this.check()) {
                 __transitionRedirectType = 401;
+
+                if (typeof authRedirect === 'function') {
+                    authRedirect = authRedirect(transition);
+                }
                 cb.call(this, authRedirect);
             }
             else if ((routeAuth.constructor === Array || __utils.isObject(routeAuth)) && ! __utils.compare(routeAuth, this.watch.data[this.options.rolesVar])) {
                 __transitionRedirectType = 403;
+
+                if (typeof forbiddenRedirect === 'function') {
+                    forbiddenRedirect = forbiddenRedirect(transition);
+                }
                 cb.call(this, forbiddenRedirect);
             }
             else {
@@ -107,6 +115,10 @@ module.exports = function () {
         }
         else if (routeAuth === false && this.check()) {
             __transitionRedirectType = 404;
+
+            if (typeof notFoundRedirect === 'function') {
+                notFoundRedirect = notFoundRedirect(transition);
+            }
             cb.call(this, notFoundRedirect);
         }
         else {
@@ -128,7 +140,7 @@ module.exports = function () {
         if (req.impersonating === false && this.impersonating()) {
             tokenName = this.options.tokenDefaultName;
         }
-        
+
         token = __token.get.call(this, tokenName);
 
         if (token) {
@@ -273,7 +285,7 @@ module.exports = function () {
     function _fetchProcess(res, data) {
         this.watch.authenticated = true;
         this.watch.data = this.options.parseUserData.call(this, this.options.http._httpData.call(this, res));
-        
+
         this.watch.loaded = true;
 
         if (this.options.fetchData.success) { this.options.fetchData.success.call(this, res); }
@@ -702,7 +714,7 @@ module.exports = function () {
         if (this.impersonating()) {
             this.currentToken = this.options.tokenDefaultName;
         }
-    }; 
+    };
 
     return Auth;
 };
