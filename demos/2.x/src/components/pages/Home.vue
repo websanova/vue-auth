@@ -59,6 +59,8 @@
             },
 
             clearToken() {
+                sessionStorage.removeItem('impersonate_auth_token');
+                sessionStorage.removeItem('default_auth_token');
                 localStorage.removeItem('impersonate_auth_token');
                 localStorage.removeItem('default_auth_token');
                 cookie.remove.call(this.$auth, 'impersonate_auth_token');
@@ -68,6 +70,8 @@
             },
 
             setDudToken() {
+                sessionStorage.setItem('impersonate_auth_token', 'nil');
+                sessionStorage.setItem('default_auth_token', 'nil');
                 localStorage.setItem('impersonate_auth_token', 'nil');
                 localStorage.setItem('default_auth_token', 'nil');
                 cookie.set.call(this.$auth, 'impersonate_auth_token', 'nil');

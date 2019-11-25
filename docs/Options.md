@@ -15,7 +15,7 @@ Pretty much all methods are overridable now in case there any specific issues wi
 
 * The name of the default token stored in local storage.
 
-### tokenStore: `['localStorage', 'cookie']`
+### tokenStore: `['localStorage', 'sessionStorage', 'cookie']`
 
 * Set storage method in order of importance and usage based on availability (from left to right).
 
