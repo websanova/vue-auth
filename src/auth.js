@@ -257,6 +257,10 @@ module.exports = function () {
 
         if (auth) {
             redirect = auth.redirect || this.options.authRedirect;
+
+            if (typeof redirect === 'function') {
+                redirect = redirect(transition);
+            }
         }
 
         this.options.logoutProcess.call(this, res, {redirect: redirect});
