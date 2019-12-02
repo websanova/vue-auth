@@ -70,7 +70,8 @@ module.exports = function () {
         }
 
         if (this.options.refreshData.enabled &&
-            (this.options.tokenExpired.call(this) ||
+            ((this.options.tokenExpired.call(this) && this.watch.loaded)
+            ||
             (! this.watch.loaded && __token.get.call(this)))
         ) {
             this.options.refreshPerform.call(this, {
