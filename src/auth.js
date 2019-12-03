@@ -69,11 +69,7 @@ module.exports = function () {
             this.options.logoutProcess.call(this, null, {});
         }
 
-        if (this.options.refreshData.enabled &&
-            ((this.options.tokenExpired.call(this) && this.watch.loaded)
-            ||
-            (! this.watch.loaded && __token.get.call(this)))
-        ) {
+        if (this.options.refreshData.enabled && ! this.watch.loaded && __token.get.call(this)) {
             this.options.refreshPerform.call(this, {
                 success: function () {
                     this.options.checkAuthenticated.call(_this, cb);
@@ -615,8 +611,10 @@ module.exports = function () {
         // Set refresh interval.
         if (this.options.refreshData.interval && this.options.refreshData.interval > 0) {
             setInterval(function () {
-                if (this.options.refreshData.enabled && !this.options.tokenExpired.call(this)) {
-                    this.options.refreshPerform.call(this, {});
+                if (document.hasFocus()) {
+                    if (this.options.refreshData.enabled && !this.options.tokenExpired.call(this)) {
+                        this.options.refreshPerform.call(this, {});
+                    }
                 }
             }.bind(this), this.options.refreshData.interval * 1000 * 60); // In minutes.
         }
