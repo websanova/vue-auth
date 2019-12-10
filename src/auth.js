@@ -611,10 +611,17 @@ module.exports = function () {
         // Set refresh interval.
         if (this.options.refreshData.interval && this.options.refreshData.interval > 0) {
             setInterval(function () {
+                let today = new Date();
+                let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
                 if (document.hasFocus()) {
+                    console.log(time + ': has focus, doing refresh ');
                     if (this.options.refreshData.enabled && !this.options.tokenExpired.call(this)) {
                         this.options.refreshPerform.call(this, {});
                     }
+                } else {
+
+                    console.log(time + ': no focus');
                 }
             }.bind(this), this.options.refreshData.interval * 1000 * 60); // In minutes.
         }
