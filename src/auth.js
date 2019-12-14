@@ -327,6 +327,9 @@ module.exports = function () {
                 if (data.redirect && _this.options.check.call(_this)) {
                     _this.options.router._routerGo.call(_this, data.redirect);
                 }
+            },
+            error: function(res){
+                if(data.error) { data.error.call(this, res) };
             }
         });
     }
