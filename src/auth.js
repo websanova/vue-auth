@@ -328,9 +328,7 @@ module.exports = function () {
                     _this.options.router._routerGo.call(_this, data.redirect);
                 }
             },
-            error: function(res){
-                if(data.error) { data.error.call(this, res) };
-            }
+            error: data.error
         });
     }
 
