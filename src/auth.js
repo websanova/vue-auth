@@ -79,7 +79,7 @@ module.exports = function () {
             return;
         }
 
-        _checkAuthenticated.call(this, cb);
+        this.options.checkAuthenticated.call(this, cb);
     }
 
     function _transitionEach(transition, routeAuth, cb) {
