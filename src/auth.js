@@ -174,6 +174,18 @@ module.exports = function () {
         return false;
     }
 
+    function _can(perm, key) {
+        if (this.watch.authenticated === true) {
+            if (perm) {
+                return __utils.compare(perm, this.watch.data[key || this.options.permsVar]);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     function _tokenExpired () {
         return ! __token.get.call(this);
     }
@@ -477,6 +489,7 @@ module.exports = function () {
         // Variables
 
         rolesVar:             'roles',
+        permsVar:             'permissions',
         tokenImpersonateName: 'impersonate_auth_token',
         tokenDefaultName:     'default_auth_token',
         tokenStore:           ['localStorage', 'cookie'],
@@ -524,6 +537,7 @@ module.exports = function () {
         parseOauthState:    _parseOauthState,
         tokenExpired:       _tokenExpired,
         check:              _check,
+        can:                _can,
         checkAuthenticated: _checkAuthenticated,
         getAuthMeta:        _getAuthMeta,
         setTransitions:     _setTransitions,
@@ -644,6 +658,10 @@ module.exports = function () {
 
     Auth.prototype.check = function (role, key) {
         return this.options.check.call(this, role, key);
+    };
+
+    Auth.prototype.can = function (perm, key) {
+        return this.options.can.call(this, perm, key);
     };
 
     Auth.prototype.impersonating = function () {
