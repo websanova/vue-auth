@@ -8,6 +8,10 @@ module.exports = (function () {
         if (domain !== 'localhost') {
             cookie += ' Path=/; Domain=' + domain + ';';
         }
+        
+        if (location.protocol === 'https:') {
+            cookie += 'secure';
+        }
 
         document.cookie = cookie;
     }
