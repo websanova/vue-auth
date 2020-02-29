@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@websanova/vue-auth@2.21.16-beta":
-  version "2.21.16-beta"
-  resolved "https://registry.yarnpkg.com/@websanova/vue-auth/-/vue-auth-2.21.16-beta.tgz#315c24c5ab4c560a46d832cb1f5a702d054a1dc7"
+"@websanova/vue-auth@2.21.17-beta":
+  version "2.21.17-beta"
+  resolved "https://registry.yarnpkg.com/@websanova/vue-auth/-/vue-auth-2.21.17-beta.tgz#315c24c5ab4c560a46d832cb1f5a702d054a1dc7"
 
 abbrev@1:
   version "1.0.9"
