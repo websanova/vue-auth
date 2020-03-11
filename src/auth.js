@@ -35,7 +35,7 @@ module.exports = function () {
 
     function _checkAuthenticated(cb) {
         if (this.watch.authenticated === null && __token.get.call(this)) {
-            if ( ! __cookie.exists.call(this)) {
+            if ( ! __cookie.exists.call(this, this.options.rememberMeCookieName)) {
                 this.options.logoutProcess.call(this, null, {});
 
                 this.watch.loaded = true;
@@ -343,7 +343,7 @@ module.exports = function () {
     }
 
     function _logoutProcess(res, data) {
-        __cookie.remove.call(this, 'rememberMe');
+        __cookie.remove.call(this, this.options.rememberMeCookieName);
 
         __cookie.remove.call(this, this.options.tokenImpersonateName);
         __cookie.remove.call(this, this.options.tokenDefaultName);
@@ -480,6 +480,7 @@ module.exports = function () {
         tokenImpersonateName: 'impersonate_auth_token',
         tokenDefaultName:     'default_auth_token',
         tokenStore:           ['localStorage', 'cookie'],
+        rememberMeCookieName: 'rememberMe',
         cookieExpireOffset:   20160,
 
         // Objects

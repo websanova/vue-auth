@@ -19,7 +19,7 @@ module.exports = (function () {
     return {
         remember: function(rememberMe) {
             setCookie.call(this,
-                'rememberMe',
+                this.options.rememberMeCookieName,
                 rememberMe === true ? 'true' : 'false',
                 rememberMe === true ? this.options.cookieExpireOffset : undefined
             );
@@ -51,7 +51,7 @@ module.exports = (function () {
         },
 
         exists: function(name) {
-            return document.cookie.match(/rememberMe/);
+            return document.cookie.match(name);
         },
 
         remove: function(name) {

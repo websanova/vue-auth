@@ -19,6 +19,10 @@ Pretty much all methods are overridable now in case there any specific issues wi
 
 * Set storage method in order of importance and usage based on availability (from left to right).
 
+### rememberMeCookieName: `'rememberMe'`
+
+* The name of the rememberMe cookie.
+
 ### rolesVar: `'roles'`
 
 * Name of roles var in user object.
