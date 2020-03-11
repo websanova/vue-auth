@@ -23,6 +23,10 @@ Pretty much all methods are overridable now in case there any specific issues wi
 
 * Name of roles var in user object.
 
+### cookieExpireOffset: `20160`
+
+* Set the cookie expire offset in minutes from now.
+
 ### authRedirect: `{path: '/login'}`
 
 * Redirect to use if authentication is required on a route.
