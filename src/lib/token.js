@@ -31,6 +31,21 @@ module.exports = (function () {
         }
     }
 
+    function isSessionStorageSupported() {
+        try {
+            if (!window.localStorage || !window.sessionStorage) {
+                throw 'exception';
+            }
+
+            sessionStorage.setItem('storage_test', 1);
+            sessionStorage.removeItem('storage_test');
+
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
     function isCookieSupported() {
         return true;
     }
@@ -46,6 +61,10 @@ module.exports = (function () {
         for (i = 0, ii = this.options.tokenStore.length; i < ii; i++) {
             if (this.options.tokenStore[i] === 'localStorage' && isLocalStorageSupported()) {
                 return localStorage[action + 'Item'](args[0], args[1]);
+            }
+
+            if (this.options.tokenStore[i] === 'sessionStorage' && isSessionStorageSupported()) {
+                return sessionStorage[action + 'Item'](args[0], args[1]);
             }
 
             else if (this.options.tokenStore[i] === 'cookie' && isCookieSupported()) {
