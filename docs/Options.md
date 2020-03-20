@@ -23,6 +23,11 @@ Pretty much all methods are overridable now in case there any specific issues wi
 
 * The name of the rememberMe cookie.
 
+### cookieSameSiteRule: `null`
+
+* sameSite rule for cookie (`'strict'`, `'lax'`, `'none'`, `null`)
+
+
 ### rolesVar: `'roles'`
 
 * Name of roles var in user object.

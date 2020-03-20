@@ -482,6 +482,7 @@ module.exports = function () {
         tokenStore:           ['localStorage', 'cookie'],
         rememberMeCookieName: 'rememberMe',
         cookieExpireOffset:   20160,
+        cookieSameSiteRule:   null,
 
         // Objects
 
