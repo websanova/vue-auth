@@ -1,0 +1,3 @@
+import './plugins';
+
+export default {};

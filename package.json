@@ -12,7 +12,7 @@
     "email": "rob@websanova.com"
   },
   
-  "main": "dist/vue-auth.min.js",
+  "main": "src/index.js",
   
   "version": "3.0.0-alpha",
   

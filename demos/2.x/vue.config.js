@@ -1,4 +1,6 @@
 module.exports = {
+    lintOnSave: false,
+
     devServer: {
         port: process.env.DEV_PORT || 8080,
 
@@ -10,12 +12,9 @@ module.exports = {
     },
 
     chainWebpack: (config) => {
-        // config
-        //     .resolve
-        //     .alias
-        //     .set('APP', __dirname + '/src/app')
-        //     .set('LIB', __dirname + '/src/lib')
-        //     .set('ROOT', __dirname + '/')
-        // ;
+        config
+            .resolve
+            .alias
+            .set('@websanova/vue-auth', __dirname + '/../../');
     }
 }

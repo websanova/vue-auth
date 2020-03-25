@@ -1,20 +1,20 @@
-import Vue from 'vue';
+import Vue    from 'vue';
 
-// import http from 'APP/http'
-// import store from 'APP/store'
-// import router from 'APP/router'
-// import config from 'APP/config'
+import http   from './http'
+import store  from './store'
+import router from './router'
+import config from './config'
 
-import App from './components/App.vue';
+import App from './pages/Index.vue';
 
 Vue.config.productionTip = false;
 
 new Vue({
     el: '#app',
-    // http: http,
-    // store: store,
-    // router: router,
-    // config: config,
+    http: http,
+    store: store,
+    router: router,
+    config: config,
     render: h => h(App)
 });
 
