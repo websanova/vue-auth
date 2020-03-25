@@ -1,4 +1,13 @@
 
+# ToDo
+
+- get demo working (new)
+- start setting up docs (clean).
+- 
+
+
+
+
 
 
 
