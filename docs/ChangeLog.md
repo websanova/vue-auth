@@ -1,12 +1,8 @@
+# Change Log
 
-# ToDo
+## 3.0.0-beta
 
-- get demo working (new)
-- start setting up docs (clean).
-- 
-
-
-
+* There are no more success/error callback functions, instead use a promise.
 
 
 
@@ -25,7 +21,7 @@ This should already apply but note that it no longer process error/success callb
 
 
 
-No more success/error functions, everything returns a promise.
+
 
 
 
