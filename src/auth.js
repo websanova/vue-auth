@@ -62,7 +62,7 @@ var __defaultOptions = {
 function _isAccess(role, key) {
     if (__auth.$vm.authenticated === true) {
         if (role) {
-            return __utils.compare(role, __auth.$vm.data[key || __auth.options.rolesVar]);
+            return __utils.compare(role, (__auth.$vm.data || {})[key || __auth.options.rolesVar]);
         }
 
         return true;

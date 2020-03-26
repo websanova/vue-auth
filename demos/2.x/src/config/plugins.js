@@ -11,6 +11,7 @@ Vue.use(auth, {
     http: httpVueResource,
     router: routerVueRouter,
     rolesVar: 'type',
+    notFoundRedirect: {name: 'user-account'},
     // facebookOauth2Data: {
     //     clientId: process.env.VUE_APP_FACEBOOK_CLIENT_ID
     // },

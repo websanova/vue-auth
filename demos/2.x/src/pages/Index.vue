@@ -65,6 +65,10 @@
                         <span
                             v-show="$auth.check()"
                         >
+                            <span v-show="$auth.check('admin')">
+                                <router-link :to="{name: 'admin-landing'}">admin</router-link> |
+                            </span>
+                            
                             <router-link :to="{name: 'user-account'}">account</router-link> |
                             <a @click="logout" href="javascript:void(0)">logout</a>
                         </span>
@@ -72,7 +76,6 @@
                 </div>
 
                 <hr/>
-
                 
                 <span
                     v-if="!readyOne || !readyTwo"
@@ -80,7 +83,6 @@
                 >
                     ↻
                 </span>
-
 
                 <router-view
                     v-else

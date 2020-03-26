@@ -28,25 +28,25 @@
         <button
             @click="loginDefault"
         >
-            Login Default
+            Default
         </button>
 
         <button
             @click="loginRedirect"
         >
-            Login Redirect
+            Redirect
         </button>
 
         <button
             @click="loginThen"
         >
-            Login Then
+            Then
         </button>
 
         <button
             @click="loginVuex"
         >
-            Login Vuex
+            Vuex
         </button>
     </div>
 </template>
@@ -70,8 +70,6 @@
 
         methods: {
             errors(res) {
-                console.log(res);
-
                 this.form.errors = Object.fromEntries(res.data.errors.map(item => [item.field, item.msg]));                
             },
 
@@ -97,13 +95,16 @@
                     .login({
                         body: this.form.body
                     })
-                    .then((res) => {
+                    .then(() => {
                         this.$router.push({name: 'user-account'});
                     }, this.errors);
             },
 
             loginVuex() {
-
+                this.$store.dispatch('auth/login', {
+                    body: this.form.body
+                })
+                .then(null, this.errors);
             }
         }
     }

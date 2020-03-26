@@ -21,19 +21,63 @@ Vue.router = new VueRouter({
     }, {
         path: '/login',
         name: 'auth-login',
-        component: loadView('auth/Login')
+        component: loadView('auth/Login'),
+        meta: {
+            auth: false
+        }
     }, {
         path: '/register',
         name: 'auth-register',
-        component: loadView('auth/Register')
+        component: loadView('auth/Register'),
+        meta: {
+            auth: false
+        }
     }, {
-        path: '/account',
-        name: 'user-account',
-        component: loadView('user/Account')
+        path: '/user',
+        component: loadView('user/Index'),
+        meta: {
+            auth: true
+        },
+        children: [{
+            path: '',
+            name: 'user-landing',
+            redirect: {
+                name: 'user-account'
+            }
+        }, {
+            path: 'account',
+            name: 'user-account',
+            component: loadView('user/Account')
+        }]
     }, {
-        path: '/404',
-        name: 'error-404',
-        component: loadView('error/404')
+        path: '/admin',
+        component: loadView('admin/Index'),
+        meta: {
+            auth: 'admin'
+        },
+        children: [{
+            path: '/',
+            name: 'admin-landing',
+            redirect: {
+                name: 'admin-dashboard'
+            }
+        }, {
+            path: 'dashboard',
+            name: 'admin-dashboard',
+            component: loadView('admin/Dashboard')
+        }]
+    }, {
+        path: '/',
+        component: loadView('error/Index'),
+        children: [{
+            path: '403',
+            name: 'error-403',
+            component: loadView('error/403'),
+        }, {
+            path: '*',
+            name: 'error-404',
+            component: loadView('error/404'),
+        }]
     }]
 });
 
