@@ -268,7 +268,7 @@ function _processAuthenticated(cb) {
         }
     } else {
         _setLoaded(true);
-        
+
         return cb.call(__auth);
     }
 }
@@ -436,11 +436,14 @@ Auth.prototype.redirect = function () {
 
 Auth.prototype.user = function (data) {
     if (data) {
-        __auth.$vm.data = data;
+        _processFetch(data);
     }
 
     return __auth.$vm.data || {};
 };
+
+Auth.prototype.setUser = function (data) {
+}
 
 Auth.prototype.check = function (role, key) {
     return _isAccess(role, key);
@@ -537,13 +540,20 @@ Auth.prototype.logout = function (data) {
     data = __utils.extend(__auth.options.logoutData, data);
 
     return new Promise((resolve, reject) => {
-        __auth.http.http
-            .call(__auth, data)
-            .then((res) => {
-                _processLogout(data.redirect);
+        if (data.makeRequest) {
+            __auth.http.http
+                .call(__auth, data)
+                .then((res) => {
+                    _processLogout(data.redirect);
 
-                resolve(res)
-            }, reject);
+                    resolve(res)
+                }, reject);
+        }
+        else {
+            _processLogout(data.redirect);
+
+            resolve();
+        }
     });
 };
 

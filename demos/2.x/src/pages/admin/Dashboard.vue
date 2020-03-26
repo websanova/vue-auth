@@ -1,5 +1,5 @@
 <template>
     <div>
-        Admin Dashboard
+        Dashboard
     </div>
 </template>

@@ -9,6 +9,8 @@ module.exports = {
         disableHostCheck: true,
 
         host: process.env.DEV_HOST || '0.0.0.0',
+
+        public: (process.env.DEV_HOST || '0.0.0.0') || + (process.env.DEV_PORT || 8080)
     },
 
     chainWebpack: (config) => {

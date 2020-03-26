@@ -25,28 +25,24 @@
 
         <br/>
 
-        <button
-            @click="loginDefault"
-        >
+        <button @click="loginDefault">
             Default
         </button>
 
-        <button
-            @click="loginRedirect"
-        >
+        <button @click="loginRedirect">
             Redirect
         </button>
 
-        <button
-            @click="loginThen"
-        >
+        <button @click="loginThen">
             Then
         </button>
 
-        <button
-            @click="loginVuex"
-        >
+        <button @click="loginVuex">
             Vuex
+        </button>
+
+        <button @click="loginManual">
+            Manual
         </button>
     </div>
 </template>
@@ -54,7 +50,6 @@
 
 <script>
     export default {
-        
         data() {
             return {
                 form: {
@@ -105,6 +100,22 @@
                     body: this.form.body
                 })
                 .then(null, this.errors);
+            },
+
+            loginManual() {
+
+                this.$auth.token(null, 'manual');
+
+                this.$auth.user({
+                    id: 1,
+                    first_name: 'Manual',
+                    email: 'test@manual.com',
+                    type: 'user'
+                });
+
+                this.$router.push({
+                    name: 'user-landing'
+                });
             }
         }
     }

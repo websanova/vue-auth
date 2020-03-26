@@ -48,6 +48,10 @@ Vue.router = new VueRouter({
             path: 'account',
             name: 'user-account',
             component: loadView('user/Account')
+        }, {
+            path: 'logout',
+            name: 'user-logout',
+            component: loadView('user/Logout')
         }]
     }, {
         path: '/admin',

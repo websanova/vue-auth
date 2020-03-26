@@ -49,14 +49,8 @@ export default {
             });
         },    
 
-        admin(ctx) {
-            Vue.router.push({
-                name: Vue.auth.user().type + '-landing'
-            });
-        },
-
         logout(ctx) {
-            Vue.auth.logout();
+            return Vue.auth.logout();
         },
     },
 

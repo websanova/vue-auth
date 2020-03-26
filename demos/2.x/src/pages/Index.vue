@@ -70,7 +70,7 @@
                             </span>
                             
                             <router-link :to="{name: 'user-account'}">account</router-link> |
-                            <a @click="logout" href="javascript:void(0)">logout</a>
+                            <router-link :to="{name: 'user-logout'}">logout</router-link>
                         </span>
                     </span>
                 </div>
@@ -129,14 +129,6 @@
         },
 
         methods: {
-            logout() {
-                this.$auth
-                    .logout({
-                        makeRequest: true,
-                        redirect: {name: 'auth-login'}
-                    });
-            },
-
             unimpersonate() {
                 this.$auth.unimpersonate({
                     success() {
