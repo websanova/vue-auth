@@ -1,0 +1,110 @@
+<template>
+    <div class="text-center">
+        <br/>
+
+        <div class="input-group">
+            <input
+                v-model="form.body.email"
+                placeholder="Email"
+            />
+
+            <div>{{ form.errors.email }}</div>
+        </div>
+
+        <br/>
+
+        <div class="input-group">
+            <input
+                v-model="form.body.password"
+                placeholder="Password"
+                type="password"
+            />
+
+            <div>{{ form.errors.password }}</div>
+        </div>
+
+        <br/>
+
+        <button
+            @click="loginDefault"
+        >
+            Login Default
+        </button>
+
+        <button
+            @click="loginRedirect"
+        >
+            Login Redirect
+        </button>
+
+        <button
+            @click="loginThen"
+        >
+            Login Then
+        </button>
+
+        <button
+            @click="loginVuex"
+        >
+            Login Vuex
+        </button>
+    </div>
+</template>
+
+
+<script>
+    export default {
+        
+        data() {
+            return {
+                form: {
+                    body: {
+                        email: 'rob@websanova.com',
+                        password: 'testtest',
+                    },
+
+                    errors: {}
+                }
+            }
+        },
+
+        methods: {
+            errors(res) {
+                console.log(res);
+
+                this.form.errors = Object.fromEntries(res.data.errors.map(item => [item.field, item.msg]));                
+            },
+
+            loginDefault() {
+                this.$auth
+                    .login({
+                        body: this.form.body
+                    })
+                    .then(null, this.errors);
+            },
+
+            loginRedirect() {
+                this.$auth
+                    .login({
+                        body: this.form.body,
+                        redirect: {name: 'user-account'}
+                    })
+                    .then(null, this.errors);
+            },
+
+            loginThen() {
+                this.$auth
+                    .login({
+                        body: this.form.body
+                    })
+                    .then((res) => {
+                        this.$router.push({name: 'user-account'});
+                    }, this.errors);
+            },
+
+            loginVuex() {
+
+            }
+        }
+    }
+</script>

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import cookie from '../../../../../src/lib/cookie.js'
+    // import cookie from '../../../../../src/lib/cookie.js'
 
     export default {
         data() {
