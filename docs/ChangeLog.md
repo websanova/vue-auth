@@ -2,7 +2,12 @@
 
 
 - remember me fixes
-- htttp test driver ()
+- register
+- admin (users) (impersonating \w toggles).
+- docs
+- issues
+- sponsors
+- oauth (breaking change).
 
 
 
@@ -36,3 +41,9 @@ everything changed to proper es6 module imports (check this)
 
 
 ready no longer accept a function, use $auth.load().then() promise instead.
+
+
+
+
+
+
