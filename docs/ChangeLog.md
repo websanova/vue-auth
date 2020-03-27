@@ -1,5 +1,11 @@
 # Change Log
 
+
+- remember me fixes
+- htttp test driver ()
+
+
+
 ## 3.0.0-beta
 
 * There are no more success/error callback functions, instead use a promise.

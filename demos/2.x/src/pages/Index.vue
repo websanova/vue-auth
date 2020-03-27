@@ -150,6 +150,7 @@
     }
 
     .spin {
+        font-size: 0.8em;
         display: inline-block;
         animation-name: spin;
         animation-duration: 500ms;
@@ -173,8 +174,20 @@
         cursor: pointer;
     }
 
+    table {
+        width: 100%;
+    }
+
     .text-center {
         text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .pull-left {
+        float: left;
     }
 
     .pull-right {

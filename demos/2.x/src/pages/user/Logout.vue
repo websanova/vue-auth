@@ -1,24 +1,34 @@
 <template>
-    <div class="text-center">
-        <button @click="logoutDefault">
-            Default
-        </button>
+    <div>
+        <table>
+            <tr>
+                <td>Logout</td>
 
-        <button @click="logoutRedirect">
-            Redirect
-        </button>
+                <td class="text-right">
+                    <button @click="logoutRedirect">
+                        Redirect
+                    </button>
 
-        <button @click="logoutThen">
-            Then
-        </button>
+                    <button @click="logoutThen">
+                        Then
+                    </button>
 
-        <button @click="logoutVuex">
-            Vuex
-        </button>
+                    <button @click="logoutRequest">
+                        Request
+                    </button>
 
-        <button @click="logoutRequest">
-            Request
-        </button>
+                    <button @click="logoutDefault">
+                        Default
+                    </button>
+
+                    <button @click="logoutVuex">
+                        Vuex
+                    </button>
+                </td>
+            </tr>
+        </table>
+
+        <hr />
     </div>
 </template>
 

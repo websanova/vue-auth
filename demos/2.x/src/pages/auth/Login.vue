@@ -25,6 +25,19 @@
 
         <br/>
 
+        <div class="input-group">
+            <input
+                v-model="form.rememberMe"
+                type="checkbox"
+            />
+
+            Remember Me
+
+            <div />
+        </div>
+
+        <br/>
+
         <button @click="loginDefault">
             Default
         </button>
@@ -54,9 +67,11 @@
             return {
                 form: {
                     body: {
-                        email: 'rob@websanova.com',
-                        password: 'testtest',
+                        email: '',
+                        password: '',
                     },
+
+                    rememberMe: false,
 
                     errors: {}
                 }
@@ -71,7 +86,8 @@
             loginDefault() {
                 this.$auth
                     .login({
-                        body: this.form.body
+                        body: this.form.body,
+                        rememberMe: this.form.rememberMe
                     })
                     .then(null, this.errors);
             },
@@ -80,7 +96,8 @@
                 this.$auth
                     .login({
                         body: this.form.body,
-                        redirect: {name: 'user-account'}
+                        redirect: {name: 'user-account'},
+                        rememberMe: this.form.rememberMe
                     })
                     .then(null, this.errors);
             },
@@ -88,7 +105,8 @@
             loginThen() {
                 this.$auth
                     .login({
-                        body: this.form.body
+                        body: this.form.body,
+                        rememberMe: this.form.rememberMe
                     })
                     .then(() => {
                         this.$router.push({name: 'user-account'});
@@ -97,13 +115,13 @@
 
             loginVuex() {
                 this.$store.dispatch('auth/login', {
-                    body: this.form.body
+                    body: this.form.body,
+                    rememberMe: this.form.rememberMe
                 })
                 .then(null, this.errors);
             },
 
             loginManual() {
-
                 this.$auth.token(null, 'manual');
 
                 this.$auth.user({

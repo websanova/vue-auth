@@ -14,6 +14,10 @@ export default {
             return Vue.auth.fetch(data);
         },
 
+        refresh(data) {
+            return Vue.auth.refresh(data);
+        },
+
         login(ctx, data) {
             return new Promise((resolve, reject) => {
                 Vue.auth.login({
