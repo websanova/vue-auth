@@ -28,3 +28,14 @@ $auth.setUser({
     full_name: 'Rob Nova'
 })
 ```
+
+
+## Setting `staySignedIn` to false is broken when using `cookie` to store tokens.
+
+This seems to be an issue with modern browsers simply ignoring standards with non persistent cookies.
+
+Can read more about it on [StackOverflow](https://stackoverflow.com/questions/10617954/chrome-doesnt-delete-session-cookies).
+
+Basically it's advised to better use session storage which is the default setting already.
+
+As a "test", running Chrome in Incognito mode seems to produce the (correct) expected behaviour.

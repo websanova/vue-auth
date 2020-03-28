@@ -9,9 +9,10 @@ var __defaultOptions = {
     // Variables
 
     rolesVar:             'roles',
-    tokenImpersonateName: 'impersonate_auth_token',
-    tokenDefaultName:     'default_auth_token',
-    tokenStore:           ['sessionStorage', 'localStorage', 'cookie'],
+    rememberName:         'auth_remember',
+    tokenDefaultName:     'auth_token_default',
+    tokenImpersonateName: 'auth_token_impersonate',
+    tokenStore:           ['storage', 'cookie'],
 
     // Redirects
 
@@ -186,17 +187,19 @@ function _processInvalidToken(res, transition) {
 }
 
 function _processRouterBeforeEach(cb) {
+    var isTokenExpired = _isTokenExpired();
+
     if (
-        __auth.$vm.authenticated &&
-        !__token.get.call(__auth)
+        isTokenExpired &&
+        __auth.$vm.authenticated
     ) {
         _processLogout();
     }
 
     if (
-        __auth.options.refreshData.enabled &&
+        !isTokenExpired &&
         !__auth.$vm.loaded &&
-        __token.get.call(__auth)
+        __auth.options.refreshData.enabled
     ) {
         __auth
             .refresh()
@@ -250,13 +253,13 @@ function _processAuthenticated(cb) {
         __auth.$vm.authenticated === null &&
         __token.get.call(__auth)
     ) {
-        if ( ! __cookie.exists.call(__auth)) {
-            _processLogout();
 
-            return cb.call(__auth);
-        }
+        // TODO: Remember me delete hack.
+        // if ( ! __cookie.exists.call(__auth)) {
+        //     _processLogout();
 
-        // __auth.$vm.authenticated = false;
+        //     return cb.call(__auth);
+        // }
 
         if (__auth.options.fetchData.enabled) {
             __auth.fetch().then(cb, cb);
@@ -511,7 +514,7 @@ Auth.prototype.login = function (data) {
         __auth.http.http
             .call(__auth, data)
             .then((res) => {
-                __cookie.remember.call(__auth, data.rememberMe);
+                // __cookie.remember.call(__auth, data.rememberMe);
 
                 _setAuthenticated(true);
 

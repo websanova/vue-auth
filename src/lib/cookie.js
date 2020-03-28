@@ -1,45 +1,42 @@
-function setCookie (name, value, timeOffset) {
-    var domain = this.options.getDomain(),
-        expires = (new Date((new Date()).getTime() + timeOffset)).toUTCString(),
-        cookie = name + '=' + value + '; Expires=' + expires + ';';
-    
+function setCookie (key, value, timeOffset) {
+    var domain  = this.options.getDomain(),
+        cookie  = key + '=' + value + '; SameSite=None;',
+        expires = '';
+
+    if (timeOffset) {
+        expires = (new Date((new Date()).getTime() + timeOffset)).toUTCString();
+    }
+
+    cookie += ' Expires=' + expires + ';';
+
     if (domain !== 'localhost') {
         cookie += ' Path=/; Domain=' + domain + ';';
     }
     
     if (location.protocol === 'https:') {
-        cookie += 'secure';
+        cookie += ' Secure;';
     }
 
     document.cookie = cookie;
 }
 
-function remember(rememberMe) {
-    setCookie.call(this,
-        'rememberMe',
-        rememberMe === true ? 'true' : 'false',
-        rememberMe === true ? 12096e5 : undefined
-    );
+function set(key, value, expires) {
+    setCookie.call(this, key, value, (expires ? 0 : 1) * 12096e5);
 }
 
-function set(name, value, expires) {
-    if (value) {
-        setCookie.call(this, name, value, 12096e5);
-    }
-}
-
-function get(name) {
+function get(key) {
     var i, ii,
         cookie = document.cookie;
 
-     cookie = cookie.replace(/;\s+/g, ';')
-                    .split(';')
-                    .map(function(s) {
-                        return s.replace(/\s+=\s+/g, '=').split('=');
-                     });
+     cookie = cookie
+        .replace(/;\s+/g, ';')
+        .split(';')
+        .map(function(s) {
+            return s.replace(/\s+=\s+/g, '=').split('=');
+         });
 
     for (i = 0, ii = cookie.length; i < ii; i++) {
-        if (cookie[i][0] && cookie[i][0] === name) {
+        if (cookie[i][0] && cookie[i][0] === key) {
             return cookie[i][1];
         }
     }
@@ -47,18 +44,12 @@ function get(name) {
     return null;
 }
 
-function exists(name) {
-    return document.cookie.match(/rememberMe/);
-}
-
-function remove(name) {
-    setCookie.call(this, name, '', -12096e5);
+function remove(key) {
+    setCookie.call(this, key, '', -12096e5);
 }
 
 export {
-    set,
     get,
-    remove,
-    exists,
-    remember
-}
+    set,
+    remove
+};

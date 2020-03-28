@@ -1,95 +1,64 @@
-import * as __cookie from './cookie.js';
+import * as __utils   from './utils.js';
+import * as __cookie  from './cookie.js';
+import * as __storage from './storage.js';
 
-function tokenName(name) {
-    name = name || this.currentToken;
+function getTokenName(key) {
+    key = key || this.currentToken;
     
-    if (name) {
-        return name;
+    if (key) {
+        return key;
     }
 
-    if (this.impersonating.call(this)) {
+    if (this.impersonating()) {
         return this.options.tokenImpersonateName;
     }
 
     return this.options.tokenDefaultName;
 }
 
-function isLocalStorageSupported() {
-    try {
-        if (!window.localStorage || !window.sessionStorage) {
-            throw 'exception';
-        }
+function processToken(action, key, token, expires) {
+    var i   = 0,
+        ts  = this.options.tokenStore,
+        ii  = ts.length,
+        args = [getTokenName.call(this, key)];
 
-        localStorage.setItem('storage_test', 1);
-        localStorage.removeItem('storage_test');
-        
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
-
-function isSessionStorageSupported() {
-    try {
-        if (!window.localStorage || !window.sessionStorage) {
-            throw 'exception';
-        }
-
-        sessionStorage.setItem('storage_test', 1);
-        sessionStorage.removeItem('storage_test');
-
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
-
-function isCookieSupported() {
-    return true;
-}
-
-function processToken(action, name, token) {
-    var i, ii,
-        args = [tokenName.call(this, name)];
-
-    if (token) {
+    if (action === 'set') {
         args.push(token);
+        args.push(expires);
     }
 
-    for (i = 0, ii = this.options.tokenStore.length; i < ii; i++) {
-        if (this.options.tokenStore[i] === 'localStorage' && isLocalStorageSupported()) {
-            return localStorage[action + 'Item'](args[0], args[1]);
+    for (; i < ii; i++) {
+        if (
+            ts[i] === 'storage' &&
+            __utils.isLocalStorageSupported() &&
+            __utils.isSessionStorageSupported()
+        ) {
+            return __storage[action].apply(this, args);
         }
 
-        if (this.options.tokenStore[i] === 'sessionStorage' && isSessionStorageSupported()) {
-            return sessionStorage[action + 'Item'](args[0], args[1]);
-        }
-
-        else if (this.options.tokenStore[i] === 'cookie' && isCookieSupported()) {
+        if (
+            ts[i] === 'cookie' &&
+            __utils.isCookieStorageSupported()
+        ) {
             return __cookie[action].apply(this, args);
         }
     }
 }
 
-function get(name) {
-    return processToken.call(this, 'get', name);
+function get(key) {
+    return processToken.call(this, 'get', key);
 }
 
-function set(name, token) {
-    return processToken.call(this, 'set', name, token);
+function set(key, token, expires) {
+    return processToken.call(this, 'set', key, token, expires);
 }
 
-function remove(name) {
-    return processToken.call(this, 'remove', name);
-}
-
-function expiring() {
-    return false;
+function remove(key) {
+    return processToken.call(this, 'remove', key);
 }
 
 export {
     get,
     set,
-    remove,
-    expiring
-}
+    remove
+};

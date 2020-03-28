@@ -84,15 +84,25 @@
                     ↻
                 </span>
 
-                <router-view
-                    v-else
-                />
+                <div v-else>
+                    {{ $route.name.split('-').join(' / ') }}
+
+                    <span class="pull-right">
+                        {{ $auth.user().first_name }}
+                    </span>
+
+                    <hr />
+
+                    <router-view />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import * as cookie from '../../../../src/lib/cookie.js';
+
     export default {
         data() {
             return {

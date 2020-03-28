@@ -4,7 +4,7 @@ module.exports = {
     devServer: {
         port: process.env.DEV_PORT || 8080,
 
-        https: process.env.DEV_HTTPS === 'true' ? true : false,
+        https: process.env.DEV_HTTPS === 'false' ? false : true,
         
         disableHostCheck: true,
 

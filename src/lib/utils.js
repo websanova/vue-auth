@@ -71,9 +71,46 @@ function compare(one, two) {
     return false;
 }
 
+function isLocalStorageSupported() {
+    try {
+        if (!window.localStorage) {
+            throw 'exception';
+        }
+
+        localStorage.setItem('storage_test', 1);
+        localStorage.removeItem('storage_test');
+        
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function isSessionStorageSupported() {
+    try {
+        if (!window.sessionStorage) {
+            throw 'exception';
+        }
+
+        sessionStorage.setItem('storage_test', 1);
+        sessionStorage.removeItem('storage_test');
+
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function isCookieStorageSupported() {
+    return true;
+}
+
 export {
     extend,
     toArray,
     isObject,
-    compare
+    compare,
+    isLocalStorageSupported,
+    isCookieStorageSupported,
+    isSessionStorageSupported,
 };
