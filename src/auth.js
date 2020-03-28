@@ -23,7 +23,7 @@ var __defaultOptions = {
     // Http
 
     registerData:       {url: 'auth/register',      method: 'POST', redirect: '/login', autoLogin: false},
-    loginData:          {url: 'auth/login',         method: 'POST', redirect: '/', fetchUser: true},
+    loginData:          {url: 'auth/login',         method: 'POST', redirect: '/', fetchUser: true, staySignedIn: false},
     logoutData:         {url: 'auth/logout',        method: 'POST', redirect: '/', makeRequest: false},
     oauth1Data:         {url: 'auth/login',         method: 'POST'},
     fetchData:          {url: 'auth/user',          method: 'GET', enabled: true},

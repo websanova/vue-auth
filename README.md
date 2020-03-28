@@ -41,6 +41,9 @@ If you like this package please consider sponsoring.
 ## ToDo
 
 - remember me fixes
+  - staySignedIn
+  - rememberMe: 'string'
+- unremember
 - register
 - admin (users) (impersonating \w toggles).
 - docs
