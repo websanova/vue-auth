@@ -479,7 +479,7 @@ module.exports = function () {
         rolesVar:             'roles',
         tokenImpersonateName: 'impersonate_auth_token',
         tokenDefaultName:     'default_auth_token',
-        tokenStore:           ['sessionStorage', 'localStorage', 'cookie'],
+        tokenStore:           ['localStorage', 'cookie', 'sessionStorage'],
 
         // Objects
 
