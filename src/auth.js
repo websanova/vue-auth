@@ -72,7 +72,7 @@ function _isAccess(role, key) {
 }
 
 function _isTokenExpired () {
-    return ! token.get.call(__auth);
+    return ! __token.get.call(__auth);
 }
 
 function _getAuthMeta (transition) {
