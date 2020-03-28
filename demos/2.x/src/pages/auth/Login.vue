@@ -6,6 +6,7 @@
             <input
                 v-model="form.body.email"
                 placeholder="Email"
+                type="text"
             />
 
             <div>{{ form.errors.email }}</div>
@@ -38,24 +39,37 @@
 
         <br/>
 
-        <button @click="loginDefault">
-            Default
+        <div class="input-group">
+            <input
+                v-model="form.fetchUser"
+                type="checkbox"
+            />
+
+            Fetch User
+
+            <div />
+        </div>
+        
+        <br/>
+
+        <button @click="loginThen">
+            Then
         </button>
 
         <button @click="loginRedirect">
             Redirect
         </button>
 
-        <button @click="loginThen">
-            Then
+        <button @click="loginManual">
+            Manual
+        </button>
+
+        <button @click="loginDefault">
+            Default
         </button>
 
         <button @click="loginVuex">
             Vuex
-        </button>
-
-        <button @click="loginManual">
-            Manual
         </button>
     </div>
 </template>
@@ -70,9 +84,8 @@
                         email: '',
                         password: '',
                     },
-
                     rememberMe: false,
-
+                    fetchUser: true,
                     errors: {}
                 }
             }
@@ -87,7 +100,8 @@
                 this.$auth
                     .login({
                         body: this.form.body,
-                        rememberMe: this.form.rememberMe
+                        rememberMe: this.form.rememberMe,
+                        fetchUser: this.form.fetchUser
                     })
                     .then(null, this.errors);
             },
@@ -97,7 +111,8 @@
                     .login({
                         body: this.form.body,
                         redirect: {name: 'user-account'},
-                        rememberMe: this.form.rememberMe
+                        rememberMe: this.form.rememberMe,
+                        fetchUser: this.form.fetchUser
                     })
                     .then(null, this.errors);
             },
@@ -106,7 +121,8 @@
                 this.$auth
                     .login({
                         body: this.form.body,
-                        rememberMe: this.form.rememberMe
+                        rememberMe: this.form.rememberMe,
+                        fetchUser: this.form.fetchUser
                     })
                     .then(() => {
                         this.$router.push({name: 'user-account'});
@@ -116,7 +132,8 @@
             loginVuex() {
                 this.$store.dispatch('auth/login', {
                     body: this.form.body,
-                    rememberMe: this.form.rememberMe
+                    rememberMe: this.form.rememberMe,
+                    fetchUser: this.form.fetchUser
                 })
                 .then(null, this.errors);
             },

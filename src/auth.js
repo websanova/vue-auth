@@ -21,7 +21,7 @@ var __defaultOptions = {
 
     // Http
 
-    registerData:       {url: 'auth/register',      method: 'POST', redirect: '/login'},
+    registerData:       {url: 'auth/register',      method: 'POST', redirect: '/login', autoLogin: false},
     loginData:          {url: 'auth/login',         method: 'POST', redirect: '/', fetchUser: true},
     logoutData:         {url: 'auth/logout',        method: 'POST', redirect: '/', makeRequest: false},
     oauth1Data:         {url: 'auth/login',         method: 'POST'},
@@ -484,7 +484,7 @@ Auth.prototype.refresh = function (data) {
 };
 
 Auth.prototype.register = function (data) {
-    data = __utils.extend(__auth.options.loginData, data);
+    data = __utils.extend(__auth.options.registerData, data);
 
     return new Promise((resolve, reject) => {
         __auth.http.http

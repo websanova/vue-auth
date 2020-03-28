@@ -8,6 +8,7 @@
 - issues
 - sponsors
 - oauth (breaking change).
+- manual login then refresh should toss user on 401?
 
 
 

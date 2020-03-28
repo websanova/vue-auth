@@ -144,6 +144,10 @@
 </script>
 
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     a {
         text-decoration: none;
         color: #6699ff;
@@ -197,9 +201,12 @@
     .input-group {
         display: inline-block;
         text-align: left;
+        width: 200px;
     }
 
-    .input-group > input {
+    .input-group > input[type='text'],
+    .input-group > input[type='password'] {
+        width: 100%;
         margin-bottom: 0px;
     }
 
