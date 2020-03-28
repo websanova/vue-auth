@@ -2,17 +2,49 @@
 
 A simple light-weight authentication library for Vue.js
 
+If you are still on 2.x please visit the (very short) [2.x to 3.x Upgrade Guide].
+
 
 ## Sponsor
 
 If you like this package please consider sponsoring.
 
 
-## Documentation
+## Guides
 
-The docs for this plugin can be found at [https://websanova.com/docs/vue-auth](https://websanova.com/docs/vue-auth).
+* [Basic Setup](https://websanova.com/docs/vue-auth)
+* [Getting Started](https://websanova.com/docs/vue-auth)
+* [Running Demos](https://websanova.com/docs/vue-auth)
+* [Using Vuex](https://websanova.com/docs/vue-auth)
+* [Custom Drivers](https://websanova.com/docs/vue-auth)
+* [Common Solutions](https://websanova.com/docs/vue-auth)
 
 
-## 2.x to 3.x Upgrade Guide
+## Reference
 
-For changes to the 3.x version please visit the [ChangeLog](/docs/UpgradeGuide.md).
+* [Options](https://websanova.com/docs/vue-auth).
+* [Methods](https://websanova.com/docs/vue-auth).
+
+
+## Upgrade Guide
+
+* [2.x to 3.x](/docs/upgrades/2.x-3.x.md).
+
+
+## Change Log
+
+* [3.x Change Log](/docs/changes/3.x.md)
+* [2.x Change Log](/docs/changes/2.x.md)
+* [1.x Change Log](/docs/changes/1.x.md)
+
+
+## ToDo
+
+- remember me fixes
+- register
+- admin (users) (impersonating \w toggles).
+- docs
+- issues
+- sponsors
+- oauth (breaking change).
+- manual login then refresh should toss user on 401?

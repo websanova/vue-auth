@@ -5,7 +5,7 @@ The demos follow the standard Vue setup using `vue-cli`.
 Note that the `@websanova/vue-auth` package is an alias to the root folder and not actually installed.
 
 
-## 2.x
+## Vue 2.x
 
 ```
 > git clone https://github.com/websanova/vue-auth.git vue-auth
@@ -16,8 +16,6 @@ Note that the `@websanova/vue-auth` package is an alias to the root folder and n
 ```
 
 
-## 3.x
+## Vue 3.x
 
-```
-// TODO
-```
+Todo...
