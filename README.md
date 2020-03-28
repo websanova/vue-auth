@@ -46,8 +46,8 @@ If you like this package please consider sponsoring.
 - unremember
 - register
 - admin (users) (impersonating \w toggles).
+- oauth (breaking change).
 - docs
 - issues
 - sponsors
-- oauth (breaking change).
 - manual login then refresh should toss user on 401?

@@ -48,7 +48,25 @@
 
         <hr />
 
-        {{ documentCookie }}
+        <table>
+            <tr>
+                <td>Token</td>
+
+                <td class="text-right">
+                    {{ token || 'unset' }}
+
+                    <button @click="tokenStorage">
+                        Storage
+                    </button>
+
+                    <button @click="tokenCookie">
+                        Cookie
+                    </button>
+                </td>
+            </tr>
+        </table>
+
+        <hr />
     </div>
 </template>
 
@@ -60,56 +78,71 @@
     export default {
         data() {
             return {
+                token: null,
                 cookie: null,
-                storage: null,
-                documentCookie: null
+                storage: null
             }
         },
 
         mounted() {
+            this.token = token.get.call(this.$auth, 'test');
             this.cookie = cookie.get.call(this.$auth, 'test');
             this.storage = storage.get.call(this.$auth, 'test');
-            this.documentCookie = document.cookie;
         },
 
         methods: {
             cookieTemp() {
-                cookie.set.call(this.$auth, 'test', 'cookie', true);
+                cookie.set.call(this.$auth, 'test', '-cookie-token-', true);
 
                 this.cookie = cookie.get.call(this.$auth, 'test');
-                this.documentCookie = document.cookie;
+                this.token = token.get.call(this.$auth, 'test');
             },
 
             cookiePerm() {
-                cookie.set.call(this.$auth, 'test', 'cookie', false);
+                cookie.set.call(this.$auth, 'test', '-cookie-token-', false);
 
                 this.cookie = cookie.get.call(this.$auth, 'test');
-                this.documentCookie = document.cookie;
+                this.token = token.get.call(this.$auth, 'test');
             },
 
             cookieRemove() {
                 cookie.remove.call(this.$auth, 'test');
 
                 this.cookie = cookie.get.call(this.$auth, 'test');
-                this.documentCookie = document.cookie;
+                this.token = token.get.call(this.$auth, 'test');
             },
 
             storageTemp() {
-                storage.set.call(this.$auth, 'test', 'storage', true);
+                storage.set.call(this.$auth, 'test', '-storage-token-', true);
 
                 this.storage = storage.get.call(this.$auth, 'test');
+                this.token = token.get.call(this.$auth, 'test');
             },
 
             storagePerm() {
-                storage.set.call(this.$auth, 'test', 'storage', false);
+                storage.set.call(this.$auth, 'test', '-storage-token-', false);
 
                 this.storage = storage.get.call(this.$auth, 'test');
+                this.token = token.get.call(this.$auth, 'test');
             },
 
             storageRemove() {
                 storage.remove.call(this.$auth, 'test');
 
                 this.storage = storage.get.call(this.$auth, 'test');
+                this.token = token.get.call(this.$auth, 'test');
+            },
+
+            tokenStorage() {
+                this.$auth.options.tokenStore = ['storage', 'cookie'];
+
+                this.token = token.get.call(this.$auth, 'test');
+            },
+
+            tokenCookie() {
+                this.$auth.options.tokenStore = ['cookie', 'storage'];
+
+                this.token = token.get.call(this.$auth, 'test');
             }
         }
     }
