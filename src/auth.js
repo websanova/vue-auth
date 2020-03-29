@@ -23,7 +23,7 @@ var __defaultOptions = {
     // Http
 
     registerData:       {url: 'auth/register',      method: 'POST', redirect: '/login', autoLogin: false},
-    loginData:          {url: 'auth/login',         method: 'POST', redirect: '/', fetchUser: true, staySignedIn: false},
+    loginData:          {url: 'auth/login',         method: 'POST', redirect: '/', fetchUser: true, staySignedIn: true},
     logoutData:         {url: 'auth/logout',        method: 'POST', redirect: '/', makeRequest: false},
     oauth1Data:         {url: 'auth/login',         method: 'POST'},
     fetchData:          {url: 'auth/user',          method: 'GET', enabled: true},
@@ -72,11 +72,11 @@ function _isAccess(role, key) {
     return false;
 }
 
-function _isTokenExpired () {
+function _isTokenExpired() {
     return ! __token.get.call(__auth);
 }
 
-function _getAuthMeta (transition) {
+function _getAuthMeta(transition) {
     var auth,
         authRoutes;
 
@@ -96,14 +96,54 @@ function _getAuthMeta (transition) {
     return auth;
 }
 
-function _getDomain () {
+function _getDomain() {
     return window.location.hostname;
 }
 
-function _getUrl () {
+function _getUrl() {
     var port = window.location.port
 
     return window.location.protocol + '//' + window.location.hostname + (port ? ':' + port : '');
+}
+
+function _getRemember() {
+    return __token.get.call(__auth, 'remember');
+}
+
+function _setUser(data) {
+    __auth.$vm.data = data;
+}
+
+function _setLoaded(loaded) {
+    __auth.$vm.loaded = loaded;
+}
+
+function _setAuthenticated(authenticated) {
+    __auth.$vm.loaded = true;
+    __auth.$vm.authenticated = authenticated;
+}
+
+function _setStaySignedIn(staySignedIn) {
+    if (
+        staySignedIn === true ||
+        staySignedIn === false
+    ) {
+        __auth.options.loginData.staySignedIn = staySignedIn;
+    }
+}
+
+function _setRemember(val) {
+    if (val) {
+        __token.set.call(__auth, 'remember', val, false);
+    }
+    else {
+        __token.remove.call(__auth, 'remember');
+    }
+}
+
+function _setTransitions (transition) {
+    __auth.transitionPrev = __auth.transitionThis;
+    __auth.transitionThis = transition;
 }
 
 function _parseUserData(data) {
@@ -121,7 +161,11 @@ function _parseRequestIntercept(req) {
     if (req && req.ignoreVueAuth) {
         return req;
     }
-    if (req.impersonating === false && __auth.impersonating()) {
+    
+    if (
+        req.impersonating === false &&
+        __auth.impersonating()
+    ) {
         tokenName = __auth.options.tokenDefaultName;
     }
     
@@ -146,7 +190,7 @@ function _parseResponseIntercept(res, req) {
     token = this.auth.response.call(this, res);
 
     if (token) {
-        __token.set.call(this, null, token);
+        __token.set.call(this, null, token, __auth.options.loginData.staySignedIn);
     }
 }
 
@@ -300,9 +344,9 @@ function _processLogout(redirect) {
     _processRedirect(redirect);
 }
 
-function _processImpersonate(token, redirect) {
-    __token.set.call(__auth, __auth.options.tokenImpersonateName, __auth.token());
-    __token.set.call(__auth, __auth.options.tokenDefaultName, token);
+function _processImpersonate(defaultToken, redirect) {
+    __token.set.call(__auth, __auth.options.tokenImpersonateName, __auth.token(), __auth.options.loginData.staySignedIn);
+    __token.set.call(__auth, __auth.options.tokenDefaultName, defaultToken, __auth.options.loginData.staySignedIn);
 
     _processRedirect(redirect);
 }
@@ -311,24 +355,6 @@ function _processRedirect(redirect) {
     if (redirect) {
         __auth.router.routerGo.call(__auth, redirect);
     }
-}
-
-function _setUser(data) {
-    __auth.$vm.data = data;
-}
-
-function _setLoaded(loaded) {
-    __auth.$vm.loaded = loaded;
-}
-
-function _setAuthenticated(authenticated) {
-    __auth.$vm.loaded = true;
-    __auth.$vm.authenticated = authenticated;
-}
-
-function _setTransitions (transition) {
-    __auth.transitionPrev = __auth.transitionThis;
-    __auth.transitionThis = transition;
 }
 
 function _initVm() {
@@ -453,14 +479,16 @@ Auth.prototype.check = function (role, key) {
 };
 
 Auth.prototype.impersonating = function () {
-    __auth.$vm.data; // To fire watch
+    // __auth.$vm.data; // To fire watch
 
     return __token.get.call(__auth, __auth.options.tokenImpersonateName) ? true : false;
 };
 
-Auth.prototype.token = function (name, token) {
+Auth.prototype.token = function (name, token, expires) {
     if (token) {
-        __token.set.call(__auth, name, token);
+        expires = (expires === true || expires === false) ? expires : __auth.options.loginData.staySignedIn;
+
+        __token.set.call(__auth, name, token, expires);
     }
 
     return __token.get.call(__auth, name);
@@ -495,7 +523,11 @@ Auth.prototype.register = function (data) {
             .then((res) => {
                 if (data.autoLogin) {
                     __auth
-                        .login({redirect: data.redirect})
+                        .login({
+                            redirect: data.redirect,
+                            remember: data.remember,
+                            staySignedIn: data.staySignedIn
+                        })
                         .then(resolve, reject);
                 }
                 else {
@@ -510,12 +542,13 @@ Auth.prototype.register = function (data) {
 Auth.prototype.login = function (data) {
     data = __utils.extend(__auth.options.loginData, data);
 
+    _setRemember(data.remember);
+    _setStaySignedIn(data.staySignedIn);
+
     return new Promise((resolve, reject) => {
         __auth.http.http
             .call(__auth, data)
             .then((res) => {
-                // __cookie.remember.call(__auth, data.rememberMe);
-
                 _setAuthenticated(true);
 
                 if (
@@ -538,6 +571,18 @@ Auth.prototype.login = function (data) {
             });
     });
 };
+
+Auth.prototype.remember = function (val) {
+    if (val) {
+        _setRemember(val);
+    }
+
+    return _getRemember();
+}
+
+Auth.prototype.unremember = function () {
+    _setRemember(null);
+}
 
 Auth.prototype.logout = function (data) {
     data = __utils.extend(__auth.options.logoutData, data);

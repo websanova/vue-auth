@@ -25,6 +25,12 @@ export default {
                     body: data.body,
                 })
                 .then((res) => {
+                    if (data.rememberMe) {
+                        Vue.auth.remember(JSON.stringify({
+                            name: ctx.getters.user.first_name
+                        }));
+                    }
+
                     Vue.router.push({
                         name: ctx.getters.user.type + '-landing'
                     });

@@ -88,7 +88,13 @@
                     {{ $route.name.split('-').join(' / ') }}
 
                     <span class="pull-right">
-                        {{ $auth.user().first_name }}
+                        <span v-if="$auth.check()">
+                            {{ $auth.user().first_name }}
+                        </span>
+
+                        <span v-else-if="$auth.remember()">
+                            Welcome back, {{ JSON.parse($auth.remember()).name }}
+                        </span>
                     </span>
 
                     <hr />

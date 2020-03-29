@@ -100,7 +100,7 @@
                 this.$auth
                     .login({
                         body: this.form.body,
-                        rememberMe: this.form.rememberMe,
+                        remember: this.form.rememberMe ? '{"name": "Default"}' : null,
                         fetchUser: this.form.fetchUser
                     })
                     .then(null, this.errors);
@@ -111,7 +111,7 @@
                     .login({
                         body: this.form.body,
                         redirect: {name: 'user-account'},
-                        rememberMe: this.form.rememberMe,
+                        remember: this.form.rememberMe ? '{"name": "Redirect"}' : null,
                         fetchUser: this.form.fetchUser
                     })
                     .then(null, this.errors);
@@ -121,10 +121,15 @@
                 this.$auth
                     .login({
                         body: this.form.body,
-                        rememberMe: this.form.rememberMe,
                         fetchUser: this.form.fetchUser
                     })
-                    .then(() => {
+                    .then((res) => {
+                        if (this.form.rememberMe) {
+                            this.$auth.remember(JSON.stringify({
+                                name: this.$auth.user().first_name
+                            }));
+                        }
+
                         this.$router.push({name: 'user-account'});
                     }, this.errors);
             },
@@ -147,6 +152,10 @@
                     email: 'test@manual.com',
                     type: 'user'
                 });
+
+                this.$auth.remember(JSON.stringify({
+                    name: 'Manual'
+                }));
 
                 this.$router.push({
                     name: 'user-landing'

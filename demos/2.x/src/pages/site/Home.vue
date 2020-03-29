@@ -1,5 +1,10 @@
 <template>
     <div>
+
+        NOTE: Testing these requires browser refresh or close.
+
+        <hr />
+
         <table>
             <tr>
                 <td>Cookie</td>
@@ -67,6 +72,26 @@
         </table>
 
         <hr />
+
+        <table>
+            <tr>
+                <td>Remember</td>
+
+                <td class="text-right">
+                    {{ remember || 'unset' }}
+
+                    <button @click="rememberSet">
+                        Set
+                    </button>
+
+                    <button @click="rememberRemove">
+                        Remove
+                    </button>
+                </td>
+            </tr>
+        </table>
+
+        <hr />
     </div>
 </template>
 
@@ -80,14 +105,18 @@
             return {
                 token: null,
                 cookie: null,
-                storage: null
+                storage: null,
+                remember: null,
             }
         },
 
         mounted() {
+            var remember = this.$auth.remember();
+
             this.token = token.get.call(this.$auth, 'test');
             this.cookie = cookie.get.call(this.$auth, 'test');
             this.storage = storage.get.call(this.$auth, 'test');
+            this.remember = remember ? JSON.parse(remember) : null;
         },
 
         methods: {
@@ -143,7 +172,19 @@
                 this.$auth.options.tokenStore = ['cookie', 'storage'];
 
                 this.token = token.get.call(this.$auth, 'test');
-            }
+            },
+
+            rememberSet() {
+                this.remember = {name: 'Nova'};
+
+                this.$auth.remember(JSON.stringify(this.remember));
+            },
+
+            rememberRemove() {
+                this.remember = null;
+
+                this.$auth.unremember();
+            },
         }
     }
 </script>

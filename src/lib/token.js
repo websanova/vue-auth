@@ -24,7 +24,7 @@ function processToken(action, key, token, expires) {
 
     if (action === 'set') {
         args.push(token);
-        args.push(expires);
+        args.push(expires === true ? true : false);
     }
 
     for (; i < ii; i++) {
