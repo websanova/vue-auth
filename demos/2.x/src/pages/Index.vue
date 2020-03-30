@@ -214,6 +214,10 @@
         float: right;
     }
 
+    .text-danger {
+        color: red;
+    }
+
     .input-group {
         display: inline-block;
         text-align: left;

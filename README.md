@@ -40,9 +40,10 @@ If you like this package please consider sponsoring.
 
 ## ToDo
 
-- register
 - admin (users) (impersonating \w toggles).
 - oauth (breaking change).
+- clear any app references (LS).
+- hook up proper API (note on login page for super access).
 - docs
 - issues
 - sponsors

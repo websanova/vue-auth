@@ -1,122 +1,130 @@
 <template>
-    <div class="text-center">
-        <br/>
+    <div>
 
-        <div class="input-group">
-            <input
-                v-model="form.body.first_name"
-                placeholder="First Name"
-                type="text"
-            />
-
-            <div>{{ form.errors.first_name }}</div>
+        <div class="text-danger">
+            NOTE: This is a public API, don't use a real email address.
         </div>
 
-        <br/>
+        <hr />
 
-        <div class="input-group">
-            <input
-                v-model="form.body.email"
-                placeholder="Email"
-                type="text"
-            />
+        <div class="text-center">
 
-            <div>{{ form.errors.email }}</div>
+            <div class="input-group">
+                <input
+                    v-model="form.body.first_name"
+                    placeholder="First Name"
+                    type="text"
+                />
+
+                <div>{{ form.errors.first_name }}</div>
+            </div>
+
+            <br/>
+
+            <div class="input-group">
+                <input
+                    v-model="form.body.email"
+                    placeholder="Email"
+                    type="text"
+                />
+
+                <div>{{ form.errors.email }}</div>
+            </div>
+
+            <br/>
+
+            <div class="input-group">
+                <input
+                    v-model="form.body.password"
+                    placeholder="Password"
+                    type="password"
+                />
+
+                <div>{{ form.errors.password }}</div>
+            </div>
+
+            <br/>
+            <div class="input-group">
+                <input
+                    v-model="form.body.tos_pp"
+                    type="checkbox"
+                />
+
+                Accept terms of service.
+
+                <div>{{ form.errors.tos_pp }}</div>
+            </div>
+
+            <br/>
+
+            <div class="input-group">
+                <input
+                    v-model="form.remember"
+                    type="checkbox"
+                />
+
+                Remember Me
+
+                <div />
+            </div>
+
+            <br/>
+
+            <div class="input-group">
+                <input
+                    v-model="form.staySignedIn"
+                    type="checkbox"
+                />
+
+                Stay Signed In
+
+                <div />
+            </div>
+
+            <br/>
+
+            <div class="input-group">
+                <input
+                    v-model="form.fetchUser"
+                    type="checkbox"
+                />
+
+                Fetch User
+
+                <div />
+            </div>
+
+            <br/>
+
+            <div class="input-group">
+                <input
+                    v-model="form.autoLogin"
+                    type="checkbox"
+                />
+
+                Auto Login
+
+                <div />
+            </div>
+
+            <br/>
+
+            <button @click="registerThen">
+                Then
+            </button>
+
+            <button @click="registerRedirect">
+                Redirect
+            </button>
+
+            <button @click="registerDefault">
+                Default
+            </button>
+
+            <button @click="registerVuex">
+                Vuex
+            </button>
         </div>
-
-        <br/>
-
-        <div class="input-group">
-            <input
-                v-model="form.body.password"
-                placeholder="Password"
-                type="password"
-            />
-
-            <div>{{ form.errors.password }}</div>
-        </div>
-
-        <br/>
-        <div class="input-group">
-            <input
-                v-model="form.body.tos_pp"
-                type="checkbox"
-            />
-
-            Accept terms of service.
-
-            <div>{{ form.errors.tos_pp }}</div>
-        </div>
-
-        <br/>
-
-        <div class="input-group">
-            <input
-                v-model="form.remember"
-                type="checkbox"
-            />
-
-            Remember Me
-
-            <div />
-        </div>
-
-        <br/>
-
-        <div class="input-group">
-            <input
-                v-model="form.staySignedIn"
-                type="checkbox"
-            />
-
-            Stay Signed In
-
-            <div />
-        </div>
-
-        <br/>
-
-        <div class="input-group">
-            <input
-                v-model="form.fetchUser"
-                type="checkbox"
-            />
-
-            Fetch User
-
-            <div />
-        </div>
-
-        <br/>
-
-        <div class="input-group">
-            <input
-                v-model="form.autoLogin"
-                type="checkbox"
-            />
-
-            Auto Login
-
-            <div />
-        </div>
-
-        <br/>
-
-        <button @click="registerThen">
-            Then
-        </button>
-
-        <button @click="registerRedirect">
-            Redirect
-        </button>
-
-        <button @click="registerDefault">
-            Default
-        </button>
-
-        <button @click="registerVuex">
-            Vuex
-        </button>
     </div>
 </template>
 
