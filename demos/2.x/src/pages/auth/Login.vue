@@ -153,9 +153,14 @@
                     type: 'user'
                 });
 
-                this.$auth.remember(JSON.stringify({
-                    name: 'Manual'
-                }));
+                if (this.form.rememberMe) {
+                    this.$auth.remember(JSON.stringify({
+                        name: this.$auth.user().first_name
+                    }));
+                }
+                else {
+                    this.$auth.unremember();
+                }
 
                 this.$router.push({
                     name: 'user-landing'
