@@ -40,11 +40,6 @@ If you like this package please consider sponsoring.
 
 ## ToDo
 
-- remember me fixes
-  - staySignedIn
-  - rememberMe: 'string'
-- test impersonating / remember (as dynamic since they are connected to cookie/storage).
-- unremember
 - register
 - admin (users) (impersonating \w toggles).
 - oauth (breaking change).
