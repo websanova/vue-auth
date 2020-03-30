@@ -367,6 +367,7 @@ function _initVm() {
                 loaded: false,
                 redirect: null,
                 authenticated: null, // TODO: false ?
+                impersonating: undefined,
                 remember: undefined,
             };
         }
@@ -482,9 +483,13 @@ Auth.prototype.check = function (role, key) {
 };
 
 Auth.prototype.impersonating = function () {
-    // __auth.$vm.data; // To fire watch
+    var impersonating = __token.get.call(__auth, __auth.options.tokenImpersonateName) ? true : false;
 
-    return __token.get.call(__auth, __auth.options.tokenImpersonateName) ? true : false;
+    if (__auth.$vm.impersonating === undefined) {
+        __auth.$vm.impersonating = impersonating;
+    }
+
+    return __auth.$vm.impersonating;
 };
 
 Auth.prototype.token = function (name, token, expires) {
