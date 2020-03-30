@@ -28,7 +28,7 @@
 
         <div class="input-group">
             <input
-                v-model="form.rememberMe"
+                v-model="form.remember"
                 type="checkbox"
             />
 
@@ -39,6 +39,19 @@
 
         <br/>
 
+        <div class="input-group">
+            <input
+                v-model="form.staySignedIn"
+                type="checkbox"
+            />
+
+            Stay Signed In
+
+            <div />
+        </div>
+
+        <br/>
+        
         <div class="input-group">
             <input
                 v-model="form.fetchUser"
@@ -52,16 +65,16 @@
         
         <br/>
 
+        <button @click="loginManual">
+            Manual
+        </button>
+
         <button @click="loginThen">
             Then
         </button>
 
         <button @click="loginRedirect">
             Redirect
-        </button>
-
-        <button @click="loginManual">
-            Manual
         </button>
 
         <button @click="loginDefault">
@@ -84,8 +97,9 @@
                         email: '',
                         password: '',
                     },
-                    rememberMe: false,
+                    remember: false,
                     fetchUser: true,
+                    staySignedIn: false,
                     errors: {}
                 }
             }
@@ -100,8 +114,9 @@
                 this.$auth
                     .login({
                         body: this.form.body,
-                        remember: this.form.rememberMe ? '{"name": "Default"}' : null,
-                        fetchUser: this.form.fetchUser
+                        remember: this.form.remember ? '{"name": "Default"}' : null,
+                        fetchUser: this.form.fetchUser,
+                        staySignedIn: this.form.staySignedIn,
                     })
                     .then(null, this.errors);
             },
@@ -111,8 +126,9 @@
                     .login({
                         body: this.form.body,
                         redirect: {name: 'user-account'},
-                        remember: this.form.rememberMe ? '{"name": "Redirect"}' : null,
-                        fetchUser: this.form.fetchUser
+                        remember: this.form.remember ? '{"name": "Redirect"}' : null,
+                        fetchUser: this.form.fetchUser,
+                        staySignedIn: this.form.staySignedIn,
                     })
                     .then(null, this.errors);
             },
@@ -121,10 +137,11 @@
                 this.$auth
                     .login({
                         body: this.form.body,
-                        fetchUser: this.form.fetchUser
+                        fetchUser: this.form.fetchUser,
+                        staySignedIn: this.form.staySignedIn,
                     })
                     .then((res) => {
-                        if (this.form.rememberMe) {
+                        if (this.form.remember) {
                             this.$auth.remember(JSON.stringify({
                                 name: this.$auth.user().first_name
                             }));
@@ -137,23 +154,24 @@
             loginVuex() {
                 this.$store.dispatch('auth/login', {
                     body: this.form.body,
-                    rememberMe: this.form.rememberMe,
-                    fetchUser: this.form.fetchUser
+                    remember: this.form.remember,
+                    fetchUser: this.form.fetchUser,
+                    staySignedIn: this.form.staySignedIn,
                 })
                 .then(null, this.errors);
             },
 
             loginManual() {
-                this.$auth.token(null, 'manual');
+                this.$auth.token(null, 'manual', false);
 
                 this.$auth.user({
                     id: 1,
                     first_name: 'Manual',
                     email: 'test@manual.com',
-                    type: 'user'
+                    type: 'user',
                 });
 
-                if (this.form.rememberMe) {
+                if (this.form.remember) {
                     this.$auth.remember(JSON.stringify({
                         name: this.$auth.user().first_name
                     }));

@@ -532,8 +532,10 @@ Auth.prototype.register = function (data) {
                 if (data.autoLogin) {
                     __auth
                         .login({
+                            body: data.body,
                             redirect: data.redirect,
                             remember: data.remember,
+                            fetchUser: data.fetchUser,
                             staySignedIn: data.staySignedIn
                         })
                         .then(resolve, reject);

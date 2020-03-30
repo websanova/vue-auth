@@ -37,14 +37,52 @@
         </div>
 
         <br/>
+        <div class="input-group">
+            <input
+                v-model="form.body.tos_pp"
+                type="checkbox"
+            />
+
+            Accept terms of service.
+
+            <div>{{ form.errors.tos_pp }}</div>
+        </div>
+
+        <br/>
 
         <div class="input-group">
             <input
-                v-model="form.rememberMe"
+                v-model="form.remember"
                 type="checkbox"
             />
 
             Remember Me
+
+            <div />
+        </div>
+
+        <br/>
+
+        <div class="input-group">
+            <input
+                v-model="form.staySignedIn"
+                type="checkbox"
+            />
+
+            Stay Signed In
+
+            <div />
+        </div>
+
+        <br/>
+
+        <div class="input-group">
+            <input
+                v-model="form.fetchUser"
+                type="checkbox"
+            />
+
+            Fetch User
 
             <div />
         </div>
@@ -64,16 +102,16 @@
 
         <br/>
 
-        <button @click="registerDefault">
-            Default
+        <button @click="registerThen">
+            Then
         </button>
 
         <button @click="registerRedirect">
             Redirect
         </button>
 
-        <button @click="registerThen">
-            Then
+        <button @click="registerDefault">
+            Default
         </button>
 
         <button @click="registerVuex">
@@ -91,11 +129,14 @@
                     body: {
                         email: '',
                         password: '',
+                        tos_pp: false,
                     },
 
-                    autoLogin: false,
-
-                    errors: {}
+                    errors: {},
+                    remember: false,
+                    fetchUser: true,
+                    autoLogin: true,
+                    staySignedIn: false,
                 }
             }
         },
@@ -107,9 +148,12 @@
 
             registerDefault() {
                 this.$auth
-                    .reg({
+                    .register({
                         body: this.form.body,
-                        autoLogin: this.form.autoLogin
+                        remember: this.form.remember ? '{"name": "Default"}' : null,
+                        fetchUser: this.form.fetchUser,
+                        autoLogin: this.form.autoLogin,
+                        staySignedIn: this.form.staySignedIn,
                     })
                     .then(null, this.errors);
             },
@@ -119,7 +163,10 @@
                     .register({
                         body: this.form.body,
                         redirect: {name: 'user-account'},
-                        autoLogin: this.form.autoLogin
+                        remember: this.form.remember ? '{"name": "Redirect"}' : null,
+                        fetchUser: this.form.fetchUser,
+                        autoLogin: this.form.autoLogin,
+                        staySignedIn: this.form.staySignedIn,
                     })
                     .then(null, this.errors);
             },
@@ -128,9 +175,17 @@
                 this.$auth
                     .register({
                         body: this.form.body,
-                        autoLogin: this.form.autoLogin
+                        fetchUser: this.form.fetchUser,
+                        autoLogin: this.form.autoLogin,
+                        staySignedIn: this.form.staySignedIn,
                     })
                     .then(() => {
+                        if (this.form.remember) {
+                            this.$auth.remember(JSON.stringify({
+                                name: this.$auth.user().first_name
+                            }));
+                        }
+
                         this.$router.push({name: 'user-account'});
                     }, this.errors);
             },
@@ -138,7 +193,10 @@
             registerVuex() {
                 this.$store.dispatch('auth/register', {
                     body: this.form.body,
-                    autoLogin: this.form.autoLogin
+                    remember: this.form.remember,
+                    fetchUser: this.form.fetchUser,
+                    autoLogin: this.form.autoLogin,
+                    staySignedIn: this.form.staySignedIn,
                 })
                 .then(null, this.errors);
             }

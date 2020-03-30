@@ -19,13 +19,17 @@ export default {
         },
 
         login(ctx, data) {
+            data = data || {};
+
             return new Promise((resolve, reject) => {
                 Vue.auth.login({
                     url: 'auth/login',
                     body: data.body,
+                    remember: data.remember,
+                    staySignedIn: data.staySignedIn,
                 })
                 .then((res) => {
-                    if (data.rememberMe) {
+                    if (data.remember) {
                         Vue.auth.remember(JSON.stringify({
                             name: ctx.getters.user.first_name
                         }));
@@ -40,15 +44,28 @@ export default {
             });
         },
 
-        register() {
+        register(ctx, data) {
+            data = data || {};
 
+            return new Promise((resolve, reject) => {
+                Vue.auth.register({
+                    url: 'auth/register',
+                    body: data.body,
+                    autoLogin: false,
+                })
+                .then((res) => {
+                    if (data.autoLogin) {
+                        ctx.dispatch('login', data).then(resolve, reject);
+                    }
+                }, reject);
+            });
         },
 
         impersonate(ctx, data) {
             var props = this.getters['properties/data'];
 
             Vue.auth.impersonate({
-                url: 'auth/' + data.id + '/impersonate',
+                url: 'auth/' + data.user.id + '/impersonate',
                 redirect: props.auth.impersonateRedirect
             });
         },
