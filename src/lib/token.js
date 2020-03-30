@@ -30,15 +30,15 @@ function processToken(action, key, token, expires) {
     for (; i < ii; i++) {
         if (
             ts[i] === 'storage' &&
-            __utils.isLocalStorageSupported() &&
-            __utils.isSessionStorageSupported()
+            __utils.isLocalStorage() &&
+            __utils.isSessionStorage()
         ) {
             return __storage[action].apply(this, args);
         }
 
         if (
             ts[i] === 'cookie' &&
-            __utils.isCookieStorageSupported()
+            __utils.isCookieStorage()
         ) {
             return __cookie[action].apply(this, args);
         }

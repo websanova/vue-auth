@@ -71,7 +71,7 @@ function compare(one, two) {
     return false;
 }
 
-function isLocalStorageSupported() {
+function isLocalStorage() {
     try {
         if (!window.localStorage) {
             throw 'exception';
@@ -86,7 +86,7 @@ function isLocalStorageSupported() {
     }
 }
 
-function isSessionStorageSupported() {
+function isSessionStorage() {
     try {
         if (!window.sessionStorage) {
             throw 'exception';
@@ -101,16 +101,16 @@ function isSessionStorageSupported() {
     }
 }
 
-function isCookieStorageSupported() {
+function isCookieStorage() {
     return true;
 }
 
 export {
     extend,
+    compare,
     toArray,
     isObject,
-    compare,
-    isLocalStorageSupported,
-    isCookieStorageSupported,
-    isSessionStorageSupported,
+    isLocalStorage,
+    isCookieStorage,
+    isSessionStorage,
 };
