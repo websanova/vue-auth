@@ -135,9 +135,11 @@ function _setStaySignedIn(staySignedIn) {
 function _setRemember(val) {
     if (val) {
         __token.set.call(__auth, 'remember', val, false);
+        __auth.$vm.remember = val;
     }
     else {
         __token.remove.call(__auth, 'remember');
+        __auth.$vm.remember = null;
     }
 }
 
@@ -364,7 +366,8 @@ function _initVm() {
                 data: null,
                 loaded: false,
                 redirect: null,
-                authenticated: null // TODO: false ?
+                authenticated: null, // TODO: false ?
+                remember: undefined,
             };
         }
     });
@@ -577,7 +580,13 @@ Auth.prototype.remember = function (val) {
         _setRemember(val);
     }
 
-    return _getRemember();
+    var remember = _getRemember();
+
+    if (__auth.$vm.remember === undefined) {
+        __auth.$vm.remember = remember;
+    }
+
+    return __auth.$vm.remember;
 }
 
 Auth.prototype.unremember = function () {
