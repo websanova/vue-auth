@@ -43,6 +43,7 @@ If you like this package please consider sponsoring.
 - admin (users) (impersonating \w toggles).
 - oauth (breaking change).
 - clear any app references (LS).
+- check any old rememberMe stuff (and remember in general).
 - hook up proper API (note on login page for super access).
 - docs
 - issues

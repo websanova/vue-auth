@@ -49,6 +49,10 @@ Vue.router = new VueRouter({
             name: 'user-account',
             component: loadView('user/Account')
         }, {
+            path: 'unimpersonate',
+            name: 'user-unimpersonate',
+            component: loadView('user/Unimpersonate')
+        }, {
             path: 'logout',
             name: 'user-logout',
             component: loadView('user/Logout')
@@ -63,12 +67,12 @@ Vue.router = new VueRouter({
             path: '/',
             name: 'admin-landing',
             redirect: {
-                name: 'admin-dashboard'
+                name: 'admin-users'
             }
         }, {
-            path: 'dashboard',
-            name: 'admin-dashboard',
-            component: loadView('admin/Dashboard')
+            path: 'users',
+            name: 'admin-users',
+            component: loadView('admin/Users')
         }]
     }, {
         path: '/',

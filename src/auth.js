@@ -28,8 +28,8 @@ var __defaultOptions = {
     oauth1Data:         {url: 'auth/login',         method: 'POST'},
     fetchData:          {url: 'auth/user',          method: 'GET', enabled: true},
     refreshData:        {url: 'auth/refresh',       method: 'GET', enabled: true, interval: 30},
-    impersonateData:    {url: 'auth/impersonate',   method: 'POST', redirect: '/'},
-    unimpersonateData:  {url: 'auth/unimpersonate', method: 'POST', redirect: '/admin', makeRequest: false},
+    impersonateData:    {url: 'auth/impersonate',   method: 'POST', redirect: '/', fetchUser: true},
+    unimpersonateData:  {url: 'auth/unimpersonate', method: 'POST', redirect: '/admin', makeRequest: false, fetchUser: true},
 
     facebookData:       {url: 'auth/facebook',      method: 'POST', redirect: '/'},
     googleData:         {url: 'auth/google',        method: 'POST', redirect: '/'},
@@ -259,6 +259,26 @@ function _processRouterBeforeEach(cb) {
     _processAuthenticated(cb);
 }
 
+function _processAuthenticated(cb) {
+    if (
+        __auth.$vm.authenticated === null &&
+        __token.get.call(__auth)
+    ) {
+        if (__auth.options.fetchData.enabled) {
+            __auth.fetch().then(cb, cb);
+        }
+        else {
+            _processFetch({});
+            
+            return cb.call(__auth);
+        }
+    } else {
+        _setLoaded(true);
+
+        return cb.call(__auth);
+    }
+}
+
 function _processTransitionEach(transition, routeAuth, cb) {
     var authRedirect = (routeAuth || '').redirect || __auth.options.authRedirect,
         forbiddenRedirect = (routeAuth || '').forbiddenRedirect || (routeAuth || '').redirect || __auth.options.forbiddenRedirect,
@@ -294,34 +314,6 @@ function _processTransitionEach(transition, routeAuth, cb) {
     }
 }
 
-function _processAuthenticated(cb) {
-    if (
-        __auth.$vm.authenticated === null &&
-        __token.get.call(__auth)
-    ) {
-
-        // TODO: Remember me delete hack.
-        // if ( ! __cookie.exists.call(__auth)) {
-        //     _processLogout();
-
-        //     return cb.call(__auth);
-        // }
-
-        if (__auth.options.fetchData.enabled) {
-            __auth.fetch().then(cb, cb);
-        }
-        else {
-            _processFetch({});
-            
-            return cb.call(__auth);
-        }
-    } else {
-        _setLoaded(true);
-
-        return cb.call(__auth);
-    }
-}
-
 function _processFetch(data, redirect) {
     _setUser(data);
 
@@ -331,7 +323,7 @@ function _processFetch(data, redirect) {
 }
 
 function _processLogout(redirect) {
-    __cookie.remove.call(__auth, 'rememberMe');
+    __cookie.remove.call(__auth, 'remember');
 
     __cookie.remove.call(__auth, __auth.options.tokenImpersonateName);
     __cookie.remove.call(__auth, __auth.options.tokenDefaultName);
@@ -349,6 +341,14 @@ function _processLogout(redirect) {
 function _processImpersonate(defaultToken, redirect) {
     __token.set.call(__auth, __auth.options.tokenImpersonateName, __auth.token(), __auth.options.loginData.staySignedIn);
     __token.set.call(__auth, __auth.options.tokenDefaultName, defaultToken, __auth.options.loginData.staySignedIn);
+    __auth.$vm.impersonating = true;
+
+    _processRedirect(redirect);
+}
+
+function _processUnimpersonate(redirect) {
+    __token.remove.call(__auth, __auth.options.tokenImpersonateName);
+    __auth.$vm.impersonating = false;
 
     _processRedirect(redirect);
 }
@@ -474,9 +474,6 @@ Auth.prototype.user = function (data) {
 
     return __auth.$vm.data || {};
 };
-
-Auth.prototype.setUser = function (data) {
-}
 
 Auth.prototype.check = function (role, key) {
     return _isAccess(role, key);
@@ -632,39 +629,48 @@ Auth.prototype.impersonate = function (data) {
             .then((res) => {
                 _processImpersonate(token, data.redirect);
 
-                resolve(res);
+                if (data.fetchUser) {
+                    __auth.fetch().then(resolve, reject);
+                }
+                else {
+                    resolve(res);
+                }
+
             }, reject);
     });
 };
 
 Auth.prototype.unimpersonate = function (data) {
-    // return __bindContext.call(this, 'unimpersonate', data);
+    data = __utils.extend(__auth.options.unimpersonateData, data);
 
-    // function _unimpersonatePerform(data) {
-    //     data = __utils.extend(this.options.unimpersonateData, [data || {}]);
+    return new Promise((resolve, reject) => {
+        if (data.makeRequest) {
+            __auth.http.http
+                .call(__auth, data)
+                .then(resolve, reject);
+        }
+        else {
+            resolve();
+        }
+    })
+    .then(() => {
+        return new Promise((resolve, reject) => {
+            _processUnimpersonate();
 
-    //     if (data.makeRequest) {
-    //         return __duckPunch.call(this, 'unimpersonate', data);
-    //     }
-    //     else {
-    //         this.options.unimpersonateProcess.call(this, null, data);
-    //     }
-    // }
+            if (data.fetchUser) {
+                __auth
+                    .fetch()
+                    .then(() => {
+                        _processRedirect(data.redirect);
 
-    // function _unimpersonateProcess(res, data) {
-    //     __token.remove.call(this, this.options.tokenImpersonateName);
-
-    //     this.options.fetchPerform.call(this, {
-    //         enabled: true,
-    //         success: function () {
-    //             if (data.success) { data.success.call(this, res, data); }
-
-    //             if (data.redirect) {
-    //                 this.options.router._routerGo.call(this, data.redirect);
-    //             }
-    //         }
-    //     });
-    // }
+                        resolve();
+                    }, reject);
+            }
+            else {
+                resolve();
+            }
+        });
+    });
 };
 
 Auth.prototype.oauth2 = function (data) {

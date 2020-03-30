@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            style="max-width:400px; margin:0 auto 50px auto;"
+            style="max-width:500px; margin:0 auto 50px auto;"
         >
             <h1 class="text-center">
                 Vue Auth Plugin Demo
@@ -67,6 +67,10 @@
                         >
                             <span v-show="$auth.check('admin')">
                                 <router-link :to="{name: 'admin-landing'}">admin</router-link> |
+                            </span>
+
+                            <span v-show="$auth.impersonating()">
+                                <router-link :to="{name: 'user-unimpersonate'}">unimpersonate</router-link> |
                             </span>
                             
                             <router-link :to="{name: 'user-account'}">account</router-link> |

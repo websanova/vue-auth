@@ -137,6 +137,7 @@
                 this.$auth
                     .login({
                         body: this.form.body,
+                        redirect: null,
                         fetchUser: this.form.fetchUser,
                         staySignedIn: this.form.staySignedIn,
                     })

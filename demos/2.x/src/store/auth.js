@@ -66,13 +66,13 @@ export default {
 
             Vue.auth.impersonate({
                 url: 'auth/' + data.user.id + '/impersonate',
-                redirect: props.auth.impersonateRedirect
+                redirect: 'user-account'
             });
         },
 
         unimpersonate(ctx) {
             Vue.auth.unimpersonate({
-                redirect: props.auth.unimpersonateRedirect
+                redirect: 'admin-users'
             });
         },    
 
