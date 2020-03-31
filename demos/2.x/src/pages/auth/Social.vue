@@ -94,16 +94,19 @@
 
         methods: {
             reset() {
-                var code = this.$route.query.code;
-                var type = this.$route.params.type;
+                var code  = this.$route.query.code;
+                var type  = this.$route.params.type;
+                var state = this.$route.query.state;
 
                 delete this.form.url;
+                delete this.form.state;
 
                 this.form.body = {};
                 this.form.code = code ? true : false;
 
                 if (this.form.code) {
                     this.form.url        = 'auth/' + type;
+                    this.form.state      = state
                     this.form.body.code  = code;
                 }
             },  

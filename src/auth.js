@@ -549,7 +549,7 @@ Auth.prototype.login = function (data) {
 
                 if (
                     data.fetchUser ||
-                    __auth.options.fetchData.enabled
+                    (data.fetchUser === undefined && __auth.options.fetchData.enabled)
                 ) {
                     __auth
                         .fetch({
@@ -622,7 +622,7 @@ Auth.prototype.impersonate = function (data) {
 
                 if (
                     data.fetchUser ||
-                    __auth.options.fetchData.enabled
+                    (data.fetchUser === undefined && __auth.options.fetchData.enabled)
                 ) {
                     __auth
                         .fetch({
@@ -658,7 +658,7 @@ Auth.prototype.unimpersonate = function (data) {
 
             if (
                 data.fetchUser ||
-                __auth.options.fetchData.enabled
+                (data.fetchUser === undefined && __auth.options.fetchData.enabled)
             ) {
                     __auth
                         .fetch({
@@ -690,9 +690,10 @@ Auth.prototype.oauth2 = function (type, data) {
             data.state = data.state || {};
         }
         
-        data = __utils.extend(__auth.options.oauth2Data, [data.params.state, data]);
+        data = __utils.extend(__auth.options.oauth2Data, [data.state, data]);
 
         delete data.code;
+        delete data.state;
         delete data.params;
 
         return __auth.login(data);
