@@ -59,7 +59,8 @@
                             v-show="!$auth.check()"
                         >
                             <router-link :to="{name: 'auth-login'}">login</router-link> |
-                            <router-link :to="{name: 'auth-register'}">register</router-link>
+                            <router-link :to="{name: 'auth-register'}">register</router-link> |
+                            <router-link :to="{name: 'auth-social'}">social</router-link>
                         </span>
 
                         <span

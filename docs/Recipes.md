@@ -39,3 +39,31 @@ Can read more about it on [StackOverflow](https://stackoverflow.com/questions/10
 Basically it's advised to better use session storage which is the default setting already.
 
 As a "test", running Chrome in Incognito mode seems to produce the (correct) expected behaviour.
+
+
+
+
+
+## Duplicate Navigation Error
+
+If you are seeing this it could potentially be caused by one of the auth functions.
+
+Since there are a lot of default redirects, IF you are doing some manual reidrect they might be getting run twice.
+
+If you are doing something manual, make sure to set the `redirect` options to arguments to `null`
+
+For example:
+
+```
+this.$auth
+    .login({
+        ...
+        redirect: null
+    })
+    .then(() => {
+        this.$router.push({
+            name: 'user-account'
+        });
+    });
+
+```

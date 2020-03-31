@@ -26,6 +26,14 @@ Vue.router = new VueRouter({
             auth: false
         }
     }, {
+        path: '/social',
+        name: 'auth-social',
+        component: loadView('auth/Social'),
+    }, {
+        path: '/login/:type',
+        name: 'auth-login-social',
+        component: loadView('auth/Social'),
+    }, {
         path: '/register',
         name: 'auth-register',
         component: loadView('auth/Register'),

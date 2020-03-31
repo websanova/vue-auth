@@ -22,36 +22,15 @@ var __defaultOptions = {
 
     // Http
 
-    registerData:       {url: 'auth/register',      method: 'POST', redirect: '/login', autoLogin: false},
-    loginData:          {url: 'auth/login',         method: 'POST', redirect: '/', fetchUser: true, staySignedIn: true},
-    logoutData:         {url: 'auth/logout',        method: 'POST', redirect: '/', makeRequest: false},
-    oauth1Data:         {url: 'auth/login',         method: 'POST'},
-    fetchData:          {url: 'auth/user',          method: 'GET', enabled: true},
-    refreshData:        {url: 'auth/refresh',       method: 'GET', enabled: true, interval: 30},
-    impersonateData:    {url: 'auth/impersonate',   method: 'POST', redirect: '/', fetchUser: true},
-    unimpersonateData:  {url: 'auth/unimpersonate', method: 'POST', redirect: '/admin', makeRequest: false, fetchUser: true},
-
-    facebookData:       {url: 'auth/facebook',      method: 'POST', redirect: '/'},
-    googleData:         {url: 'auth/google',        method: 'POST', redirect: '/'},
-
-    // OAuth2
-
-    facebookOauth2Data: {
-        url: 'https://www.facebook.com/v2.5/dialog/oauth',
-        params: {
-            client_id: '',
-            redirect_uri: function () { return this.options.getUrl() + '/login/facebook'; },
-            scope: 'email'
-        }
-    },
-    googleOauth2Data: {
-        url: 'https://accounts.google.com/o/oauth2/auth',
-        params: {
-            client_id: '',
-            redirect_uri: function () { return this.options.getUrl() + '/login/google'; },
-            scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
-        }
-    },
+    registerData:       {url: 'auth/register',      method: 'POST', redirect: '/login',                  autoLogin: false           },
+    loginData:          {url: 'auth/login',         method: 'POST', redirect: '/',      fetchUser: true, staySignedIn: true         },
+    logoutData:         {url: 'auth/logout',        method: 'POST', redirect: '/',                       makeRequest: false         },
+    oauth1Data:         {url: 'auth/login',         method: 'POST'                                                                  },
+    fetchData:          {url: 'auth/user',          method: 'GET',                                       enabled: true              },
+    refreshData:        {url: 'auth/refresh',       method: 'GET',                                       enabled: true, interval: 30},
+    impersonateData:    {url: 'auth/impersonate',   method: 'POST', redirect: '/',      fetchUser: true                             },
+    unimpersonateData:  {url: 'auth/unimpersonate', method: 'POST', redirect: '/admin', fetchUser: true, makeRequest: false         },
+    oauth2Data:         {url: 'auth/social',        method: 'POST', redirect: '/',      fetchUser:true                              },
 
     // External
 
@@ -154,6 +133,16 @@ function _parseUserData(data) {
 
 function _parseUserResponseData(res) {
     return __auth.options.parseUserData(__auth.http.httpData(res));
+}
+
+function _parseRedirectUri(uri) {
+    uri = uri || '';
+
+    if (/^https?\:\/\//.test(uri)) {
+        return uri;
+    }
+
+    return _getUrl() + '/' + uri.replace(/^\/|\/$/g, '');
 }
 
 function _parseRequestIntercept(req) {
@@ -472,7 +461,7 @@ Auth.prototype.user = function (data) {
         _processFetch(data);
     }
 
-    return __auth.$vm.data || {};
+    return __auth.$vm.data;
 };
 
 Auth.prototype.check = function (role, key) {
@@ -559,11 +548,13 @@ Auth.prototype.login = function (data) {
                 _setAuthenticated(true);
 
                 if (
-                    data.fetchUser &&
+                    data.fetchUser ||
                     __auth.options.fetchData.enabled
                 ) {
                     __auth
-                        .fetch({redirect: data.redirect})
+                        .fetch({
+                            redirect: data.redirect
+                        })
                         .then(resolve, reject);
                 }
                 else {
@@ -627,15 +618,23 @@ Auth.prototype.impersonate = function (data) {
         __auth.http.http
             .call(__auth, data)
             .then((res) => {
-                _processImpersonate(token, data.redirect);
+                _processImpersonate(token);
 
-                if (data.fetchUser) {
-                    __auth.fetch().then(resolve, reject);
+                if (
+                    data.fetchUser ||
+                    __auth.options.fetchData.enabled
+                ) {
+                    __auth
+                        .fetch({
+                            redirect: data.redirect
+                        })
+                        .then(resolve, reject);
                 }
                 else {
+                    _processRedirect(data.redirect);
+
                     resolve(res);
                 }
-
             }, reject);
     });
 };
@@ -657,24 +656,58 @@ Auth.prototype.unimpersonate = function (data) {
         return new Promise((resolve, reject) => {
             _processUnimpersonate();
 
-            if (data.fetchUser) {
-                __auth
-                    .fetch()
-                    .then(() => {
-                        _processRedirect(data.redirect);
-
-                        resolve();
-                    }, reject);
+            if (
+                data.fetchUser ||
+                __auth.options.fetchData.enabled
+            ) {
+                    __auth
+                        .fetch({
+                            redirect: data.redirect
+                        })
+                        .then(resolve, reject);
             }
             else {
+                _processRedirect(data.redirect);
+
                 resolve();
             }
         });
     });
 };
 
-Auth.prototype.oauth2 = function (data) {
-    return __bindContext.call(this, 'oauth2', data);
+Auth.prototype.oauth2 = function (type, data) {
+    var key,
+        params = '';
+
+    if (data.code) {
+        try {
+            if (data.state) {
+                data.state = JSON.parse(decodeURIComponent(data.state));
+            }
+        }
+        catch (e) {
+            console.error('vue-auth:error There was an issue retrieving the state data.');
+            data.state = data.state || {};
+        }
+        
+        data = __utils.extend(__auth.options.oauth2Data, [data.params.state, data]);
+
+        delete data.code;
+        delete data.params;
+
+        return __auth.login(data);
+    }
+
+    data = __utils.extend(__auth.options.oauth2[type], data);
+    
+    data.params.state        = JSON.stringify(data.params.state || {});
+    data.params.redirect_uri = _parseRedirectUri(data.params.redirect_uri);
+
+    for (key in data.params) {
+        params += '&' + key + '=' + encodeURIComponent(data.params[key]);
+    }
+
+    window.location = data.url + '?' + params.substring();
 }
 
 Auth.prototype.enableImpersonate = function () {
