@@ -3,53 +3,60 @@
 
         <br/><br/>
 
+        <div v-if="form.code">
+            <span class="spin">↻</span>
 
-        <div class="input-group">
-            <input
-                v-model="form.params.state.remember"
-                type="checkbox"
-            />
-
-            Remember Me
-
-            <div />
+            Loading social...
         </div>
 
-        <br/>
+        <div v-else>
+            <div class="input-group">
+                <input
+                    v-model="form.params.state.remember"
+                    type="checkbox"
+                />
 
-        <div class="input-group">
-            <input
-                v-model="form.params.state.staySignedIn"
-                type="checkbox"
-            />
+                Remember Me
 
-            Stay Signed In
+                <div />
+            </div>
 
-            <div />
+            <br/>
+
+            <div class="input-group">
+                <input
+                    v-model="form.params.state.staySignedIn"
+                    type="checkbox"
+                />
+
+                Stay Signed In
+
+                <div />
+            </div>
+
+            <br/>
+            
+            <div class="input-group">
+                <input
+                    v-model="form.params.state.fetchUser"
+                    type="checkbox"
+                />
+
+                Fetch User
+
+                <div />
+            </div>
+            
+            <br/>
+
+            <button @click="oauth2Default('google')">
+                Google
+            </button>
+
+            <button @click="oauth2Default('facebook')">
+                Facebook
+            </button>
         </div>
-
-        <br/>
-        
-        <div class="input-group">
-            <input
-                v-model="form.params.state.fetchUser"
-                type="checkbox"
-            />
-
-            Fetch User
-
-            <div />
-        </div>
-        
-        <br/>
-
-        <button @click="oauth2Default('google')">
-            Google
-        </button>
-
-        <button @click="oauth2Default('facebook')">
-            Facebook
-        </button>
     </div>
 </template>
 
@@ -91,13 +98,13 @@
                 var type = this.$route.params.type;
 
                 delete this.form.url;
+
                 this.form.body = {};
                 this.form.code = code ? true : false;
 
                 if (this.form.code) {
-                    this.form.url = 'auth/' + type;
-
-                    this.form.body.code = code;
+                    this.form.url        = 'auth/' + type;
+                    this.form.body.code  = code;
                 }
             },  
 

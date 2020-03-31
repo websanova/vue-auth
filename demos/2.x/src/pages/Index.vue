@@ -94,7 +94,7 @@
 
                     <span class="pull-right">
                         <span v-if="$auth.check()">
-                            {{ $auth.user().first_name }}
+                            {{ _user.first_name }}
                         </span>
 
                         <span v-else-if="$auth.remember()">
@@ -124,6 +124,10 @@
         },
 
         computed: {
+            _user() {
+                return this.$auth.user() || {};
+            },
+
             _loaded() {
                 return this.$auth.ready() && this.artificialLoad;
             }
