@@ -660,11 +660,11 @@ Auth.prototype.unimpersonate = function (data) {
                 data.fetchUser ||
                 (data.fetchUser === undefined && __auth.options.fetchData.enabled)
             ) {
-                    __auth
-                        .fetch({
-                            redirect: data.redirect
-                        })
-                        .then(resolve, reject);
+                __auth
+                    .fetch({
+                        redirect: data.redirect
+                    })
+                    .then(resolve, reject);
             }
             else {
                 _processRedirect(data.redirect);
