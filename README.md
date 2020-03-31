@@ -2,51 +2,26 @@
 
 A simple light-weight authentication library for Vue.js
 
-If you are still on 2.x please visit the (very short) [2.x to 3.x Upgrade Guide]().
+If you are still on 2.x please visit the [2.x to 3.x Upgrade Guide](https://websanova.com/docs/vue-auth/upgrades/2x-3x).
 
 
 ## Sponsor
 
-If you like this package please consider sponsoring.
+If you like this plugin please consider sponsoring.
 
 
-## Guides
+## Resources
 
-* [Basic Setup](https://websanova.com/docs/vue-auth)
-* [Getting Started](https://websanova.com/docs/vue-auth)
-* [Running Demos](https://websanova.com/docs/vue-auth/Demos.md)
-* [Using Vuex](https://websanova.com/docs/vue-auth)
-* [Custom Drivers](https://websanova.com/docs/vue-auth)
-* [Common Solutions](https://websanova.com/docs/Recipes.md)
-
-
-## Reference
-
-* [Options](https://websanova.com/docs/vue-auth).
-* [Methods](https://websanova.com/docs/vue-auth).
+* [Guides](https://websanova.com/docs/vue-auth/guides)
+* [Recipes](https://websanova.com/docs/vue-auth/recipes)
+* [Methods](https://websanova.com/docs/vue-auth/methods)
+* [Options](https://websanova.com/docs/vue-auth/options)
+* [Upgrades](https://websanova.com/docs/vue-auth/upgrades)
+* [Changes](https://websanova.com/docs/vue-auth/changes)
 
 
-## Upgrade Guide
+## License
 
-* [2.x to 3.x](/docs/upgrades/2.x-3.x.md).
+MIT licensed
 
-
-## Change Log
-
-* [3.x Change Log](/docs/changes/3.x.md)
-* [2.x Change Log](/docs/changes/2.x.md)
-* [1.x Change Log](/docs/changes/1.x.md)
-
-
-## ToDo
-
-- oauth (breaking change).
-- make sure using function not () => 
-- clear any app references (LS).
-- check any old rememberMe stuff (and remember in general).
-- hook up proper API (note on login page for super access).
-
-- docs
-- issues
-- sponsors
-- manual login then refresh should toss user on 401?
+Copyright (C) 2011-2012 Websanova https://websanova.com
