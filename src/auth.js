@@ -8,11 +8,11 @@ var __defaultOptions = {
 
     // Variables
 
-    rolesVar:             'roles',
-    rememberName:         'auth_remember',
-    tokenDefaultName:     'auth_token_default',
-    tokenImpersonateName: 'auth_token_impersonate',
-    tokenStore:           ['storage', 'cookie'],
+    rolesKey:            'roles',
+    rememberkey:         'auth_remember',
+    tokenDefaultKey:     'auth_token_default',
+    tokenImpersonateKey: 'auth_token_impersonate',
+    tokenStore:          ['storage', 'cookie'],
 
     // Redirects
 
@@ -42,7 +42,7 @@ var __defaultOptions = {
 function _isAccess(role, key) {
     if (__auth.$vm.authenticated === true) {
         if (role) {
-            return __utils.compare(role, (__auth.$vm.data || {})[key || __auth.options.rolesVar]);
+            return __utils.compare(role, (__auth.$vm.data || {})[key || __auth.options.rolesKey]);
         }
 
         return true;
@@ -86,7 +86,7 @@ function _getUrl() {
 }
 
 function _getRemember() {
-    return __token.get.call(__auth, 'remember');
+    return __token.get.call(__auth, __auth.options.rememberKey);
 }
 
 function _setUser(data) {
@@ -113,11 +113,11 @@ function _setStaySignedIn(staySignedIn) {
 
 function _setRemember(val) {
     if (val) {
-        __token.set.call(__auth, 'remember', val, false);
+        __token.set.call(__auth, __auth.options.rememberKey, val, false);
         __auth.$vm.remember = val;
     }
     else {
-        __token.remove.call(__auth, 'remember');
+        __token.remove.call(__auth, __auth.options.rememberKey);
         __auth.$vm.remember = null;
     }
 }
@@ -157,7 +157,7 @@ function _parseRequestIntercept(req) {
         req.impersonating === false &&
         __auth.impersonating()
     ) {
-        tokenName = __auth.options.tokenDefaultName;
+        tokenName = __auth.options.tokenDefaultKey;
     }
     
     token = __token.get.call(__auth, tokenName);
@@ -280,7 +280,7 @@ function _processTransitionEach(transition, routeAuth, cb) {
             __auth.$vm.transitionRedirectType = 401;
             cb.call(__auth, authRedirect);
         }
-        else if ((routeAuth.constructor === Array || __utils.isObject(routeAuth)) && ! __utils.compare(routeAuth, __auth.$vm.data[__auth.options.rolesVar])) {
+        else if ((routeAuth.constructor === Array || __utils.isObject(routeAuth)) && ! __utils.compare(routeAuth, __auth.$vm.data[__auth.options.rolesKey])) {
             __auth.$vm.transitionRedirectType = 403;
             cb.call(__auth, forbiddenRedirect);
         }
@@ -312,13 +312,13 @@ function _processFetch(data, redirect) {
 }
 
 function _processLogout(redirect) {
-    __cookie.remove.call(__auth, 'remember');
+    __cookie.remove.call(__auth, __auth.options.rememberKey);
 
-    __cookie.remove.call(__auth, __auth.options.tokenImpersonateName);
-    __cookie.remove.call(__auth, __auth.options.tokenDefaultName);
+    __cookie.remove.call(__auth, __auth.options.tokenImpersonateKey);
+    __cookie.remove.call(__auth, __auth.options.tokenDefaultKey);
 
-    __token.remove.call(__auth, __auth.options.tokenImpersonateName);
-    __token.remove.call(__auth, __auth.options.tokenDefaultName);
+    __token.remove.call(__auth, __auth.options.tokenImpersonateKey);
+    __token.remove.call(__auth, __auth.options.tokenDefaultKey);
 
     __auth.$vm.loaded = true;
     __auth.$vm.authenticated = false;
@@ -328,15 +328,15 @@ function _processLogout(redirect) {
 }
 
 function _processImpersonate(defaultToken, redirect) {
-    __token.set.call(__auth, __auth.options.tokenImpersonateName, __auth.token(), __auth.options.loginData.staySignedIn);
-    __token.set.call(__auth, __auth.options.tokenDefaultName, defaultToken, __auth.options.loginData.staySignedIn);
+    __token.set.call(__auth, __auth.options.tokenImpersonateKey, __auth.token(), __auth.options.loginData.staySignedIn);
+    __token.set.call(__auth, __auth.options.tokenDefaultKey, defaultToken, __auth.options.loginData.staySignedIn);
     __auth.$vm.impersonating = true;
 
     _processRedirect(redirect);
 }
 
 function _processUnimpersonate(redirect) {
-    __token.remove.call(__auth, __auth.options.tokenImpersonateName);
+    __token.remove.call(__auth, __auth.options.tokenImpersonateKey);
     __auth.$vm.impersonating = false;
 
     _processRedirect(redirect);
@@ -434,11 +434,11 @@ function Auth(Vue, options) {
     _initInterceptors();
 }
 
-Auth.prototype.ready = function (cb) {
+Auth.prototype.ready = function () {
     return __auth.$vm.loaded;
 };
 
-Auth.prototype.load = function (cb) {
+Auth.prototype.load = function () {
     return new Promise((resolve) => {
         var timer = null;
 
@@ -469,7 +469,7 @@ Auth.prototype.check = function (role, key) {
 };
 
 Auth.prototype.impersonating = function () {
-    var impersonating = __token.get.call(__auth, __auth.options.tokenImpersonateName) ? true : false;
+    var impersonating = __token.get.call(__auth, __auth.options.tokenImpersonateKey) ? true : false;
 
     if (__auth.$vm.impersonating === undefined) {
         __auth.$vm.impersonating = impersonating;
@@ -719,7 +719,7 @@ Auth.prototype.enableImpersonate = function () {
 
 Auth.prototype.disableImpersonate = function () {
     if (__auth.impersonating()) {
-        __auth.currentToken = __auth.options.tokenDefaultName;
+        __auth.currentToken = __auth.options.tokenDefaultKey;
     }
 };
 

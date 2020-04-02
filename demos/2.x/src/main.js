@@ -123,7 +123,7 @@ new Vue({
 //     http: require('../../../drivers/http/vue-resource.1.x.js'),
 //     // http: require('../../../drivers/http/axios.1.x.js'),
 //     router: require('../../../drivers/router/vue-router.2.x.js'),
-//     rolesVar: 'role',
+//     rolesKey: 'role',
 //     facebookOauth2Data: {
 //         clientId: '196729390739201'
 //     },

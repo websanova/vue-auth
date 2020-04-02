@@ -2,7 +2,7 @@ import * as __utils   from './utils.js';
 import * as __cookie  from './cookie.js';
 import * as __storage from './storage.js';
 
-function getTokenName(key) {
+function getTokenKey(key) {
     key = key || this.currentToken;
     
     if (key) {
@@ -10,17 +10,17 @@ function getTokenName(key) {
     }
 
     if (this.impersonating()) {
-        return this.options.tokenImpersonateName;
+        return this.options.tokenImpersonateKey;
     }
 
-    return this.options.tokenDefaultName;
+    return this.options.tokenDefaultKey;
 }
 
 function processToken(action, key, token, expires) {
     var i   = 0,
         ts  = this.options.tokenStore,
         ii  = ts.length,
-        args = [getTokenName.call(this, key)];
+        args = [getTokenKey.call(this, key)];
 
     if (action === 'set') {
         args.push(token);

@@ -15,7 +15,7 @@ Vue.use(auth, {
     auth: authBearer,
     http: httpVueResource,
     router: routerVueRouter,
-    rolesVar: 'type',
+    rolesKey: 'type',
     notFoundRedirect: {name: 'user-account'},
     oauth2: {
         google: oauth2Google,
