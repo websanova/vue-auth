@@ -1,7 +1,6 @@
 <template>
     <div class="text-center">
-
-        <br/><br/>
+        <br/>
 
         <div v-if="form.code">
             <span class="spin">↻</span>

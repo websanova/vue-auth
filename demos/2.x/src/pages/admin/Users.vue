@@ -28,7 +28,9 @@
                     </span>
                 </div>
 
-                {{ user.email }}
+                <span class="text-muted">
+                    ({{ user.role }})
+                </span>
 
                 <hr/>
             </template>

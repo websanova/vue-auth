@@ -42,6 +42,17 @@
 
             <hr/>
 
+            <div class="text-danger">
+                NOTE: This demo uses a public API to simulate realistic flow. The database is reset every 30 minutes and otherwise reveals no sensitive data such as emails or last names.
+
+                <br/>
+
+                NOTE: Would be nice to get some generic node (or deno?) service up for better/safer local testing. If you anyone can contribute, would be greatly appreciated :-) 
+
+            </div>
+
+            <hr />
+
             <div
                 v-if="_loaded"
             >
@@ -90,6 +101,7 @@
                 </span>
 
                 <div v-else>
+
                     {{ $route.name.split('-').join(' / ') }}
 
                     <span class="pull-right">
@@ -103,6 +115,8 @@
                     </span>
 
                     <hr />
+
+
 
                     <router-view />
                 </div>
@@ -221,6 +235,10 @@
 
     .pull-right {
         float: right;
+    }
+
+    .text-muted {
+        color: #aeaeae;
     }
 
     .text-danger {
