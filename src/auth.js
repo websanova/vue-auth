@@ -12,7 +12,7 @@ var __defaultOptions = {
     rememberkey:         'auth_remember',
     tokenDefaultKey:     'auth_token_default',
     tokenImpersonateKey: 'auth_token_impersonate',
-    tokenStore:          ['storage', 'cookie'],
+    stores:              ['storage', 'cookie'],
 
     // Redirects
 
@@ -25,7 +25,6 @@ var __defaultOptions = {
     registerData:       {url: 'auth/register',      method: 'POST', redirect: '/login',                  autoLogin: false           },
     loginData:          {url: 'auth/login',         method: 'POST', redirect: '/',      fetchUser: true, staySignedIn: true         },
     logoutData:         {url: 'auth/logout',        method: 'POST', redirect: '/',                       makeRequest: false         },
-    oauth1Data:         {url: 'auth/login',         method: 'POST'                                                                  },
     fetchData:          {url: 'auth/user',          method: 'GET',                                       enabled: true              },
     refreshData:        {url: 'auth/refresh',       method: 'GET',                                       enabled: true, interval: 30},
     impersonateData:    {url: 'auth/impersonate',   method: 'POST', redirect: '/',      fetchUser: true                             },
@@ -312,7 +311,7 @@ function _processFetch(data, redirect) {
 }
 
 function _processLogout(redirect) {
-    __cookie.remove.call(__auth, __auth.options.rememberKey);
+    // __cookie.remove.call(__auth, __auth.options.rememberKey);
 
     __cookie.remove.call(__auth, __auth.options.tokenImpersonateKey);
     __cookie.remove.call(__auth, __auth.options.tokenDefaultKey);

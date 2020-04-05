@@ -18,7 +18,7 @@ function getTokenKey(key) {
 
 function processToken(action, key, token, expires) {
     var i   = 0,
-        ts  = this.options.tokenStore,
+        ts  = this.options.stores,
         ii  = ts.length,
         args = [getTokenKey.call(this, key)];
 
