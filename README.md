@@ -9,6 +9,8 @@ If you are still on 2.x please visit the [2.x to 3.x Upgrade Guide](https://webs
 
 If you like this plugin please consider sponsoring.
 
+* [Patreon](https://patreon.com/websanova)
+
 
 ## Resources
 
