@@ -1,36 +1,25 @@
 {
-  "name": "@websanova/vue-auth",
+    "name": "@websanova/vue-auth",
 
-  "description": "Vue.js token based authentication plugin. Supports simple token based and Json Web Tokens (JWT) authentication.",
+    "description": "A simple light-weight authentication library for Vue.js",
 
-  "keywords": ["vue", "vue.js", "jwt", "auth", "authentication", "plugin", "json", "web", "token"],
+    "keywords": ["vue", "vue.js", "jwt", "auth", "authentication", "plugin", "json", "web", "token"],
 
-  "author": {
-    "name": "Websanova",
-    "url": "http://websanova.com",
-    "username": "websanova",
-    "email": "rob@websanova.com"
-  },
-  
-  "main": "src/index.js",
-  
-  "version": "3.0.0-alpha",
-  
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/websanova/vue-auth"
-  },
-  
-  "licenses": "MIT, GPL",
+    "author": {
+        "name": "Websanova",
+        "url": "http://websanova.com",
+        "username": "websanova",
+        "email": "rob@websanova.com"
+    },
 
-  "devDependencies": {
-    "webpack": "4.40.2",
-    "@babel/core": "7.6.0",
-    "babel-loader": "8.0.6",
-    "@babel/preset-env": "7.6.0"
-  },
-  
-  "scripts": {
-    "build": "node ./build.js"
-  }
+    "main": "src/index.js",
+
+    "version": "3.0.0-beta",
+
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/websanova/vue-auth"
+    },
+
+    "licenses": "MIT, GPL"
 }
