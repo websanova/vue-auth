@@ -1,15 +1,15 @@
-module.exports = {
+export default {
 
-    _init: function () {
-        if ( ! this.options.Vue.http) {
+    init: function () {
+        if ( ! this.Vue.http) {
             return 'vue-resource.1.x.js : Vue.http must be set.';
         }
     },
     
-    _interceptor: function (req, res) {
+    interceptor: function (req, res) {
         var _this = this;
 
-        this.options.Vue.http.interceptors.push(function (request, next) {
+        this.Vue.http.interceptors.push(function (request, next) {
             if (req) { req.call(_this, request); }
             
             next(function (response) {
@@ -18,25 +18,21 @@ module.exports = {
         });
     },
 
-    _invalidToken: function (res, transition) {
+    invalidToken: function (res) {
         if (res.status === 401) {
             return true;
         }
     },
 
-    _httpData: function (res) {
+    httpData: function (res) {
         return res.data || {};
     },
 
-    _http: function (data) {
-        var http = this.options.Vue.http(data);
-
-        http.then(data.success, data.error);
-
-        return http;
+    http: function (data) {
+        return this.Vue.http(data);
     },
 
-    _getHeaders: function (res) {
+    getHeaders: function (res) {
         var i,
             data = {},
             headers = res.headers.map;
@@ -48,7 +44,7 @@ module.exports = {
         return data;
     },
 
-    _setHeaders: function (req, headers) {
+    setHeaders: function (req, headers) {
         var i;
 
         for (i in headers) {

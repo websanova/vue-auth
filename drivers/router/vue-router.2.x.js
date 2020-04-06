@@ -1,35 +1,35 @@
-module.exports = {
+export default {
 
-    _init: function () {
-        if ( ! this.options.Vue.router) {
+    init: function () {
+        if ( ! this.Vue.router) {
             return 'vue-router.2.x.js : Vue.router must be set.';
         }
     },
 
-    _bindData: function (data, ctx) {
-        var error, success;
+    // bindData: function (data, ctx) {
+    //     var error, success;
 
-        data = data || {};
+    //     data = data || {};
 
-        error = data.error;
-        success = data.success;
+    //     error = data.error;
+    //     success = data.success;
 
-        data.query = ctx.$route.query || {};
+    //     data.query = ctx.$route.query || {};
 
-        if (data.success) { data.success = function (res) { success.call(ctx, res); } }
-        if (data.error) { data.error = function (res) { error.call(ctx, res); } }
+    //     if (data.success) { data.success = function (res) { success.call(ctx, res); } }
+    //     if (data.error) { data.error = function (res) { error.call(ctx, res); } }
 
-        return data;
-    },
+    //     return data;
+    // },
 
-    _beforeEach: function (routerBeforeEach, transitionEach) {
+    beforeEach: function (routerBeforeEach, transitionEach, setTransitions, getAuthMeta) {
         var _this = this;
 
-        this.options.Vue.router.beforeEach(function (transition, location, next) {
-            _this.options.setTransitions.call(this, transition);
+        this.Vue.router.beforeEach(function (transition, location, next) {
+            setTransitions(transition);
             
             routerBeforeEach.call(_this, function () {
-                var auth = _this.options.getAuthMeta(transition);
+                var auth = getAuthMeta(transition);
 
                 transitionEach.call(_this, transition, auth, function (redirect) {
                     if (!redirect) {
@@ -41,23 +41,22 @@ module.exports = {
                     if (next) {
                         next(redirect);
                     } else {
-                        this.options.router._routerReplace.call(this, redirect);
+                        this.router._routerReplace.call(this, redirect);
                     }
                 });
             });
         })
     },
 
-    _routerReplace: function (data) {
-        var router = this.options.Vue.router;
+    routerReplace: function (data) {
+        var router = this.Vue.router;
 
         router.replace.call(router, data);
     },
 
-    _routerGo: function (data) {
-        var router = this.options.Vue.router;
+    routerGo: function (data) {
+        var router = this.Vue.router;
 
         (router.push || router.go).call(router, data).catch(function (err){});
     }
-
 };

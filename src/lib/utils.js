@@ -1,65 +1,53 @@
-module.exports = (function (){
-
-    function isObject(val) {
-        if (val !== null && typeof val === 'object' && val.constructor !== Array ) {
-            return true;
-        }
-
-        return false;
+function isObject(val) {
+    if (val !== null && typeof val === 'object' && val.constructor !== Array ) {
+        return true;
     }
 
-    function toArray(val) {
-        return (typeof val) === 'string' || (typeof val) === 'number' ? [val] : val;
+    return false;
+}
+
+function toArray(val) {
+    return (typeof val) === 'string' || (typeof val) === 'number' ? [val] : val;
+}
+
+function extend(mainObj, appendObj) {
+    var i, ii, key, data = {};
+
+    appendObj = appendObj || {};
+
+    for (key in mainObj) {
+        if (isObject(mainObj[key]) && mainObj[key].constructor.name !== 'FormData') {
+            data[key] = extend(mainObj[key], {});
+        }
+        else {
+            data[key] = mainObj[key];
+        }
     }
 
-    function extend(mainObj, appendObj) {
-        var i, ii, key, data = {};
-
-        for (key in mainObj) {
-            if (isObject(mainObj[key]) && mainObj[key].constructor.name !== 'FormData') {
-                data[key] = extend(mainObj[key], {});
-            }
-            else {
-                data[key] = mainObj[key];
-            }
-        }
-
-        for (i = 0, ii = appendObj.length; i < ii; i++) {
-            for (key in appendObj[i]) {
-                if (isObject(appendObj[i][key]) && appendObj[i][key].constructor.name !== 'FormData') {
-                    data[key] = extend(mainObj[key] || {}, [appendObj[i][key]]);
-                }
-                else  {
-                    data[key] = appendObj[i][key];
-                }
-            }
-        }
-
-        return data;
+    if (appendObj.constructor !== Array) {
+        appendObj = [appendObj];
     }
 
-    function compare(one, two) {
-        var i, ii, key;
-
-        if (Object.prototype.toString.call(one) === '[object Object]' && Object.prototype.toString.call(two) === '[object Object]') {
-            for (key in one) {
-                if (compare(one[key], two[key])) {
-                    return true;
-                }
+    for (i = 0, ii = appendObj.length; i < ii; i++) {
+        for (key in appendObj[i]) {
+            if (isObject(appendObj[i][key]) && appendObj[i][key].constructor.name !== 'FormData') {
+                data[key] = extend(mainObj[key] || {}, [appendObj[i][key]]);
             }
-
-            return false;
+            else  {
+                data[key] = appendObj[i][key];
+            }
         }
+    }
 
-        one = toArray(one);
-        two = toArray(two);
+    return data;
+}
 
-        if (!one || !two || one.constructor !== Array || two.constructor !== Array) {
-            return false;
-        }
+function compare(one, two) {
+    var i, ii, key;
 
-        for (i = 0, ii = one.length; i < ii; i++) {
-            if (two.indexOf(one[i]) >= 0) {
+    if (Object.prototype.toString.call(one) === '[object Object]' && Object.prototype.toString.call(two) === '[object Object]') {
+        for (key in one) {
+            if (compare(one[key], two[key])) {
                 return true;
             }
         }
@@ -67,10 +55,62 @@ module.exports = (function (){
         return false;
     }
 
-    return {
-        extend: extend,
-        toArray: toArray,
-        isObject: isObject,
-        compare: compare
-    };
-})();
+    one = toArray(one);
+    two = toArray(two);
+
+    if (!one || !two || one.constructor !== Array || two.constructor !== Array) {
+        return false;
+    }
+
+    for (i = 0, ii = one.length; i < ii; i++) {
+        if (two.indexOf(one[i]) >= 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function isLocalStorage() {
+    try {
+        if (!window.localStorage) {
+            throw 'exception';
+        }
+
+        localStorage.setItem('storage_test', 1);
+        localStorage.removeItem('storage_test');
+        
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function isSessionStorage() {
+    try {
+        if (!window.sessionStorage) {
+            throw 'exception';
+        }
+
+        sessionStorage.setItem('storage_test', 1);
+        sessionStorage.removeItem('storage_test');
+
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function isCookieStorage() {
+    return true;
+}
+
+export {
+    extend,
+    compare,
+    toArray,
+    isObject,
+    isLocalStorage,
+    isCookieStorage,
+    isSessionStorage,
+};

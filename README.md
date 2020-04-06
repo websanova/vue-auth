@@ -2,62 +2,26 @@
 
 A simple light-weight authentication library for Vue.js
 
-## Guides
-
-* [Guide](https://github.com/websanova/vue-auth/blob/master/docs/Guide.md)
-* [Step By Step Guide](https://github.com/websanova/vue-auth/blob/master/docs/StepByStepGuide.md)
-* [FAQ](https://github.com/websanova/vue-auth/blob/master/docs/Faq.md)
-
-## Reference
-
-* [Installation](https://github.com/websanova/vue-auth/blob/master/docs/Installation.md)
-* [Demos](https://github.com/websanova/vue-auth/blob/master/docs/Demos.md)
-* [Authentication](https://github.com/websanova/vue-auth/blob/master/docs/Authentication.md)
-* [Privileges](https://github.com/websanova/vue-auth/blob/master/docs/Privileges.md)
-* [Methods](https://github.com/websanova/vue-auth/blob/master/docs/Methods.md)
-* [Options](https://github.com/websanova/vue-auth/blob/master/docs/Options.md)
-* [Change Log](https://github.com/websanova/vue-auth/blob/master/docs/ChangeLog.md)
-* [Contributors](https://github.com/websanova/vue-auth/blob/master/docs/Contributors.md)
+If you are still on 2.x please visit the [2.x to 3.x Upgrade Guide](https://websanova.com/docs/vue-auth/upgrades/2x-3x).
 
 
+## Sponsor
+
+If you like this plugin please consider sponsoring.
 
 
+## Resources
+
+* [Guides](https://websanova.com/docs/vue-auth/guides)
+* [Recipes](https://websanova.com/docs/vue-auth/recipes)
+* [Methods](https://websanova.com/docs/vue-auth/methods)
+* [Options](https://websanova.com/docs/vue-auth/options)
+* [Upgrades](https://websanova.com/docs/vue-auth/upgrades)
+* [Changes](https://websanova.com/docs/vue-auth/changes)
 
 
+## License
 
+MIT licensed
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Copyright (C) 2011-2012 Websanova https://websanova.com

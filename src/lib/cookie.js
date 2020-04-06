@@ -1,62 +1,55 @@
-module.exports = (function () {
+function setCookie (key, value, timeOffset) {
+    var domain  = this.options.getDomain(),
+        cookie  = key + '=' + value + '; SameSite=None;',
+        expires = '';
 
-    function setCookie (name, value, timeOffset) {
-        var domain = this.options.cookieDomain(),
-            expires = (new Date((new Date()).getTime() + timeOffset)).toUTCString(),
-            cookie = name + '=' + value + '; Expires=' + expires + ';';
-        
-        if (domain !== 'localhost') {
-            cookie += ' Path=/; Domain=' + domain + ';';
-        }
-        
-        if (location.protocol === 'https:') {
-            cookie += 'secure';
-        }
-
-        document.cookie = cookie;
+    if (timeOffset) {
+        expires = (new Date((new Date()).getTime() + timeOffset)).toUTCString();
     }
 
-    return {
-        remember: function(rememberMe) {
-            setCookie.call(this,
-                'rememberMe',
-                rememberMe === true ? 'true' : 'false',
-                rememberMe === true ? 12096e5 : undefined
-            );
-        },
+    cookie += ' Expires=' + expires + ';';
 
-        set: function(name, value, expires) {
-            if (value) {
-                setCookie.call(this, name, value, 12096e5);
-            }
-        },
+    if (domain !== 'localhost') {
+        cookie += ' Path=/; Domain=' + domain + ';';
+    }
+    
+    if (location.protocol === 'https:') {
+        cookie += ' Secure;';
+    }
 
-        get: function(name) {
-            var i, ii,
-                cookie = document.cookie;
+    document.cookie = cookie;
+}
 
-             cookie = cookie.replace(/;\s+/g, ';')
-                            .split(';')
-                            .map(function(s) {
-                                return s.replace(/\s+\=\s+/g, '=').split('=');
-                             });
+function set(key, value, expires) {
+    setCookie.call(this, key, value, (expires ? 0 : 1) * 12096e5);
+}
 
-            for (i = 0, ii = cookie.length; i < ii; i++) {
-                if (cookie[i][0] && cookie[i][0] === name) {
-                    return cookie[i][1];
-                }
-            }
+function get(key) {
+    var i, ii,
+        cookie = document.cookie;
 
-            return null;
-        },
+     cookie = cookie
+        .replace(/;\s+/g, ';')
+        .split(';')
+        .map(function(s) {
+            return s.replace(/\s+=\s+/g, '=').split('=');
+         });
 
-        exists: function(name) {
-            return document.cookie.match(/rememberMe/);
-        },
-
-        remove: function(name) {
-            setCookie.call(this, name, '', -12096e5);
+    for (i = 0, ii = cookie.length; i < ii; i++) {
+        if (cookie[i][0] && cookie[i][0] === key) {
+            return cookie[i][1];
         }
-    };
+    }
 
-})();
+    return null;
+}
+
+function remove(key) {
+    setCookie.call(this, key, '', -12096e5);
+}
+
+export {
+    get,
+    set,
+    remove
+};
