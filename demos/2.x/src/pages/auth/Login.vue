@@ -94,8 +94,8 @@
             return {
                 form: {
                     body: {
-                        email: '',
-                        password: '',
+                        email: 'super@starter.com',
+                        password: 'testtest',
                     },
                     remember: false,
                     fetchUser: true,

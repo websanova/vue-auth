@@ -23,9 +23,7 @@
         "eslint-plugin-vue": "6.1.2",
         "vue-template-compiler": "2.6.11",
         "sass-loader": "8.0.2",
-        "node-sass": "4.13.1",
-        "webpack": "4.41.5",
-        "webpack-cli": "3.3.10"
+        "node-sass": "4.13.1"
     },
     "eslintConfig": {
         "root": true,

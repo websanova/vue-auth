@@ -137,7 +137,7 @@ function _parseUserResponseData(res) {
 function _parseRedirectUri(uri) {
     uri = uri || '';
 
-    if (/^https?\:\/\//.test(uri)) {
+    if (/^https?:\/\//.test(uri)) {
         return uri;
     }
 
