@@ -180,7 +180,7 @@ function _parseResponseIntercept(res, req) {
     token = this.auth.response.call(this, res);
 
     if (token) {
-        __token.set.call(this, null, token, __auth.options.loginData.staySignedIn);
+        __token.set.call(this, null, token, (__auth.options.loginData.staySignedIn === true ? false : true));
     }
 }
 
