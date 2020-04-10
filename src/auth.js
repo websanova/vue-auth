@@ -10,6 +10,7 @@ var __defaultOptions = {
 
     rolesKey:            'roles',
     rememberkey:         'auth_remember',
+    staySignedInKey:     'auth_stay_signed_in',
     tokenDefaultKey:     'auth_token_default',
     tokenImpersonateKey: 'auth_token_impersonate',
     stores:              ['storage', 'cookie'],
@@ -102,11 +103,11 @@ function _setAuthenticated(authenticated) {
 }
 
 function _setStaySignedIn(staySignedIn) {
-    if (
-        staySignedIn === true ||
-        staySignedIn === false
-    ) {
-        __auth.options.loginData.staySignedIn = staySignedIn;
+    if (staySignedIn === true) {
+        __token.set.call(__auth, __auth.options.staySignedInKey, 'true', false);
+    }
+    else {
+        __token.remove.call(__auth, __auth.options.staySignedInKey);
     }
 }
 
@@ -180,7 +181,7 @@ function _parseResponseIntercept(res, req) {
     token = this.auth.response.call(this, res);
 
     if (token) {
-        __token.set.call(this, null, token, (__auth.options.loginData.staySignedIn === true ? false : true));
+        __token.set.call(this, null, token, (__token.get.call(__auth, __auth.options.staySignedInKey) ? false : true));
     }
 }
 
@@ -327,8 +328,8 @@ function _processLogout(redirect) {
 }
 
 function _processImpersonate(defaultToken, redirect) {
-    __token.set.call(__auth, __auth.options.tokenImpersonateKey, __auth.token(), __auth.options.loginData.staySignedIn);
-    __token.set.call(__auth, __auth.options.tokenDefaultKey, defaultToken, __auth.options.loginData.staySignedIn);
+    __token.set.call(__auth, __auth.options.tokenImpersonateKey, __auth.token(), __token.get.call(__auth, __auth.options.staySignedInKey));
+    __token.set.call(__auth, __auth.options.tokenDefaultKey, defaultToken, __token.get.call(__auth, __auth.options.staySignedInKey));
     __auth.$vm.impersonating = true;
 
     _processRedirect(redirect);
@@ -479,7 +480,7 @@ Auth.prototype.impersonating = function () {
 
 Auth.prototype.token = function (name, token, expires) {
     if (token) {
-        expires = (expires === true || expires === false) ? expires : __auth.options.loginData.staySignedIn;
+        expires = (expires === true || expires === false) ? expires : __token.get.call(__auth, __auth.options.staySignedInKey);
 
         __token.set.call(__auth, name, token, expires);
     }
