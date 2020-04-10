@@ -45,7 +45,7 @@ function _isAccess(role, key) {
             return __utils.compare(role, (__auth.$vm.data || {})[key || __auth.options.rolesKey]);
         }
 
-        return true;
+        return __auth.$vm.data && true;
     }
 
     return false;
