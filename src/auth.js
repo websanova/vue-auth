@@ -545,7 +545,7 @@ Auth.prototype.login = function (data) {
         __auth.http.http
             .call(__auth, data)
             .then((res) => {
-                _setAuthenticated(true);
+                // _setAuthenticated(true);
 
                 if (
                     data.fetchUser ||
