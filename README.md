@@ -12,6 +12,14 @@ If you like this plugin please consider sponsoring.
 * [Patreon](https://patreon.com/websanova)
 
 
+## Issues
+
+For any issues or errors with the plugin or docs:
+
+* [Get in touch on Reddit](https://reddit.com/r/websanova)
+* [Submit an issue on GitHub](https://github.com/websanova/vue-auth/issues)
+
+
 ## Resources
 
 * [Guides](https://websanova.com/docs/vue-auth/guides)
