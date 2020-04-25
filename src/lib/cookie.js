@@ -1,27 +1,52 @@
-function setCookie (key, value, timeOffset) {
-    var domain  = this.options.getDomain(),
-        cookie  = key + '=' + value + '; SameSite=None;',
-        expires = '';
+function setCookie (key, value, params) {
+    var i,
+        cookie = key + '=' + value + ';';
 
-    if (timeOffset) {
-        expires = (new Date((new Date()).getTime() + timeOffset)).toUTCString();
-    }
+    for (i in params) {
 
-    cookie += ' Expires=' + expires + ';';
+        // Just skip if unset or false.
+        if (params[i] === false || params[i] === undefined) {
+            continue;
+        }
+        
+        // If null and an option method exists such ex: "getCookieDomain".
+        else if (params[i] === null) {
+            if (this.options['getCookie' + i]) {
+                cookie += ' ' + i + '=' + this.options['getCookie' + i]() + ';';
+            }
+        }
 
-    if (domain !== 'localhost') {
-        cookie += ' Path=/; Domain=' + domain + ';';
-    }
-    
-    if (location.protocol === 'https:') {
-        cookie += ' Secure;';
+        // If true just set the flag as in "Secure;".
+        else if (params[i] === true) {
+            cookie += ' ' + i + ';';
+        }
+
+        // Default key/val.
+        else {
+            cookie += ' ' + i + '=' + params[i] + ';';
+        }
     }
 
     document.cookie = cookie;
 }
 
+function getDate(val) {
+    if (typeof val === 'string') {
+        return val;
+    }
+    else if (val !== null && val !== undefined) {
+        return (new Date((new Date()).getTime() + val)).toUTCString();
+    }
+
+    return val;
+}
+
 function set(key, value, expires) {
-    setCookie.call(this, key, value, (expires ? 0 : 1) * 12096e5);
+    var params = this.options.cookie;
+
+    params.Expires = expires === true ? '' : getDate(params.Expires);
+
+    setCookie.call(this, key, value, params);
 }
 
 function get(key) {
@@ -45,7 +70,11 @@ function get(key) {
 }
 
 function remove(key) {
-    setCookie.call(this, key, '', -12096e5);
+    var params = this.options.cookie;
+
+    params.Expires = getDate(-12096e5);
+
+    setCookie.call(this, key, '', params);
 }
 
 export {

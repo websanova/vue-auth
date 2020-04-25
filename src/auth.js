@@ -15,6 +15,14 @@ var __defaultOptions = {
     tokenImpersonateKey: 'auth_token_impersonate',
     stores:              ['storage', 'cookie'],
 
+    cookie: {
+        Path:     '/',
+        Domain:   null,
+        Secure:   true,
+        Expires:  12096e5,
+        SameSite: 'None',
+    },
+
     // Redirects
 
     authRedirect:       {path: '/login'},
@@ -35,7 +43,7 @@ var __defaultOptions = {
     // External
 
     getUrl: _getUrl,
-    getDomain: _getDomain,
+    getCookieDomain: _getCookieDomain,
     parseUserData: _parseUserData
 };
 
@@ -75,7 +83,7 @@ function _getAuthMeta(transition) {
     return auth;
 }
 
-function _getDomain() {
+function _getCookieDomain() {
     return window.location.hostname;
 }
 

@@ -4,7 +4,7 @@ import * as __storage from './storage.js';
 
 function getTokenKey(key) {
     key = key || this.currentToken;
-    
+
     if (key) {
         return key;
     }
