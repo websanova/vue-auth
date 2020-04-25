@@ -480,7 +480,7 @@ Auth.prototype.redirect = function () {
 };
 
 Auth.prototype.user = function (data) {
-    if (data) {
+    if (data !== undefined) {
         _processFetch(data);
     }
 
@@ -502,10 +502,15 @@ Auth.prototype.impersonating = function () {
 };
 
 Auth.prototype.token = function (name, token, expires) {
-    if (token) {
-        expires = (expires === true || expires === false) ? expires : __token.get.call(__auth, __auth.options.staySignedInKey);
+    if (token !== undefined) {
+        if (token === null) {
+            __token.remove.call(__auth, name);
+        }
+        else {
+            expires = (expires === true || expires === false) ? expires : __token.get.call(__auth, __auth.options.staySignedInKey);
 
-        __token.set.call(__auth, name, token, expires);
+            __token.set.call(__auth, name, token, expires);
+        }
     }
 
     return __token.get.call(__auth, name);
