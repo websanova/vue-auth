@@ -9,7 +9,7 @@ var __defaultOptions = {
     // Variables
 
     rolesKey:            'roles',
-    rememberkey:         'auth_remember',
+    rememberKey:         'auth_remember',
     staySignedInKey:     'auth_stay_signed_in',
     tokenDefaultKey:     'auth_token_default',
     tokenImpersonateKey: 'auth_token_impersonate',
