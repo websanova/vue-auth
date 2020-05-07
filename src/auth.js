@@ -285,7 +285,7 @@ function _processTransitionEach(transition, routeAuth, cb) {
 
     if (routeAuth && (routeAuth === true || routeAuth.constructor === Array || __utils.isObject(routeAuth))) {
         if ( ! __auth.check()) {
-            __auth.$vm.transitionRedirectType = 401;
+            __auth.transitionRedirectType = 401;
 
             if (typeof authRedirect === 'function') {
                 authRedirect = authRedirect(transition);
@@ -294,7 +294,7 @@ function _processTransitionEach(transition, routeAuth, cb) {
             cb.call(__auth, authRedirect);
         }
         else if ((routeAuth.constructor === Array || __utils.isObject(routeAuth)) && ! __utils.compare(routeAuth, __auth.$vm.data[__auth.options.rolesKey])) {
-            __auth.$vm.transitionRedirectType = 403;
+            __auth.transitionRedirectType = 403;
 
             if (typeof forbiddenRedirect === 'function') {
                 forbiddenRedirect = forbiddenRedirect(transition);
@@ -303,14 +303,14 @@ function _processTransitionEach(transition, routeAuth, cb) {
             cb.call(__auth, forbiddenRedirect);
         }
         else {
-            __auth.$vm.redirect = __auth.$vm.transitionRedirectType ? {type: __auth.$vm.transitionRedirectType, from: __auth.$vm.transitionPrev, to: __auth.$vm.transitionThis} : null;
-            __auth.$vm.transitionRedirectType = null;
+            __auth.$vm.redirect = __auth.transitionRedirectType ? {type: __auth.transitionRedirectType, from: __auth.transitionPrev, to: __auth.transitionThis} : null;
+            __auth.transitionRedirectType = null;
 
             return cb();
         }
     }
     else if (routeAuth === false && __auth.check()) {
-        __auth.$vm.transitionRedirectType = 404;
+        __auth.transitionRedirectType = 404;
 
         if (typeof notFoundRedirect === 'function') {
             notFoundRedirect = notFoundRedirect(transition);
@@ -319,8 +319,8 @@ function _processTransitionEach(transition, routeAuth, cb) {
         cb.call(__auth, notFoundRedirect);
     }
     else {
-        __auth.$vm.redirect = __auth.$vm.transitionRedirectType ? {type: __auth.$vm.transitionRedirectType, from: __auth.$vm.transitionPrev, to: __auth.$vm.transitionThis} : null;
-        __auth.$vm.transitionRedirectType = null;
+        __auth.$vm.redirect = __auth.transitionRedirectType ? {type: __auth.transitionRedirectType, from: __auth.transitionPrev, to: __auth.transitionThis} : null;
+        __auth.transitionRedirectType = null;
 
         return cb();
     }

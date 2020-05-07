@@ -105,6 +105,10 @@
             }
         },
 
+        mounted() {
+            console.log(this.$auth.redirect());
+        },
+
         methods: {
             errors(res) {
                 this.form.errors = Object.fromEntries(res.data.errors.map(item => [item.field, item.msg]));                
