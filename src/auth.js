@@ -544,9 +544,10 @@ Auth.prototype.register = function (data) {
             .call(__auth, data)
             .then((res) => {
                 if (data.autoLogin) {
+                    var bodyKey = (data.data !== undefined) ? 'data' : 'body'
                     __auth
                         .login({
-                            body: data.body,
+                            [bodyKey]: data[bodyKey],
                             redirect: data.redirect,
                             remember: data.remember,
                             fetchUser: data.fetchUser,
