@@ -537,27 +537,25 @@ Auth.prototype.refresh = function (data) {
 };
 
 Auth.prototype.register = function (data) {
-    data = __utils.extend(__auth.options.registerData, data);
+    var registerData = __utils.extend(__auth.options.registerData, data);
 
     return new Promise((resolve, reject) => {
         __auth.http.http
-            .call(__auth, data)
+            .call(__auth, registerData)
             .then((res) => {
-                if (data.autoLogin) {
+                var loginData;
+
+                if (registerData.autoLogin) {
+                    loginData = __utils.extend(__auth.options.loginData, data);
+
                     __auth
-                        .login({
-                            body: data.body,
-                            redirect: data.redirect,
-                            remember: data.remember,
-                            fetchUser: data.fetchUser,
-                            staySignedIn: data.staySignedIn
-                        })
+                        .login(loginData)
                         .then(resolve, reject);
                 }
                 else {
                     resolve(res);
 
-                    _processRedirect(data.redirect);
+                    _processRedirect(registerData.redirect);
                 }
             }, reject);
     });
@@ -573,8 +571,6 @@ Auth.prototype.login = function (data) {
         __auth.http.http
             .call(__auth, data)
             .then((res) => {
-                // _setAuthenticated(true);
-
                 if (
                     data.fetchUser ||
                     (data.fetchUser === undefined && __auth.options.fetchData.enabled)
