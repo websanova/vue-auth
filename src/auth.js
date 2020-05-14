@@ -335,13 +335,13 @@ function _processFetch(data, redirect) {
 }
 
 function _processLogout(redirect) {
-    // __cookie.remove.call(__auth, __auth.options.rememberKey);
-
     __cookie.remove.call(__auth, __auth.options.tokenImpersonateKey);
     __cookie.remove.call(__auth, __auth.options.tokenDefaultKey);
 
     __token.remove.call(__auth, __auth.options.tokenImpersonateKey);
     __token.remove.call(__auth, __auth.options.tokenDefaultKey);
+    
+    __token.remove.call(__auth, __auth.options.staySignedInKey);
 
     __auth.$vm.loaded = true;
     __auth.$vm.authenticated = false;
@@ -351,8 +351,8 @@ function _processLogout(redirect) {
 }
 
 function _processImpersonate(defaultToken, redirect) {
-    __token.set.call(__auth, __auth.options.tokenImpersonateKey, __auth.token(), __token.get.call(__auth, __auth.options.staySignedInKey));
-    __token.set.call(__auth, __auth.options.tokenDefaultKey, defaultToken, __token.get.call(__auth, __auth.options.staySignedInKey));
+    __token.set.call(__auth, __auth.options.tokenImpersonateKey, __auth.token(), __token.get.call(__auth, __auth.options.staySignedInKey) ? false : true);
+    __token.set.call(__auth, __auth.options.tokenDefaultKey, defaultToken, __token.get.call(__auth, __auth.options.staySignedInKey) ? false : true);
     __auth.$vm.impersonating = true;
 
     _processRedirect(redirect);
@@ -507,7 +507,7 @@ Auth.prototype.token = function (name, token, expires) {
             __token.remove.call(__auth, name);
         }
         else {
-            expires = (expires === true || expires === false) ? expires : __token.get.call(__auth, __auth.options.staySignedInKey);
+            expires = (expires === true || expires === false) ? expires : (__token.get.call(__auth, __auth.options.staySignedInKey) ? false : true);
 
             __token.set.call(__auth, name, token, expires);
         }
