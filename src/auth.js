@@ -246,7 +246,7 @@ function _processRouterBeforeEach(cb) {
     ) {
         __auth
             .refresh()
-            .then(() => {
+            .then(function() {
                 _processAuthenticated(cb);
             });
 
@@ -462,7 +462,7 @@ Auth.prototype.ready = function () {
 };
 
 Auth.prototype.load = function () {
-    return new Promise((resolve) => {
+    return new Promise(function(resolve) {
         var timer = null;
 
         timer = setInterval(function() {
@@ -519,10 +519,10 @@ Auth.prototype.token = function (name, token, expires) {
 Auth.prototype.fetch = function (data) {
     data = __utils.extend(__auth.options.fetchData, data);
 
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
         __auth.http.http
             .call(__auth, data)
-            .then((res) => {
+            .then(function(res) {
                 _processFetch(_parseUserResponseData(res), data.redirect);
 
                 resolve(res);
@@ -539,10 +539,10 @@ Auth.prototype.refresh = function (data) {
 Auth.prototype.register = function (data) {
     var registerData = __utils.extend(__auth.options.registerData, data);
 
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
         __auth.http.http
             .call(__auth, registerData)
-            .then((res) => {
+            .then(function(res) {
                 var loginData;
 
                 if (registerData.autoLogin) {
@@ -567,10 +567,10 @@ Auth.prototype.login = function (data) {
     _setRemember(data.remember);
     _setStaySignedIn(data.staySignedIn);
 
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
         __auth.http.http
             .call(__auth, data)
-            .then((res) => {
+            .then(function(res) {
                 if (
                     data.fetchUser ||
                     (data.fetchUser === undefined && __auth.options.fetchData.enabled)
@@ -586,7 +586,7 @@ Auth.prototype.login = function (data) {
                     
                     resolve(res);
                 }
-            }, (res) => {
+            }, function(res) {
                 _setAuthenticated(false);
 
                 reject(res);
@@ -615,11 +615,11 @@ Auth.prototype.unremember = function () {
 Auth.prototype.logout = function (data) {
     data = __utils.extend(__auth.options.logoutData, data);
 
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
         if (data.makeRequest) {
             __auth.http.http
                 .call(__auth, data)
-                .then((res) => {
+                .then(function(res) {
                     _processLogout(data.redirect);
 
                     resolve(res)
@@ -636,12 +636,12 @@ Auth.prototype.logout = function (data) {
 Auth.prototype.impersonate = function (data) {
     data = __utils.extend(__auth.options.impersonateData, data);
 
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
         var token = __auth.token();
         
         __auth.http.http
             .call(__auth, data)
-            .then((res) => {
+            .then(function(res) {
                 _processImpersonate(token);
 
                 if (
@@ -666,7 +666,7 @@ Auth.prototype.impersonate = function (data) {
 Auth.prototype.unimpersonate = function (data) {
     data = __utils.extend(__auth.options.unimpersonateData, data);
 
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
         if (data.makeRequest) {
             __auth.http.http
                 .call(__auth, data)
@@ -676,8 +676,8 @@ Auth.prototype.unimpersonate = function (data) {
             resolve();
         }
     })
-    .then(() => {
-        return new Promise((resolve, reject) => {
+    .then(function() {
+        return new Promise(function(resolve, reject) {
             _processUnimpersonate();
 
             if (
