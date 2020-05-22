@@ -12,7 +12,7 @@
         "email": "rob@websanova.com"
     },
 
-    "main": "src/index.js",
+    "main": "dist/auth-min.js",
 
     "version": "3.1.5-beta",
 
@@ -21,5 +21,23 @@
         "url": "https://github.com/websanova/vue-auth"
     },
 
-    "licenses": "MIT, GPL"
+    "licenses": "MIT, GPL",
+
+    "scripts": {
+        "clear": "rm -rf dist/*",
+        
+        "build-src": "babel src --out-file dist/auth.js --presets @babel/preset-env",
+        "build-src-min": "babel src --out-file dist/auth-min.js --presets @babel/preset-env --minified",
+        
+        "build-drivers": "babel drivers --out-dir dist/drivers --presets @babel/preset-env",
+        "build-drivers-min": "babel drivers --out-dir dist/drivers --presets @babel/preset-env --minified --out-file-extension .min.js",
+
+        "build": "npm run clear; npm run build-src; npm run build-src-min; npm run build-drivers; npm run build-drivers-min"
+    },
+
+    "devDependencies": {
+        "@babel/cli": "7.8.4",
+        "@babel/core": "7.9.6",
+        "@babel/preset-env": "7.9.6"
+    }
 }
