@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 // Vue-Auth
-import auth            from '@websanova/vue-auth';
+import auth            from '@websanova/vue-auth/src/index.js';
 import authBearer      from '@websanova/vue-auth/drivers/auth/bearer.js';
 import httpVueResource from '@websanova/vue-auth/drivers/http/vue-resource.1.x.js';
 import routerVueRouter from '@websanova/vue-auth/drivers/router/vue-router.2.x.js';
