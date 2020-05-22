@@ -12,7 +12,7 @@
         "email": "rob@websanova.com"
     },
 
-    "main": "dist/auth-min.js",
+    "main": "src/index.js",
 
     "version": "3.1.5-beta",
 
