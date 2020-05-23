@@ -3,7 +3,7 @@
 
     "description": "A simple light-weight authentication library for Vue.js",
 
-    "keywords": ["vue", "vue.js", "jwt", "auth", "authentication", "plugin", "json", "web", "token"],
+    "keywords": ["vue", "vue.js", "vuejs", "plugin", "jwt", "auth", "authentication", "authorize", "authenticate", "bearer", "basic", "axios", "http", "api", "json", "web", "token"],
 
     "homepage": "https://websanova.com/docs/vue-auth",
 
