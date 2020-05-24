@@ -1,8 +1,8 @@
 import Vue from 'vue'
 
-// Vue-Auth
 import auth            from '@websanova/vue-auth/src/index.js';
 import authBearer      from '@websanova/vue-auth/drivers/auth/bearer.js';
+import httpAxios       from '@websanova/vue-auth/drivers/http/axios.1.x.js';
 import httpVueResource from '@websanova/vue-auth/drivers/http/vue-resource.1.x.js';
 import routerVueRouter from '@websanova/vue-auth/drivers/router/vue-router.2.x.js';
 import oauth2Google    from '@websanova/vue-auth/drivers/oauth2/google.js';
@@ -13,7 +13,8 @@ oauth2Facebook.params.client_id = '196729390739201';
 
 Vue.use(auth, {
     auth: authBearer,
-    http: httpVueResource,
+    // http: httpAxios, // Axios
+    http: httpVueResource, // Vue Resource
     router: routerVueRouter,
     rolesKey: 'type',
     notFoundRedirect: {name: 'user-account'},

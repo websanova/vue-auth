@@ -117,30 +117,43 @@
             loginDefault() {
                 this.$auth
                     .login({
-                        body: this.form.body,
+                        body: this.form.body, // VueResource
+                        data: this.form.body, // Axios
                         remember: this.form.remember ? '{"name": "Default"}' : null,
                         fetchUser: this.form.fetchUser,
                         staySignedIn: this.form.staySignedIn,
                     })
-                    .then(null, this.errors);
+                    .then(null, (res) => {
+                        this.errors(
+                            res.response || // Axios
+                            res             // VueResource
+                        );
+                    });
             },
 
             loginRedirect() {
                 this.$auth
                     .login({
-                        body: this.form.body,
+                        body: this.form.body, // VueResource
+                        data: this.form.body, // Axios
                         redirect: {name: 'user-account'},
                         remember: this.form.remember ? '{"name": "Redirect"}' : null,
                         fetchUser: this.form.fetchUser,
                         staySignedIn: this.form.staySignedIn,
                     })
-                    .then(null, this.errors);
+                    .then(null, (res) => {
+                        this.errors(
+                            res.response || // Axios
+                            res             // VueResource
+                        );
+                    });
             },
 
             loginThen() {
                 this.$auth
                     .login({
-                        body: this.form.body,
+                        body: this.form.body, // VueResource
+                        data: this.form.body, // Axios
                         redirect: null,
                         fetchUser: this.form.fetchUser,
                         staySignedIn: this.form.staySignedIn,
@@ -153,41 +166,56 @@
                         }
 
                         this.$router.push({name: 'user-account'});
-                    }, this.errors);
+                    }, (res) => {
+                        this.errors(
+                            res.response || // Axios
+                            res             // VueResource
+                        );
+                    })
             },
 
             loginVuex() {
-                this.$store.dispatch('auth/login', {
-                    body: this.form.body,
-                    remember: this.form.remember,
-                    fetchUser: this.form.fetchUser,
-                    staySignedIn: this.form.staySignedIn,
-                })
-                .then(null, this.errors);
+                this.$store
+                    .dispatch('auth/login', {
+                        body: this.form.body, // VueResource
+                        data: this.form.body, // Axios
+                        remember: this.form.remember,
+                        fetchUser: this.form.fetchUser,
+                        staySignedIn: this.form.staySignedIn,
+                    })
+                    .then(null, (res) => {
+                        this.errors(
+                            res.response || // Axios
+                            res             // VueResource
+                        );
+                    });
             },
 
             loginManual() {
                 this.$auth.token(null, 'manual', false);
 
-                this.$auth.user({
-                    id: 1,
-                    first_name: 'Manual',
-                    email: 'test@manual.com',
-                    type: 'user',
-                });
+                this.$auth
+                    .user({
+                        id: 1,
+                        first_name: 'Manual',
+                        email: 'test@manual.com',
+                        type: 'user',
+                    });
 
                 if (this.form.remember) {
-                    this.$auth.remember(JSON.stringify({
-                        name: this.$auth.user().first_name
-                    }));
+                    this.$auth
+                        .remember(JSON.stringify({
+                            name: this.$auth.user().first_name
+                        }));
                 }
                 else {
                     this.$auth.unremember();
                 }
 
-                this.$router.push({
-                    name: 'user-landing'
-                });
+                this.$router
+                    .push({
+                        name: 'user-landing'
+                    });
             }
         }
     }

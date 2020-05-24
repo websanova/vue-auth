@@ -149,32 +149,45 @@
             registerDefault() {
                 this.$auth
                     .register({
-                        body: this.form.body,
+                        body: this.form.body, // VueResource
+                        data: this.form.body, // Axios
                         remember: this.form.remember ? '{"name": "Default"}' : null,
                         fetchUser: this.form.fetchUser,
                         autoLogin: this.form.autoLogin,
                         staySignedIn: this.form.staySignedIn,
                     })
-                    .then(null, this.errors);
+                    .then(null, (res) => {
+                        this.errors(
+                            res.response || // Axios
+                            res             // VueResource
+                        );
+                    });
             },
 
             registerRedirect() {
                 this.$auth
                     .register({
-                        body: this.form.body,
+                        body: this.form.body, // VueResource
+                        data: this.form.body, // Axios
                         redirect: {name: 'user-account'},
                         remember: this.form.remember ? '{"name": "Redirect"}' : null,
                         fetchUser: this.form.fetchUser,
                         autoLogin: this.form.autoLogin,
                         staySignedIn: this.form.staySignedIn,
                     })
-                    .then(null, this.errors);
+                    .then(null, (res) => {
+                        this.errors(
+                            res.response || // Axios
+                            res             // VueResource
+                        );
+                    });
             },
 
             registerThen() {
                 this.$auth
                     .register({
-                        body: this.form.body,
+                        body: this.form.body, // VueResource
+                        data: this.form.body, // Axios
                         fetchUser: this.form.fetchUser,
                         autoLogin: this.form.autoLogin,
                         staySignedIn: this.form.staySignedIn,
@@ -187,18 +200,30 @@
                         }
 
                         this.$router.push({name: 'user-account'});
-                    }, this.errors);
+                    }, (res) => {
+                        this.errors(
+                            res.response || // Axios
+                            res             // VueResource
+                        );
+                    });
             },
 
             registerVuex() {
-                this.$store.dispatch('auth/register', {
-                    body: this.form.body,
-                    remember: this.form.remember,
-                    fetchUser: this.form.fetchUser,
-                    autoLogin: this.form.autoLogin,
-                    staySignedIn: this.form.staySignedIn,
-                })
-                .then(null, this.errors);
+                this.$store
+                    .dispatch('auth/register', {
+                        body: this.form.body, // VueResource
+                        data: this.form.body, // Axios
+                        remember: this.form.remember,
+                        fetchUser: this.form.fetchUser,
+                        autoLogin: this.form.autoLogin,
+                        staySignedIn: this.form.staySignedIn,
+                    })
+                    .then(null, (res) => {
+                        this.errors(
+                            res.response || // Axios
+                            res             // VueResource
+                        );
+                    });
             }
         }
     }

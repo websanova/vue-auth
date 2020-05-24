@@ -24,7 +24,8 @@ export default {
             return new Promise((resolve, reject) => {
                 Vue.auth.login({
                     url: 'auth/login',
-                    body: data.body,
+                    body: this.form.body, // VueResource
+                    data: this.form.body, // Axios
                     remember: data.remember,
                     staySignedIn: data.staySignedIn,
                 })
@@ -50,7 +51,8 @@ export default {
             return new Promise((resolve, reject) => {
                 Vue.auth.register({
                     url: 'auth/register',
-                    body: data.body,
+                    body: this.form.body, // VueResource
+                    data: this.form.body, // Axios
                     autoLogin: false,
                 })
                 .then((res) => {
