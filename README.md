@@ -22,6 +22,7 @@ For any issues or errors with the plugin or docs:
 
 ## Resources
 
+* [Home](https://websanova.com/docs/vue-auth)
 * [Guides](https://websanova.com/docs/vue-auth/guides)
 * [Recipes](https://websanova.com/docs/vue-auth/recipes)
 * [Methods](https://websanova.com/docs/vue-auth/methods)
