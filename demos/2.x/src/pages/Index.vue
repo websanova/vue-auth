@@ -1,125 +1,123 @@
 <template>
-    <div>
-        <div
-            style="max-width:500px; margin:0 auto 50px auto;"
-        >
-            <h1 class="text-center">
-                Vue Auth Plugin Demo
-            </h1>
+    <div
+        style="max-width:500px; margin:0 auto 50px auto;"
+    >
+        <h1 class="text-center">
+            Websanova Vue Auth Plugin Demo
+        </h1>
 
-            <div>
-                {{ (_loaded && readyOne && readyTwo) ? 'Online ' : 'Loading...' }}
+        <div>
+            {{ (_loaded && readyOne && readyTwo) ? 'Online ' : 'Loading...' }}
+
+            <span
+                class="pull-right"
+                style="font-weight:bold; font-size:30px; line-height:20px;"
+            >
+                <span
+                    v-bind:style="{
+                        color: readyOne ? 'lime' : 'red'
+                    }"
+                >
+                    &bull;
+                </span>
+                
+                <span
+                    v-bind:style="{
+                        color: _loaded ? 'lime' : 'red'
+                    }"
+                >
+                    &bull;
+                </span>
 
                 <span
-                    class="pull-right"
-                    style="font-weight:bold; font-size:30px; line-height:20px;"
+                    v-bind:style="{
+                        color: readyTwo ? 'lime' : 'red'
+                    }"
+                >
+                    &bull;
+                </span>
+            </span>
+        </div>
+
+        <hr/>
+
+        <div class="text-danger">
+            NOTE: This demo uses a public API to simulate realistic flow. The database is reset every 30 minutes and otherwise reveals no sensitive data such as emails or last names.
+
+            <br/>
+
+            NOTE: Would be nice to get some generic node (or deno?) service up for better/safer local testing. If you anyone can contribute, would be greatly appreciated :-) 
+
+        </div>
+
+        <hr />
+
+        <div
+            v-if="_loaded"
+        >
+            <div>
+                <router-link
+                    :to="{name: 'site-home'}"
+                >
+                    home
+                </router-link>
+
+                <span
+                    style="float:right;"
                 >
                     <span
-                        v-bind:style="{
-                            color: readyOne ? 'lime' : 'red'
-                        }"
+                        v-show="!$auth.check()"
                     >
-                        &bull;
-                    </span>
-                    
-                    <span
-                        v-bind:style="{
-                            color: _loaded ? 'lime' : 'red'
-                        }"
-                    >
-                        &bull;
+                        <router-link :to="{name: 'auth-login'}">login</router-link> |
+                        <router-link :to="{name: 'auth-register'}">register</router-link> |
+                        <router-link :to="{name: 'auth-social'}">social</router-link>
                     </span>
 
                     <span
-                        v-bind:style="{
-                            color: readyTwo ? 'lime' : 'red'
-                        }"
+                        v-show="$auth.check()"
                     >
-                        &bull;
+                        <span v-show="$auth.check('admin')">
+                            <router-link :to="{name: 'admin-landing'}">admin</router-link> |
+                        </span>
+
+                        <span v-show="$auth.impersonating()">
+                            <router-link :to="{name: 'user-unimpersonate'}">unimpersonate</router-link> |
+                        </span>
+                        
+                        <router-link :to="{name: 'user-account'}">account</router-link> |
+                        <router-link :to="{name: 'user-logout'}">logout</router-link>
                     </span>
                 </span>
             </div>
 
             <hr/>
-
-            <div class="text-danger">
-                NOTE: This demo uses a public API to simulate realistic flow. The database is reset every 30 minutes and otherwise reveals no sensitive data such as emails or last names.
-
-                <br/>
-
-                NOTE: Would be nice to get some generic node (or deno?) service up for better/safer local testing. If you anyone can contribute, would be greatly appreciated :-) 
-
-            </div>
-
-            <hr />
-
-            <div
-                v-if="_loaded"
+            
+            <span
+                v-if="!readyOne || !readyTwo"
+                class="spin"
             >
-                <div>
-                    <router-link
-                        :to="{name: 'site-home'}"
-                    >
-                        home
-                    </router-link>
+                ↻
+            </span>
 
-                    <span
-                        style="float:right;"
-                    >
-                        <span
-                            v-show="!$auth.check()"
-                        >
-                            <router-link :to="{name: 'auth-login'}">login</router-link> |
-                            <router-link :to="{name: 'auth-register'}">register</router-link> |
-                            <router-link :to="{name: 'auth-social'}">social</router-link>
-                        </span>
+            <div v-else>
 
-                        <span
-                            v-show="$auth.check()"
-                        >
-                            <span v-show="$auth.check('admin')">
-                                <router-link :to="{name: 'admin-landing'}">admin</router-link> |
-                            </span>
+                {{ $route.name.split('-').join(' / ') }}
 
-                            <span v-show="$auth.impersonating()">
-                                <router-link :to="{name: 'user-unimpersonate'}">unimpersonate</router-link> |
-                            </span>
-                            
-                            <router-link :to="{name: 'user-account'}">account</router-link> |
-                            <router-link :to="{name: 'user-logout'}">logout</router-link>
-                        </span>
+                <span class="pull-right">
+                    <span v-if="$auth.check()">
+                        {{ _user.first_name }}
                     </span>
-                </div>
 
-                <hr/>
-                
-                <span
-                    v-if="!readyOne || !readyTwo"
-                    class="spin"
-                >
-                    ↻
+                    <span v-else-if="$auth.remember()">
+                        Welcome back, {{ JSON.parse($auth.remember()).name }}
+                    </span>
                 </span>
 
-                <div v-else>
-
-                    {{ $route.name.split('-').join(' / ') }}
-
-                    <span class="pull-right">
-                        <span v-if="$auth.check()">
-                            {{ _user.first_name }}
-                        </span>
-
-                        <span v-else-if="$auth.remember()">
-                            Welcome back, {{ JSON.parse($auth.remember()).name }}
-                        </span>
-                    </span>
-
-                    <hr />
+                <hr />
 
 
 
-                    <router-view />
-                </div>
+                <router-view />
             </div>
         </div>
     </div>
