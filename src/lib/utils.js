@@ -79,7 +79,7 @@ function isLocalStorage() {
 
         localStorage.setItem('storage_test', 1);
         localStorage.removeItem('storage_test');
-        
+
         return true;
     } catch (e) {
         return false;
@@ -105,6 +105,12 @@ function isCookieStorage() {
     return true;
 }
 
+function getDescendantProp (obj, desc) {
+    var arr = desc.split('.');
+    while (arr.length && (obj = obj[arr.shift()]));
+    return obj;
+  }
+
 export {
     extend,
     compare,
@@ -113,4 +119,5 @@ export {
     isLocalStorage,
     isCookieStorage,
     isSessionStorage,
+    getDescendantProp,
 };
