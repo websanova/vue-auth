@@ -105,11 +105,11 @@ function isCookieStorage() {
     return true;
 }
 
-function getDescendantProp (obj, desc) {
+function getProperty (obj, desc) {
     var arr = desc.split('.');
     while (arr.length && (obj = obj[arr.shift()]));
     return obj;
-  }
+}
 
 export {
     extend,
@@ -119,5 +119,5 @@ export {
     isLocalStorage,
     isCookieStorage,
     isSessionStorage,
-    getDescendantProp,
+    getProperty,
 };
