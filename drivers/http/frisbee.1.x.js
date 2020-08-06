@@ -44,11 +44,7 @@ export default {
     },
 
     http: data => {
-        const http = this.Vue.frisbee(data);
-
-        http.then(data.success, data.error);
-
-        return http;
+        return this.Vue.frisbee(data);
     },
 
     getHeaders: res => {

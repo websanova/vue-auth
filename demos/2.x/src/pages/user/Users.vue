@@ -1,0 +1,23 @@
+<template>
+    <div>
+        Test 403 users access
+    </div>
+</template>
+
+<script>
+    export default {
+        mounted() {
+            this.$http({
+                url: 'users/list'
+            })
+            .then(() => {
+                console.log('success')
+            }, () => {
+                console.log('error')
+            })
+            .catch(() => {
+                console.log('catch')
+            });
+        }
+    }
+</script>

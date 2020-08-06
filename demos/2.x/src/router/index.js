@@ -19,6 +19,13 @@ Vue.router = new VueRouter({
             auth: false
         }
     }, {
+        path: '/users',
+        name: 'site-users',
+        component: loadView('site/Users'),
+        meta: {
+            auth: false
+        }
+    }, {
         path: '/login',
         name: 'auth-login',
         component: loadView('auth/Login'),
@@ -60,6 +67,10 @@ Vue.router = new VueRouter({
             path: 'unimpersonate',
             name: 'user-unimpersonate',
             component: loadView('user/Unimpersonate')
+        }, {
+            path: 'users',
+            name: 'user-users',
+            component: loadView('user/Users')
         }, {
             path: 'logout',
             name: 'user-logout',

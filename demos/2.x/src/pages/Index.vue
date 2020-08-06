@@ -70,12 +70,17 @@
                     >
                         <router-link :to="{name: 'auth-login'}">login</router-link> |
                         <router-link :to="{name: 'auth-register'}">register</router-link> |
-                        <router-link :to="{name: 'auth-social'}">social</router-link>
+                        <router-link :to="{name: 'auth-social'}">social</router-link> |
+                        <router-link :to="{name: 'site-users'}">users</router-link>
                     </span>
 
                     <span
                         v-show="$auth.check()"
                     >
+                        <span v-show="$auth.check('user')">
+                            <router-link :to="{name: 'user-users'}">users</router-link> |
+                        </span>
+
                         <span v-show="$auth.check('admin')">
                             <router-link :to="{name: 'admin-landing'}">admin</router-link> |
                         </span>

@@ -47,11 +47,7 @@ export default {
     },
 
     http: function (data) {
-        var http = this.Vue.axios(data);
-
-        http.then(data.success, data.error);
-
-        return http;
+        return this.Vue.axios(data);
     },
 
     getHeaders: function (res) {
