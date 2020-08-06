@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v3.2.1-beta
+ * @websanova/vue-auth v3.2.2-beta
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -45,9 +45,7 @@ var axios_1_x = {
     return res.data || {};
   },
   http: function (data) {
-    var http = this.Vue.axios(data);
-    http.then(data.success, data.error);
-    return http;
+    return this.Vue.axios(data);
   },
   getHeaders: function (res) {
     return res.headers;
