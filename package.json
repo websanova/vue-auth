@@ -19,7 +19,7 @@
     "unpkg": "dist/vue-auth.min.js",
     "jsdelivr": "dist/vue-auth.min.js",
 
-    "version": "3.2.2-beta",
+    "version": "3.2.3-beta",
 
     "repository": {
         "type": "git",
