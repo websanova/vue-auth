@@ -223,7 +223,7 @@ function _processInvalidToken(res, transition) {
     }
 
     if (auth) {
-        redirect = auth.redirect || __auth.authRedirect;
+        redirect = auth.redirect || __auth.options.authRedirect;
     }
 
     _processLogout({redirect: redirect});
