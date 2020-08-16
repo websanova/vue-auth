@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v3.2.3-beta
+ * @websanova/vue-auth v3.2.4-beta
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -113,6 +113,14 @@
 
     function isCookieStorage() {
       return true;
+    }
+
+    function getProperty(obj, desc) {
+      var arr = desc.split('.');
+
+      while (arr.length && (obj = obj[arr.shift()]));
+
+      return obj;
     }
 
     function setCookie(key, value, params) {
@@ -341,7 +349,7 @@
     function _isAccess(role, key) {
       if (__auth.$vm.authenticated === true) {
         if (role) {
-          return compare(role, (__auth.$vm.data || {})[key || __auth.options.rolesKey]);
+          return compare(role, getProperty(__auth.$vm.data || {}, key || __auth.options.rolesKey));
         }
 
         return true;
@@ -503,7 +511,7 @@
       }
 
       if (auth) {
-        redirect = auth.redirect || __auth.authRedirect;
+        redirect = auth.redirect || __auth.options.authRedirect;
       }
 
       _processLogout({
