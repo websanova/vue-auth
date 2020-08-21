@@ -12,6 +12,11 @@ If you like this plugin please consider sponsoring.
 * [Patreon](https://patreon.com/websanova)
 
 
+## Demo
+
+Check the [live demo](https://vue-auth.websanova.com) to see vue-auth in action.
+
+
 ## Issues
 
 For any issues or errors with the plugin or docs:
