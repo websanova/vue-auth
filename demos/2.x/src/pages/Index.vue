@@ -3,7 +3,13 @@
         style="max-width:500px; margin:0 auto 50px auto;"
     >
         <h1 class="text-center">
-            Websanova Vue Auth Plugin Demo
+            <a href="https://websanova.com">
+                <img src="/img/logo-dark-text.png" height="30" />
+            </a>
+        </h1>
+
+        <h1 class="text-center">
+            Vue Auth Plugin Demo
         </h1>
 
         <div>
