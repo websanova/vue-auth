@@ -182,7 +182,7 @@
     }
 
     function remove(key) {
-      var params = this.options.cookie;
+      var params = Object.assign({}, this.options.cookie);
       params.Expires = getDate(-12096e5);
       setCookie.call(this, key, '', params);
     }

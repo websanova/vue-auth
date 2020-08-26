@@ -1,39 +1,46 @@
 {
     "name": "@websanova/vue-auth",
-
     "description": "A simple light-weight authentication library for Vue.js",
-
-    "keywords": ["vue", "vue.js", "vuejs", "plugin", "jwt", "auth", "authentication", "authorize", "authenticate", "bearer", "basic", "axios", "http", "api", "json", "web", "token"],
-
+    "keywords": [
+        "vue",
+        "vue.js",
+        "vuejs",
+        "plugin",
+        "jwt",
+        "auth",
+        "authentication",
+        "authorize",
+        "authenticate",
+        "bearer",
+        "basic",
+        "axios",
+        "http",
+        "api",
+        "json",
+        "web",
+        "token"
+    ],
     "homepage": "https://websanova.com/docs/vue-auth",
-
     "author": {
         "name": "Websanova",
         "url": "http://websanova.com",
         "username": "websanova",
         "email": "rob@websanova.com"
     },
-
     "main": "dist/vue-auth.common.js",
     "module": "dist/vue-auth.esm.js",
     "unpkg": "dist/vue-auth.min.js",
     "jsdelivr": "dist/vue-auth.min.js",
-
     "version": "3.3.0",
-
     "repository": {
         "type": "git",
         "url": "https://github.com/websanova/vue-auth"
     },
-
     "licenses": "MIT, GPL",
-
     "scripts": {
         "clear": "rm -rf dist/*",
-
         "build": "npm run clear; node build/build.js"
     },
-
     "devDependencies": {
         "@babel/core": "^7.2.2",
         "@babel/preset-env": "^7.2.0",

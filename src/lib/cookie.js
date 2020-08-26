@@ -8,7 +8,7 @@ function setCookie (key, value, params) {
         if (params[i] === false || params[i] === undefined) {
             continue;
         }
-        
+
         // If null and an option method exists such ex: "getCookieDomain".
         else if (params[i] === null) {
             if (this.options['getCookie' + i]) {
@@ -70,7 +70,7 @@ function get(key) {
 }
 
 function remove(key) {
-    var params = this.options.cookie;
+    var params = Object.assign({}, this.options.cookie);
 
     params.Expires = getDate(-12096e5);
 
