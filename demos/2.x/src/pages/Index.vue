@@ -12,12 +12,22 @@
             Vue Auth Plugin Demo
         </h1>
 
+        <hr/>
+        
+        <div class="text-center">
+            <a href="https://websanova.com/docs/vue-auth"><b>DOCS</b></a> |
+            <a href="https://github.com/websanova/vue-auth"><b>GITHUB</b></a> |
+            <a href="https://patreon.com/websanova"><b>PATREON</b></a>
+        </div>
+        
+        <hr/>
+
         <div>
             {{ (_loaded && readyOne && readyTwo) ? 'Online ' : 'Loading...' }}
 
             <span
                 class="pull-right"
-                style="font-weight:bold; font-size:30px; line-height:20px;"
+                style="font-weight:bold;"
             >
                 <span
                     v-bind:style="{
@@ -192,6 +202,11 @@
 </script>
 
 <style>
+    body {
+        font-family: Verdana;
+        font-size: 12px;
+    }
+
     * {
         box-sizing: border-box;
     }
