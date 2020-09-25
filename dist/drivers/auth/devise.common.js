@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v3.3.3
+ * @websanova/vue-auth v3.3.4
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -10,7 +10,7 @@ var devise = {
   tokens: ['Token-Type', 'Access-Token', 'Client', 'Uid', 'Expiry', 'token-type', 'access-token', 'client', 'uid', 'expiry'],
   request: function (req, token) {
     var headers = {},
-        tokens = token.split(';');
+        tokens = token.split('|');
     var auth = this.deviseAuth || this.auth;
     auth.tokens.forEach(function (tokenName, index) {
       if (tokens[index]) {
@@ -31,8 +31,8 @@ var devise = {
         }
       }); // Check if access-token more recent than last one
 
-      if (!this.token() || parseInt(token[4], 10) >= parseInt(this.token().split(';')[4], 10)) {
-        return token.join(';');
+      if (!this.token() || parseInt(token[4], 10) >= parseInt(this.token().split('|')[4], 10)) {
+        return token.join('|');
       }
     }
   }
