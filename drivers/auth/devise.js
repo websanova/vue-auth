@@ -7,7 +7,7 @@ export default {
 
     request: function (req, token) {
         var headers = {},
-            tokens = token.split(';');
+            tokens = token.split('|');
 
         var auth =  this.deviseAuth || this.auth;
         
@@ -34,8 +34,8 @@ export default {
             });
 
             // Check if access-token more recent than last one
-            if (!this.token() || parseInt(token[4], 10) >= parseInt(this.token().split(';')[4], 10)) {
-                return token.join(';');
+            if (!this.token() || parseInt(token[4], 10) >= parseInt(this.token().split('|')[4], 10)) {
+                return token.join('|');
             }
         }
     }
