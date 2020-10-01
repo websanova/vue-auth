@@ -19,6 +19,8 @@
     "unpkg": "dist/vue-auth.min.js",
     "jsdelivr": "dist/vue-auth.min.js",
 
+    "types": "types/index.d.ts",
+
     "version": "3.3.6",
 
     "repository": {
@@ -30,7 +32,6 @@
 
     "scripts": {
         "clear": "rm -rf dist/*",
-
         "build": "npm run clear; node build/build.js"
     },
 
