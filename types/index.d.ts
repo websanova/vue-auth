@@ -1,4 +1,5 @@
 import {Vue} from 'vue/types/vue';
+import {PluginObject} from 'vue/types';
 
 //
 
@@ -52,23 +53,23 @@ interface LogoutOptions extends RequestOptions {
 interface Oauth2Options extends RequestOptions {
     code?: boolean;
     provider: string;
-    redirect?: redirect;
+    redirect?: Redirect;
     staySignedIn?: boolean;
     remember?: string;
 }
 
 interface ImpersonateOptions extends RequestOptions {
-    redirect?: redirect;
+    redirect?: Redirect;
 }
 
 interface UnimpersonateOptions extends RequestOptions {
-      redirect?: redirect;
+      redirect?: Redirect;
       makeRequest?: boolean;
 }
 
 //
 
-interface VueAuth {
+interface VueAuth extends PluginObject<any> {
 
     /**
      * Returns binded boolean property to know when auth is fully loaded.
