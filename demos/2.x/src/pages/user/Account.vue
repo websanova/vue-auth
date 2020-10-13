@@ -1,4 +1,4 @@
-<template>
+    <template>
     <div>
         <table>
             <tr>
@@ -44,6 +44,79 @@
         </table>
 
         <hr/>
+
+        <table>
+            <tr>
+                <td><b>$auth.check() Tests</b></td>
+
+                <td/>
+            </tr><tr>
+                <td>
+                    $auth.check('poo')
+                </td>
+                <td class="text-right">
+                    {{ $auth.check('poo') }}
+                </td>
+            </tr><tr>
+                <td>
+                    $auth.check(['poo', 'admin'])
+                </td>
+                <td class="text-right">
+                    {{ $auth.check(['poo', 'admin']) }}
+                </td>
+            </tr><tr>
+                <td>
+                    $auth.check({role: 'admin'}, 'role_test_one')
+                </td>
+                <td class="text-right">
+                    {{ $auth.check({role: 'admin'}, 'role_test_one') }}
+                </td>
+            </tr><tr>
+                <td>
+                    $auth.check([{role: 'admin'}], 'role_test_one')
+                </td>
+                <td class="text-right">
+                    {{ $auth.check([{role: 'admin'}], 'role_test_one') }}
+                </td>
+            </tr><tr>
+                <td>
+                    $auth.check({role: 'admin'}, 'role_test_two')
+                </td>
+                <td class="text-right">
+                    {{ $auth.check({role: 'admin'}, 'role_test_two') }}
+                </td>
+            </tr><tr>
+                <td>
+                    $auth.check('admin', 'role_test_three')
+                </td>
+                <td class="text-right">
+                    {{ $auth.check('admin', 'role_test_three') }}
+                </td>
+            </tr><tr>
+                <td>
+                    $auth.check({role: 'admin'}, 'role_test_four.nes.ted')
+                </td>
+                <td class="text-right">
+                    {{ $auth.check({role: 'admin'}, 'role_test_four.nes.ted') }}
+                </td>
+            </tr><tr>
+                <td>
+                    $auth.check('admin', 'role_test_four.nes.ted.role')
+                </td>
+                <td class="text-right">
+                    {{ $auth.check('admin', 'role_test_four.nes.ted.role') }}
+                </td>
+            </tr><tr>
+                <td>
+                    $auth.check(['poo', 'admin'], 'role_test_four.nes.ted.role')
+                </td>
+                <td class="text-right">
+                    {{ $auth.check(['poo', 'admin'], 'role_test_four.nes.ted.role') }}
+                </td>
+            </tr>
+        </table>
+
+        <hr/>
     </div>
 </template>
 
@@ -55,6 +128,33 @@
                     status: null
                 }
             }
+        },
+
+        created() {
+            var user = this.$auth.user();
+
+            // one
+
+            user.role_test_one = [
+                {role: 'admin'},
+                {role: 'super-admin'}
+            ];
+
+            // two
+
+            user.role_test_two = {role: 'admin'};
+
+            // three
+
+            user.role_test_three = ['super-admin', 'admin'];
+
+            // four
+
+            user.role_test_four = {nes: {ted: {role: 'admin'}}};
+
+            //
+
+            this.$auth.user(user);
         },
 
         methods: {
