@@ -372,18 +372,24 @@ function _processRedirect(redirect) {
 }
 
 function _initVm() {
-    __auth.$vm = new __auth.Vue({
-        data: function () {
-            return {
-                data: null,
-                loaded: false,
-                redirect: null,
-                authenticated: null, // TODO: false ?
-                impersonating: undefined,
-                remember: undefined,
-            };
-        }
-    });
+    var vmData = {
+        data: null,
+        loaded: false,
+        redirect: null,
+        authenticated: null, // TODO: false ?
+        impersonating: undefined,
+        remember: undefined,
+    };
+    try {
+        var { reactive } = require('vue');
+        __auth.$vm = reactive(vmData)
+    } catch (e) {
+        __auth.$vm = new __auth.Vue({
+            data: function () {
+                return vmData;
+            }
+        });
+    }
 }
 
 function _initDriverCheck() {
