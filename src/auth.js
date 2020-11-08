@@ -398,8 +398,8 @@ function _initDriverCheck() {
             return false;
         }
 
-        if (__auth.options[drivers[i]]._init) {
-            msg = __auth.options[drivers[i]]._init.call(__auth);
+        if (__auth.options[drivers[i]].init) {
+            var msg = __auth.options[drivers[i]].init.call(__auth);
 
             if (msg) {
                 console.error('Error (@websanova/vue-auth): ' + msg);
