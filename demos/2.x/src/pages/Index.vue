@@ -9,7 +9,7 @@
         </h1>
 
         <h1 class="text-center">
-            Vue Auth Plugin Demo
+            Vue Auth 2.x Demo
         </h1>
 
         <hr/>

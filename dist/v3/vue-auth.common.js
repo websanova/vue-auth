@@ -4,6 +4,12 @@
  * Released under the MIT License.
  */
 
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var vue = require('vue');
+
 function isObject(val) {
   if (val !== null && typeof val === 'object' && val.constructor !== Array) {
     return true;
@@ -109,10 +115,13 @@ function isCookieStorage() {
   return true;
 }
 
-function getProperty(obj, desc) {
+function getProperty(obj, desc, res) {
   var arr = desc.split('.');
+  res = res || [];
 
-  while (arr.length && (obj = obj[arr.shift()]));
+  while (arr.length) {
+    obj = obj[arr.shift()];
+  }
 
   return obj;
 }
@@ -430,7 +439,7 @@ function _parseUserData(data) {
 }
 
 function _parseUserResponseData(res) {
-  return __auth.options.parseUserData(__auth.http.httpData(res));
+  return __auth.options.parseUserData(__auth.drivers.http.httpData(res));
 }
 
 function _parseRedirectUri(uri) {
@@ -457,7 +466,7 @@ function _parseRequestIntercept(req) {
   token = get$2.call(__auth, tokenName);
 
   if (token) {
-    __auth.auth.request.call(__auth, req, token);
+    __auth.drivers.auth.request.call(__auth, req, token);
   }
 
   return req;
@@ -472,10 +481,10 @@ function _parseResponseIntercept(res, req) {
 
   _processInvalidToken(res, __auth.transitionThis);
 
-  token = this.auth.response.call(this, res);
+  token = __auth.drivers.auth.response.call(__auth, res);
 
   if (token) {
-    set$2.call(this, null, token, get$2.call(__auth, __auth.options.staySignedInKey) ? false : true);
+    set$2.call(__auth, null, token, get$2.call(__auth, __auth.options.staySignedInKey) ? false : true);
   }
 }
 
@@ -496,7 +505,7 @@ function _processInvalidToken(res, transition) {
     redirect += '?' + query.substring(1);
   }
 
-  if (!__auth.http.invalidToken || !__auth.http.invalidToken.call(__auth, res)) {
+  if (!__auth.drivers.http.invalidToken || !__auth.drivers.http.invalidToken.call(__auth, res)) {
     return;
   }
 
@@ -644,12 +653,12 @@ function _processUnimpersonate(redirect) {
 
 function _processRedirect(redirect) {
   if (redirect) {
-    __auth.router.routerGo.call(__auth, redirect);
+    __auth.drivers.router.routerGo.call(__auth, redirect);
   }
 }
 
-function _initVm() {
-  __auth.$vm = new __auth.Vue({
+function _initVm(Vue) {
+  __auth.$vm = new Vue({
     data: function () {
       return {
         data: null,
@@ -669,13 +678,13 @@ function _initDriverCheck() {
   var drivers = ['auth', 'http', 'router'];
 
   for (i = 0, ii = drivers.length; i < ii; i++) {
-    if (!__auth.options[drivers[i]]) {
+    if (!__auth.drivers[drivers[i]]) {
       console.error('Error (@websanova/vue-auth): "' + drivers[i] + '" driver must be set.');
       return false;
     }
 
-    if (__auth.options[drivers[i]]._init) {
-      msg = __auth.options[drivers[i]]._init.call(__auth);
+    if (__auth.drivers[drivers[i]]._init) {
+      msg = __auth.drivers[drivers[i]]._init.call(__auth);
 
       if (msg) {
         console.error('Error (@websanova/vue-auth): ' + msg);
@@ -696,19 +705,21 @@ function _initRefreshInterval() {
 }
 
 function _initInterceptors() {
-  __auth.http.interceptor.call(__auth, _parseRequestIntercept, _parseResponseIntercept);
+  __auth.drivers.http.interceptor.call(__auth, _parseRequestIntercept, _parseResponseIntercept);
 
-  __auth.router.beforeEach.call(__auth, _processRouterBeforeEach, _processTransitionEach, _setTransitions, _getAuthMeta);
+  __auth.drivers.router.beforeEach.call(__auth, _processRouterBeforeEach, _processTransitionEach, _setTransitions, _getAuthMeta);
 }
 
 function Auth(Vue, options) {
   __auth = this;
   options = options || {};
-  this.Vue = Vue;
-  this.auth = options.auth;
-  this.http = options.http;
-  this.router = options.router;
-  this.options = extend(__defaultOptions, options);
+  this.plugins = options.plugins;
+  this.drivers = options.drivers;
+  this.options = extend(__defaultOptions, options.options);
+  delete options.plugins;
+  delete options.drivers;
+  delete options.options; // Init vars.
+
   this.currentToken = null;
   this.transitionPrev = null;
   this.transitionThis = null;
@@ -716,7 +727,7 @@ function Auth(Vue, options) {
 
   _initDriverCheck();
 
-  _initVm();
+  _initVm(Vue);
 
   _initRefreshInterval();
 
@@ -782,7 +793,7 @@ Auth.prototype.token = function (name, token, expires) {
 Auth.prototype.fetch = function (data) {
   data = extend(__auth.options.fetchData, data);
   return new Promise(function (resolve, reject) {
-    __auth.http.http.call(__auth, data).then(function (res) {
+    __auth.drivers.http.http.call(__auth, data).then(function (res) {
       _processFetch(_parseUserResponseData(res), data.redirect);
 
       resolve(res);
@@ -792,14 +803,14 @@ Auth.prototype.fetch = function (data) {
 
 Auth.prototype.refresh = function (data) {
   data = extend(__auth.options.refreshData, data);
-  return __auth.http.http.call(__auth, data);
+  return __auth.drivers.http.http.call(__auth, data);
 };
 
 Auth.prototype.register = function (data) {
   var registerData = extend(__auth.options.registerData, data);
 
   return new Promise(function (resolve, reject) {
-    __auth.http.http.call(__auth, registerData).then(function (res) {
+    __auth.drivers.http.http.call(__auth, registerData).then(function (res) {
       var loginData;
 
       if (registerData.autoLogin) {
@@ -823,7 +834,7 @@ Auth.prototype.login = function (data) {
   _setStaySignedIn(data.staySignedIn);
 
   return new Promise(function (resolve, reject) {
-    __auth.http.http.call(__auth, data).then(function (res) {
+    __auth.drivers.http.http.call(__auth, data).then(function (res) {
       if (data.fetchUser || data.fetchUser === undefined && __auth.options.fetchData.enabled) {
         __auth.fetch({
           redirect: data.redirect
@@ -863,7 +874,7 @@ Auth.prototype.logout = function (data) {
   data = extend(__auth.options.logoutData, data);
   return new Promise(function (resolve, reject) {
     if (data.makeRequest) {
-      __auth.http.http.call(__auth, data).then(function (res) {
+      __auth.drivers.http.http.call(__auth, data).then(function (res) {
         _processLogout(data.redirect);
 
         resolve(res);
@@ -881,7 +892,7 @@ Auth.prototype.impersonate = function (data) {
   return new Promise(function (resolve, reject) {
     var token = __auth.token();
 
-    __auth.http.http.call(__auth, data).then(function (res) {
+    __auth.drivers.http.http.call(__auth, data).then(function (res) {
       _processImpersonate(token);
 
       if (data.fetchUser || data.fetchUser === undefined && __auth.options.fetchData.enabled) {
@@ -901,7 +912,7 @@ Auth.prototype.unimpersonate = function (data) {
   data = extend(__auth.options.unimpersonateData, data);
   return new Promise(function (resolve, reject) {
     if (data.makeRequest) {
-      __auth.http.http.call(__auth, data).then(resolve, reject);
+      __auth.drivers.http.http.call(__auth, data).then(resolve, reject);
     } else {
       resolve();
     }
@@ -943,7 +954,7 @@ Auth.prototype.oauth2 = function (type, data) {
     return __auth.login(data);
   }
 
-  data = extend(__auth.options.oauth2[type], data);
+  data = extend(__auth.drivers.oauth2[type], data);
   data.params.state = JSON.stringify(data.params.state || {});
   data.params.redirect_uri = _parseRedirectUri(data.params.redirect_uri);
 
@@ -966,19 +977,29 @@ Auth.prototype.disableImpersonate = function () {
   }
 };
 
-function plugin(Vue, options) {
-  Vue.auth = new Auth(Vue, options);
-  Object.defineProperties(Vue.prototype, {
-    $auth: {
-      get: function () {
-        return Vue.auth;
-      }
-    }
-  });
+function Vue(obj) {
+  var i,
+      data = obj.data();
+
+  for (i in data) {
+    this[i] = vue.reactive(Object.assign({}, data[i]));
+  }
 }
 
-if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(plugin);
+Vue.set = function (obj, name, val) {
+  obj[name] = vue.reactive(val);
+};
+
+Auth.prototype.install = function (app) {
+  this.Vue = Vue;
+  this.ctx = app;
+  app.auth = this;
+  app.config.globalProperties.$auth = this;
+}; //
+
+
+function createAuth(options) {
+  return new Auth(Vue, options);
 }
 
-export default plugin;
+exports.createAuth = createAuth;

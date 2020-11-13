@@ -1,15 +1,15 @@
 export default {
 
     init: function () {
-        if ( ! this.Vue.frisbee) {
-            return 'firsbee.js : Vue.frisbee must be set.'
+        if ( ! this.plugins.http) {
+            return 'drivers/http/firsbee.js: http plugin has not been set.'
         }
     },
 
     interceptor: function (req, res) {
         var _this = this;
 
-        this.Vue.frisbee.interceptors.register({
+        this.plugins.http.interceptors.register({
             request: function (path, options) {
                 req.call(_this, options);
                 
@@ -44,7 +44,7 @@ export default {
     },
 
     http: data => {
-        return this.Vue.frisbee(data);
+        return this.plugins.http(data);
     },
 
     getHeaders: res => {

@@ -15,20 +15,20 @@
       request: function (req, token) {
         var headers = {},
             tokens = token.split('|');
-        var auth = this.deviseAuth || this.auth;
+        var auth = this.drivers.deviseAuth || this.drivers.auth;
         auth.tokens.forEach(function (tokenName, index) {
           if (tokens[index]) {
             headers[tokenName] = tokens[index];
           }
         });
-        this.http.setHeaders.call(this, req, headers);
+        this.drivers.http.setHeaders.call(this, req, headers);
       },
       response: function (res) {
         var token = [],
-            headers = this.http.getHeaders.call(this, res);
+            headers = this.drivers.http.getHeaders.call(this, res);
 
         if (headers['access-token'] || headers['Access-Token']) {
-          var auth = this.deviseAuth || this.auth;
+          var auth = this.drivers.deviseAuth || this.drivers.auth;
           auth.tokens.forEach(function (tokenName) {
             if (headers[tokenName]) {
               token.push(headers[tokenName]);

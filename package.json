@@ -10,10 +10,10 @@
         "username": "websanova",
         "email": "rob@websanova.com"
     },
-    "main": "dist/vue-auth.common.js",
-    "module": "dist/vue-auth.esm.js",
-    "unpkg": "dist/vue-auth.min.js",
-    "jsdelivr": "dist/vue-auth.min.js",
+    "main": "dist/v2/vue-auth.common.js",
+    "module": "dist/v2/vue-auth.esm.js",
+    "unpkg": "dist/v2/vue-auth.min.js",
+    "jsdelivr": "dist/v2/vue-auth.min.js",
 
     "types": "types/index.d.ts",
     "repository": {

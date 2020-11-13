@@ -1,15 +1,15 @@
 export default {
 
     init: function () {
-        if ( ! this.Vue.http) {
-            return 'vue-resource.1.x.js : Vue.http must be set.';
+        if ( ! this.plugins.http) {
+            return 'drivers/http/vue-resource.1.x.js: http plugin has not been set.';
         }
     },
     
     interceptor: function (req, res) {
         var _this = this;
 
-        this.Vue.http.interceptors.push(function (request, next) {
+        this.plugins.http.interceptors.push(function (request, next) {
             if (req) { req.call(_this, request); }
             
             next(function (response) {
@@ -29,7 +29,7 @@ export default {
     },
 
     http: function (data) {
-        return this.Vue.http(data);
+        return this.plugins.http(data);
     },
 
     getHeaders: function (res) {
