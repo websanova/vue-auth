@@ -17,6 +17,18 @@ Auth.prototype.install = function (app) {
 
 //
 
+var auth;
+
+//
+
 export function createAuth(options) {
-    return new Auth(Vue, options);
+    if (!auth) {
+        auth = new Auth(Vue, options);
+    }
+
+    return auth
+}
+
+export function useAuth() {
+    return auth;
 }
