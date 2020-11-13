@@ -140,7 +140,7 @@ function _parseUserData(data) {
 }
 
 function _parseUserResponseData(res) {
-    return __auth.options.parseUserData(__auth.http.httpData(res));
+    return __auth.options.parseUserData(__auth.drivers.http.httpData(res));
 }
 
 function _parseRedirectUri(uri) {
@@ -171,7 +171,7 @@ function _parseRequestIntercept(req) {
     token = __token.get.call(__auth, tokenName);
 
     if (token) {
-        __auth.auth.request.call(__auth, req, token);
+        __auth.drivers.auth.request.call(__auth, req, token);
     }
 
     return req;
@@ -186,10 +186,10 @@ function _parseResponseIntercept(res, req) {
 
     _processInvalidToken(res, __auth.transitionThis);
 
-    token = this.auth.response.call(this, res);
+    token = __auth.drivers.auth.response.call(__auth, res);
 
     if (token) {
-        __token.set.call(this, null, token, (__token.get.call(__auth, __auth.options.staySignedInKey) ? false : true));
+        __token.set.call(__auth, null, token, (__token.get.call(__auth, __auth.options.staySignedInKey) ? false : true));
     }
 }
 
@@ -212,8 +212,8 @@ function _processInvalidToken(res, transition) {
     }
 
     if (
-        !__auth.http.invalidToken ||
-        !__auth.http.invalidToken.call(__auth, res)
+        !__auth.drivers.http.invalidToken ||
+        !__auth.drivers.http.invalidToken.call(__auth, res)
     ) {
         return;
     }
@@ -367,12 +367,12 @@ function _processUnimpersonate(redirect) {
 
 function _processRedirect(redirect) {
     if (redirect) {
-        __auth.router.routerGo.call(__auth, redirect);
+        __auth.drivers.router.routerGo.call(__auth, redirect);
     }
 }
 
-function _initVm() {
-    __auth.$vm = new __auth.Vue({
+function _initVm(Vue) {
+    __auth.$vm = new Vue({
         data: function () {
             return {
                 data: null,
@@ -392,14 +392,14 @@ function _initDriverCheck() {
     var drivers = ['auth', 'http', 'router'];
 
     for (i = 0, ii = drivers.length; i < ii; i++) {
-        if ( ! __auth.options[drivers[i]]) {
+        if ( ! __auth.drivers[drivers[i]]) {
             console.error('Error (@websanova/vue-auth): "' + drivers[i] + '" driver must be set.');
 
             return false;
         }
 
-        if (__auth.options[drivers[i]]._init) {
-            msg = __auth.options[drivers[i]]._init.call(__auth);
+        if (__auth.drivers[drivers[i]]._init) {
+            msg = __auth.drivers[drivers[i]]._init.call(__auth);
 
             if (msg) {
                 console.error('Error (@websanova/vue-auth): ' + msg);
@@ -427,9 +427,9 @@ function _initRefreshInterval() {
 }
 
 function _initInterceptors() {
-    __auth.http.interceptor.call(__auth, _parseRequestIntercept, _parseResponseIntercept);
+    __auth.drivers.http.interceptor.call(__auth, _parseRequestIntercept, _parseResponseIntercept);
 
-    __auth.router.beforeEach.call(__auth, _processRouterBeforeEach, _processTransitionEach, _setTransitions, _getAuthMeta);
+    __auth.drivers.router.beforeEach.call(__auth, _processRouterBeforeEach, _processTransitionEach, _setTransitions, _getAuthMeta);
 }
 
 function Auth(Vue, options) {
@@ -437,11 +437,19 @@ function Auth(Vue, options) {
 
     options = options || {};
 
-    this.Vue     = Vue;
-    this.auth    = options.auth;
-    this.http    = options.http;
-    this.router  = options.router;
+    // Set plugins and drivers.
+    
+    this.plugins = options.plugins;
+    this.drivers = options.drivers;
+
+    delete options.plugins;
+    delete options.drivers;
+
+    // Set options.
+
     this.options = __utils.extend(__defaultOptions, options);
+
+    // Init vars.
 
     this.currentToken           = null;
     this.transitionPrev         = null;
@@ -450,7 +458,7 @@ function Auth(Vue, options) {
 
     _initDriverCheck();
 
-    _initVm();
+    _initVm(Vue);
 
     _initRefreshInterval();
 
@@ -520,7 +528,7 @@ Auth.prototype.fetch = function (data) {
     data = __utils.extend(__auth.options.fetchData, data);
 
     return new Promise(function(resolve, reject) {
-        __auth.http.http
+        __auth.drivers.http.http
             .call(__auth, data)
             .then(function(res) {
                 _processFetch(_parseUserResponseData(res), data.redirect);
@@ -533,14 +541,14 @@ Auth.prototype.fetch = function (data) {
 Auth.prototype.refresh = function (data) {
     data = __utils.extend(__auth.options.refreshData, data);
 
-    return __auth.http.http.call(__auth, data);
+    return __auth.drivers.http.http.call(__auth, data);
 };
 
 Auth.prototype.register = function (data) {
     var registerData = __utils.extend(__auth.options.registerData, data);
 
     return new Promise(function(resolve, reject) {
-        __auth.http.http
+        __auth.drivers.http.http
             .call(__auth, registerData)
             .then(function(res) {
                 var loginData;
@@ -568,7 +576,7 @@ Auth.prototype.login = function (data) {
     _setStaySignedIn(data.staySignedIn);
 
     return new Promise(function(resolve, reject) {
-        __auth.http.http
+        __auth.drivers.http.http
             .call(__auth, data)
             .then(function(res) {
                 if (
@@ -617,7 +625,7 @@ Auth.prototype.logout = function (data) {
 
     return new Promise(function(resolve, reject) {
         if (data.makeRequest) {
-            __auth.http.http
+            __auth.drivers.http.http
                 .call(__auth, data)
                 .then(function(res) {
                     _processLogout(data.redirect);
@@ -639,7 +647,7 @@ Auth.prototype.impersonate = function (data) {
     return new Promise(function(resolve, reject) {
         var token = __auth.token();
 
-        __auth.http.http
+        __auth.drivers.http.http
             .call(__auth, data)
             .then(function(res) {
                 _processImpersonate(token);
@@ -668,7 +676,7 @@ Auth.prototype.unimpersonate = function (data) {
 
     return new Promise(function(resolve, reject) {
         if (data.makeRequest) {
-            __auth.http.http
+            __auth.drivers.http.http
                 .call(__auth, data)
                 .then(resolve, reject);
         }

@@ -1,31 +1,15 @@
 export default {
 
     init: function () {
-        if ( ! this.Vue.router) {
-            return 'vue-router.2.x.js : Vue.router must be set.';
+        if ( ! this.plugins.router) {
+            return 'drivers/router/vue-router.2.x.js: router plugin has not been set.';
         }
     },
-
-    // bindData: function (data, ctx) {
-    //     var error, success;
-
-    //     data = data || {};
-
-    //     error = data.error;
-    //     success = data.success;
-
-    //     data.query = ctx.$route.query || {};
-
-    //     if (data.success) { data.success = function (res) { success.call(ctx, res); } }
-    //     if (data.error) { data.error = function (res) { error.call(ctx, res); } }
-
-    //     return data;
-    // },
 
     beforeEach: function (routerBeforeEach, transitionEach, setTransitions, getAuthMeta) {
         var _this = this;
 
-        this.Vue.router.beforeEach(function (transition, location, next) {
+        this.plugins.router.beforeEach(function (transition, location, next) {
             setTransitions(transition);
             
             routerBeforeEach.call(_this, function () {
@@ -49,13 +33,11 @@ export default {
     },
 
     routerReplace: function (data) {
-        var router = this.Vue.router;
-
-        router.replace.call(router, data);
+        this.plugins.router.replace.call(router, data);
     },
 
     routerGo: function (data) {
-        var router = this.Vue.router;
+        var router = this.plugins.router;
 
         (router.push || router.go).call(router, data).catch(function (err){});
     }

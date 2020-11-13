@@ -1,8 +1,8 @@
 export default {
 
     init: function () {
-        if ( ! this.Vue.axios) {
-            return 'axios.js : Vue.axios must be set.'
+        if ( ! this.plugins.http) {
+            return 'drivers/http/axios.js: http plugin has not been set.'
         }
     },
 
@@ -10,7 +10,7 @@ export default {
         var _this = this;
 
         if (req) {
-            this.Vue.axios.interceptors.request.use(function (request) {
+            this.plugins.http.interceptors.request.use(function (request) {
                 req.call(_this, request);
                 
                 return request;
@@ -22,7 +22,7 @@ export default {
         }
 
         if (res) {
-            this.Vue.axios.interceptors.response.use(function (response) {
+            this.plugins.http.interceptors.response.use(function (response) {
                 res.call(_this, response);
         
                 return response;
@@ -47,7 +47,7 @@ export default {
     },
 
     http: function (data) {
-        return this.Vue.axios(data);
+        return this.plugins.http(data);
     },
 
     getHeaders: function (res) {
