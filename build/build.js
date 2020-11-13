@@ -9,59 +9,58 @@ const replace = require('rollup-plugin-replace');
 const {name, version, homepage} = require('../package.json');
 const banner = `/*!\n * ${name} v${version}\n * ${homepage}\n * Released under the MIT License.\n */\n`;
 
+// Dirs
+
+const dirs = [
+    'dist',
+    'dist/drivers',
+    'dist/drivers/auth',
+    'dist/drivers/http',
+    'dist/drivers/oauth2',
+    'dist/drivers/router',
+    'dist/v2',
+    'dist/v3'
+];
+
+dirs.forEach((dir) => {
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+});
+
+// Files
+
 const files = [{
-    input: 'src/index.js',
+    input: 'src/v2.js',
     name: 'vue-auth',
 }, {
-    input: 'drivers/auth/basic.js',
+    input: 'src/v3.js',
+    name: 'vue-auth',
+}, {
+    input: 'src/drivers/auth/basic.js',
     name: 'drivers/auth/basic'
 }, {
-    input: 'drivers/auth/bearer.js',
+    input: 'src/drivers/auth/bearer.js',
     name: 'drivers/auth/bearer'
 }, {
-    input: 'drivers/auth/devise.js',
+    input: 'src/drivers/auth/devise.js',
     name: 'drivers/auth/devise'
 }, {
-    input: 'drivers/http/axios.1.x.js',
+    input: 'src/drivers/http/axios.1.x.js',
     name: 'drivers/http/axios.1.x'
 }, {
-    input: 'drivers/http/vue-resource.1.x.js',
+    input: 'src/drivers/http/vue-resource.1.x.js',
     name: 'drivers/http/vue-resource.1.x'
 }, {
-    input: 'drivers/oauth2/facebook.js',
+    input: 'src/drivers/oauth2/facebook.js',
     name: 'drivers/oauth2/facebook'
 }, {
-    input: 'drivers/oauth2/google.js',
+    input: 'src/drivers/oauth2/google.js',
     name: 'drivers/oauth2/google'
 }, {
-    input: 'drivers/router/vue-router.2.x.js',
+    input: 'src/drivers/router/vue-router.2.x.js',
     name: 'drivers/router/vue-router.2.x'
 }];
-
-if (!fs.existsSync('dist')){
-    fs.mkdirSync('dist');
-}
-
-if (!fs.existsSync('dist/drivers')){
-    fs.mkdirSync('dist/drivers');
-}
-
-if (!fs.existsSync('dist/drivers/auth')){
-    fs.mkdirSync('dist/drivers/auth');
-}
-
-if (!fs.existsSync('dist/drivers/http')){
-    fs.mkdirSync('dist/drivers/http');
-}
-
-if (!fs.existsSync('dist/drivers/oauth2')){
-    fs.mkdirSync('dist/drivers/oauth2');
-}
-
-if (!fs.existsSync('dist/drivers/router')){
-    fs.mkdirSync('dist/drivers/router');
-}
-
 
 
 files.forEach((file) => {
