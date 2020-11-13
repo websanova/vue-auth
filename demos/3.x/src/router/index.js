@@ -14,7 +14,7 @@ const router = createRouter({
         meta: {
             auth: false
         }
-    }, {
+    // }, {
     //     path: '/users',
     //     name: 'site-users',
     //     component: loadView('site/Users'),
