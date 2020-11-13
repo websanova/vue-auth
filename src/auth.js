@@ -436,18 +436,14 @@ function Auth(Vue, options) {
     __auth  = this;
 
     options = options || {};
-
-    // Set plugins and drivers.
     
     this.plugins = options.plugins;
     this.drivers = options.drivers;
+    this.options = __utils.extend(__defaultOptions, options.options);
 
     delete options.plugins;
     delete options.drivers;
-
-    // Set options.
-
-    this.options = __utils.extend(__defaultOptions, options);
+    delete options.options;
 
     // Init vars.
 
@@ -731,7 +727,7 @@ Auth.prototype.oauth2 = function (type, data) {
         return __auth.login(data);
     }
 
-    data = __utils.extend(__auth.options.oauth2[type], data);
+    data = __utils.extend(__auth.drivers.oauth2[type], data);
 
     data.params.state        = JSON.stringify(data.params.state || {});
     data.params.redirect_uri = _parseRedirectUri(data.params.redirect_uri);
