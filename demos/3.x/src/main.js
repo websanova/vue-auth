@@ -5,9 +5,13 @@ import store       from './store';
 import router      from './router';
 import plugins     from './config/plugins.js';
 
-createApp(App)
-    .use(http)
-    .use(store)
-    .use(router)
-    .use(plugins)
-    .mount('#app');
+const app = createApp(App);
+
+app.router = router;
+
+app
+.use(http)
+.use(store)
+.use(router)
+.use(plugins)
+.mount('#app');

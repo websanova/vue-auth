@@ -1,31 +1,34 @@
 import Vue from 'vue'
 
-import auth            from '@websanova/vue-auth/src/v2.js';
-import authBearer      from '@websanova/vue-auth/src/drivers/auth/bearer.js';
-import httpAxios       from '@websanova/vue-auth/src/drivers/http/axios.1.x.js';
-// import httpVueResource from '@websanova/vue-auth/src/drivers/http/vue-resource.1.x.js';
-import routerVueRouter from '@websanova/vue-auth/src/drivers/router/vue-router.2.x.js';
-import oauth2Google    from '@websanova/vue-auth/src/drivers/oauth2/google.js';
-import oauth2Facebook  from '@websanova/vue-auth/src/drivers/oauth2/facebook.js';
+import auth                  from '@websanova/vue-auth/src/v2.js';
+import driverAuthBearer      from '@websanova/vue-auth/src/drivers/auth/bearer.js';
+import driverHttpAxios       from '@websanova/vue-auth/src/drivers/http/axios.1.x.js';
+// import driverHttpVueResource from '@websanova/vue-auth/src/drivers/http/vue-resource.1.x.js';
+import driverRouterVueRouter from '@websanova/vue-auth/src/drivers/router/vue-router.2.x.js';
+import driverOAuth2Google    from '@websanova/vue-auth/src/drivers/oauth2/google.js';
+import driverOAuth2Facebook  from '@websanova/vue-auth/src/drivers/oauth2/facebook.js';
 
-oauth2Google.params.client_id = '547886745924-4vrbhl09fr3t771drtupacct6f788566.apps.googleusercontent.com';
-oauth2Facebook.params.client_id = '196729390739201';
+driverOAuth2Google.params.client_id = '547886745924-4vrbhl09fr3t771drtupacct6f788566.apps.googleusercontent.com';
+driverOAuth2Facebook.params.client_id = '196729390739201';
 
 Vue.use(auth, {
     plugins: {
-        http: Vue.axios,
+        http: Vue.axios, // Axios
+        // http: Vue.http, // Vue Resource
         router: Vue.router,
     },
     drivers: {
-        auth: authBearer,
-        http: httpAxios, // Axios
-        // http: httpVueResource, // Vue Resource
-        router: routerVueRouter,
+        auth: driverAuthBearer,
+        http: driverHttpAxios, // Axios
+        // http: driverHttpVueResource, // Vue Resource
+        router: driverRouterVueRouter,
+        oauth2: {
+            google: driverOAuth2Google,
+            facebook: driverOAuth2Facebook,
+        }
     },
-    rolesKey: 'type',
-    notFoundRedirect: {name: 'user-account'},
-    oauth2: {
-        google: oauth2Google,
-        facebook: oauth2Facebook,
+    options: {
+        rolesKey: 'type',
+        notFoundRedirect: {name: 'user-account'},
     }
 });

@@ -42,10 +42,10 @@
                     links.push({to: {name: 'site-home'}, text: 'home'});
 
                     if (ctx.$auth.check()) {
-                        links.push({to: {name: 'auth-login'}, text: 'login'});
-                        links.push({to: {name: 'auth-register'}, text: 'register'});
-                        links.push({to: {name: 'auth-social'}, text: 'social'});
-                        links.push({to: {name: 'site-users'}, text: 'users'});
+                        // links.push({to: {name: 'auth-login'}, text: 'login'});
+                        // links.push({to: {name: 'auth-register'}, text: 'register'});
+                        // links.push({to: {name: 'auth-social'}, text: 'social'});
+                        // links.push({to: {name: 'site-users'}, text: 'users'});
                     }
 
 

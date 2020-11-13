@@ -1,41 +1,31 @@
-// import {createUpload} from '@websanova/vue-upload/src/v3.js';
-// import httpAxios      from '@websanova/vue-upload/src/drivers/http/axios.js';
+import {createAuth}          from '@websanova/vue-auth/src/v3.js';
+import driverAuthBearer      from '@websanova/vue-auth/src/drivers/auth/bearer.js';
+import driverHttpAxios       from '@websanova/vue-auth/src/drivers/http/axios.1.x.js';
+import driverRouterVueRouter from '@websanova/vue-auth/src/drivers/router/vue-router.2.x.js';
+import driverOAuth2Google    from '@websanova/vue-auth/src/drivers/oauth2/google.js';
+import driverOAuth2Facebook  from '@websanova/vue-auth/src/drivers/oauth2/facebook.js';
+
+driverOAuth2Google.params.client_id = '547886745924-4vrbhl09fr3t771drtupacct6f788566.apps.googleusercontent.com';
+driverOAuth2Facebook.params.client_id = '196729390739201';
 
 export default (app) => {
-    // app.use(createUpload({
-    //     http: httpAxios
-    // }));
+    app.use(createAuth({
+        plugins: {
+            http: app.axios,
+            router: app.router,
+        },
+        drivers: {
+            http: driverHttpAxios,
+            auth: driverAuthBearer,
+            router: driverRouterVueRouter,
+            oauth2: {
+                google: driverOAuth2Google,
+                facebook: driverOAuth2Facebook,
+            }
+        },
+        options: {
+            rolesKey: 'type',
+            notFoundRedirect: {name: 'user-account'},
+        }
+    }));
 }
-
-
-
-
-
-
-import Vue from 'vue'
-
-import auth            from '@websanova/vue-auth/src/index.js';
-import authBearer      from '@websanova/vue-auth/drivers/auth/bearer.js';
-import httpAxios       from '@websanova/vue-auth/drivers/http/axios.1.x.js';
-import httpVueResource from '@websanova/vue-auth/drivers/http/vue-resource.1.x.js';
-import routerVueRouter from '@websanova/vue-auth/drivers/router/vue-router.2.x.js';
-import oauth2Google    from '@websanova/vue-auth/drivers/oauth2/google.js';
-import oauth2Facebook  from '@websanova/vue-auth/drivers/oauth2/facebook.js';
-
-oauth2Google.params.client_id = '547886745924-4vrbhl09fr3t771drtupacct6f788566.apps.googleusercontent.com';
-oauth2Facebook.params.client_id = '196729390739201';
-
-Vue.use(auth, {
-    // httpPlugin: http,
-    // routerPlugin: router,
-    authDriver: authBearer,
-    // httpDriver: httpAxios, // Axios
-    httpDriver: httpVueResource, // Vue Resource
-    routerDriver: routerVueRouter,
-    rolesKey: 'type',
-    notFoundRedirect: {name: 'user-account'},
-    oauth2: {
-        google: oauth2Google,
-        facebook: oauth2Facebook,
-    }
-});
