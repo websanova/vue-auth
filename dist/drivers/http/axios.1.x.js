@@ -12,15 +12,15 @@
 
     var axios_1_x = {
       init: function () {
-        if (!this.Vue.axios) {
-          return 'axios.js : Vue.axios must be set.';
+        if (!this.plugins.http) {
+          return 'drivers/http/axios.js: http plugin has not been set.';
         }
       },
       interceptor: function (req, res) {
         var _this = this;
 
         if (req) {
-          this.Vue.axios.interceptors.request.use(function (request) {
+          this.plugins.http.interceptors.request.use(function (request) {
             req.call(_this, request);
             return request;
           }, function (error) {
@@ -30,7 +30,7 @@
         }
 
         if (res) {
-          this.Vue.axios.interceptors.response.use(function (response) {
+          this.plugins.http.interceptors.response.use(function (response) {
             res.call(_this, response);
             return response;
           }, function (error) {
@@ -51,7 +51,7 @@
         return res.data || {};
       },
       http: function (data) {
-        return this.Vue.axios(data);
+        return this.plugins.http(data);
       },
       getHeaders: function (res) {
         return res.headers;
