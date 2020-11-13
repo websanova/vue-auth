@@ -21,13 +21,13 @@ const router = createRouter({
     //     meta: {
     //         auth: false
     //     }
-    // }, {
-    //     path: '/login',
-    //     name: 'auth-login',
-    //     component: loadView('auth/Login'),
-    //     meta: {
-    //         auth: false
-    //     }
+    }, {
+        path: '/login',
+        name: 'auth-login',
+        component: loadView('auth/Login'),
+        meta: {
+            auth: false
+        }
     // }, {
     //     path: '/social',
     //     name: 'auth-social',
@@ -36,13 +36,13 @@ const router = createRouter({
     //     path: '/login/:type',
     //     name: 'auth-login-social',
     //     component: loadView('auth/Social'),
-    // }, {
-    //     path: '/register',
-    //     name: 'auth-register',
-    //     component: loadView('auth/Register'),
-    //     meta: {
-    //         auth: false
-    //     }
+    }, {
+        path: '/register',
+        name: 'auth-register',
+        component: loadView('auth/Register'),
+        meta: {
+            auth: false
+        }
     // }, {
     //     path: '/user',
     //     component: loadView('user/Index'),

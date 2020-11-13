@@ -4,6 +4,10 @@
         package="vue-auth"
         :links="state.links"
     >
+        {{ ($auth.user() || {}).first_name }}
+
+        <hr/>
+
         <router-view />
     </el-layout>
 </template>
@@ -41,9 +45,9 @@
 
                     links.push({to: {name: 'site-home'}, text: 'home'});
 
-                    if (ctx.$auth.check()) {
-                        // links.push({to: {name: 'auth-login'}, text: 'login'});
-                        // links.push({to: {name: 'auth-register'}, text: 'register'});
+                    if (state.loaded && !ctx.$auth.check()) {
+                        links.push({to: {name: 'auth-login'}, text: 'login'});
+                        links.push({to: {name: 'auth-register'}, text: 'register'});
                         // links.push({to: {name: 'auth-social'}, text: 'social'});
                         // links.push({to: {name: 'site-users'}, text: 'users'});
                     }
@@ -91,8 +95,41 @@
                 }),
             });
 
+            onMounted(() => {
+                ctx.$auth
+                    .load()
+                    .then(() => {
+                        state.readyOne = true;
+                    });
+
+                ctx.$auth
+                    .load()
+                    .then(() => {
+                        setTimeout(() => {
+                            state.readyTwo = true;
+                        }, 2000);
+                    });
+
+                setTimeout(() => {
+                    state.artificialLoad = true;
+                }, 1000);
+
+            });
+
+            function unimpersonate() {
+                this.$auth.unimpersonate({
+                    success() {
+                        console.log('success ' + this.context);
+                    },
+                    error() {
+                        console.log('error ' + this.context);
+                    }
+                });
+            }
+
             return {
-                state
+                state,
+                unimpersonate,
             };
         },
 
