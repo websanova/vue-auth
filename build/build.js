@@ -32,10 +32,10 @@ dirs.forEach((dir) => {
 
 const files = [{
     input: 'src/v2.js',
-    name: 'vue-auth',
+    name: 'v2/vue-auth',
 }, {
     input: 'src/v3.js',
-    name: 'vue-auth',
+    name: 'v3/vue-auth',
 }, {
     input: 'src/drivers/auth/basic.js',
     name: 'drivers/auth/basic'
