@@ -104,4 +104,8 @@ const router = createRouter({
     }]
 });
 
-export default router;
+export default (app) => {
+    app.router = router;
+
+    app.use(router);
+}
