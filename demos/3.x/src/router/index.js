@@ -97,7 +97,7 @@ const router = createRouter({
             name: 'error-403',
             component: loadView('error/403'),
         }, {
-            path: '*',
+            path: '/:pathNotFound(.*)*',
             name: 'error-404',
             component: loadView('error/404'),
         }]
