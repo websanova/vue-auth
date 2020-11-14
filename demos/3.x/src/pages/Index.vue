@@ -92,8 +92,8 @@
     import {computed       } from 'vue';
     import {onMounted      } from 'vue';
     import {onBeforeUnmount} from 'vue';
-    import {useAuth        } from '@websanova/vue-auth/src/v3.js';
     import {useRoute       } from 'vue-router';
+    import {useAuth        } from '@websanova/vue-auth/src/v3.js';
 
     export default {
         setup() {

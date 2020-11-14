@@ -7,7 +7,7 @@
                 type="text"
             />
 
-            <div>{{ state.form.errors.email }}</div>
+            <div class="text-danger text-sm">{{ state.form.errors.email }}</div>
         </div>
 
         <div class="input-group">
@@ -17,7 +17,7 @@
                 type="password"
             />
 
-            <div>{{ state.form.errors.password }}</div>
+            <div class="text-danger text-sm">{{ state.form.errors.password }}</div>
         </div>
 
         <div class="input-group">
@@ -27,8 +27,6 @@
             />
 
             Remember Me
-
-            <div />
         </div>
 
         <div class="input-group">
@@ -38,8 +36,6 @@
             />
 
             Stay Signed In
-
-            <div />
         </div>
         
         <div class="input-group">
@@ -49,9 +45,9 @@
             />
 
             Fetch User
-
-            <div />
         </div>
+
+        <br/>
 
         <ul class="spacer">
             <li>
@@ -80,13 +76,17 @@
 </template>
 
 <script>
-    import {reactive          } from 'vue';
-    import {onMounted         } from 'vue';
-    import {getCurrentInstance} from 'vue';
-
+    import {reactive } from 'vue';
+    import {onMounted} from 'vue';
+    import {useStore } from 'vuex';
+    import {useRouter} from 'vue-router';
+    import {useAuth  } from '@websanova/vue-auth/src/v3.js';
+    
     export default {
         setup() {
-            const ctx = getCurrentInstance().ctx;
+            const auth   = useAuth();
+            const store  = useStore();
+            const router = useRouter();
 
             const state = reactive({
                 form: {
@@ -102,11 +102,15 @@
             });
 
             onMounted(() => {
-                console.log(ctx.$auth.redirect());
+                console.log(auth.redirect());
             });
 
+            function errors(res) {
+                state.form.errors = Object.fromEntries(res.data.errors.map(item => [item.field, item.msg]));
+            }
+
             function loginDefault() {
-                ctx.$auth
+                auth
                     .login({
                         data: state.form.body,
                         remember: state.form.remember ? '{"name": "Default"}' : null,
@@ -120,7 +124,7 @@
             }
 
             function loginRedirect() {
-                ctx.$auth
+                auth
                     .login({
                         data: state.form.body,
                         redirect: {name: 'user-account'},
@@ -134,7 +138,7 @@
             }
 
             function loginThen() {
-                ctx.$auth
+                auth
                     .login({
                         data: state.form.body,
                         redirect: null,
@@ -143,19 +147,19 @@
                     })
                     .then((res) => {
                         if (state.form.remember) {
-                            ctx.$auth.remember(JSON.stringify({
-                                name: ctx.$auth.user().first_name
+                            auth.remember(JSON.stringify({
+                                name: auth.user().first_name
                             }));
                         }
 
-                        ctx.$router.push({name: 'user-account'});
+                        router.push({name: 'user-account'});
                     }, (res) => {
                         errors(res.response);
                     })
             }
 
             function loginVuex() {
-                ctx.$store
+                store
                     .dispatch('auth/login', {
                         data: state.form.body,
                         remember: state.form.remember,
@@ -168,9 +172,9 @@
             }
 
             function loginManual() {
-                ctx.$auth.token(null, 'manual', false);
+                auth.token(null, 'manual', false);
 
-                ctx.$auth
+                auth
                     .user({
                         id: 1,
                         first_name: 'Manual',
@@ -179,16 +183,16 @@
                     });
 
                 if (state.form.remember) {
-                    ctx.$auth
+                    auth
                         .remember(JSON.stringify({
-                            name: ctx.$auth.user().first_name
+                            name: auth.user().first_name
                         }));
                 }
                 else {
-                    ctx.$auth.unremember();
+                    auth.unremember();
                 }
 
-                ctx.$router
+                router
                     .push({
                         name: 'user-landing'
                     });

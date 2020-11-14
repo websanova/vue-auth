@@ -279,6 +279,7 @@ button {
 .input-group > input[type=text],
 .input-group > input[type=password] {
     width: 100%;
+    padding: 5px;
 }
 
 
