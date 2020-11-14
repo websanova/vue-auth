@@ -24,7 +24,7 @@
     "scripts": {
         "clear": "rm -rf dist/*",
         "build": "npm run clear; node build/build.js",
-        "ts-test": "./node_modules/typescript/bin/tsc ./build/ts-test.js --allowJS --outDir ./tmp"
+        "test-ts": "./node_modules/typescript/bin/tsc ./build/ts-test.js --allowJS --outDir ./tmp"
     },
     "devDependencies": {
         "typescript": "4.0.3",
