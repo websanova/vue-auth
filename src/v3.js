@@ -1,5 +1,8 @@
+import {inject  } from 'vue'
 import {reactive} from 'vue';
-import Auth     from './auth.js';
+import Auth       from './auth.js';
+
+const authKey = 'auth';
 
 // NOTE: Create pseudo Vue object for Vue 2 backwards compatibility.
 
@@ -9,26 +12,18 @@ function Vue (obj) {
     this.state = reactive(data.state);
 }
 
-Auth.prototype.install = function (app) {
-    app.auth = this;
+Auth.prototype.install = function (app, key) {
+    app.provide(key || authKey, this);
 
     app.config.globalProperties.$auth = this;
 }
 
 //
 
-var auth;
-
-//
-
 export function createAuth(options) {
-    if (!auth) {
-        auth = new Auth(Vue, options);
-    }
-
-    return auth
+    return new Auth(Vue, options);
 }
 
-export function useAuth() {
-    return auth;
+export function useAuth(key) {
+    return inject(key ? key : authKey);
 }
