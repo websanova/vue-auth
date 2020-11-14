@@ -16,14 +16,13 @@
             >
 
                 <div class="media-middle">
-
                     <span class="text-muted">
                         ({{ user.role }})
                     </span>
 
-                    &nbsp;
-
-                    {{ user.first_name }}
+                    <span class="mx-1">
+                        {{ user.first_name }}
+                    </span>
                 </div>
 
                 <div class="media-tight media-middle">
