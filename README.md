@@ -2,8 +2,6 @@
 
 A simple light-weight authentication library for Vue.js
 
-If you are still on 2.x please visit the [2.x to 3.x Upgrade Guide](https://websanova.com/docs/vue-auth/upgrades/2x-3x).
-
 
 ## Sponsor
 
@@ -16,6 +14,14 @@ If you like this plugin please consider sponsoring.
 ## Demo
 
 Check the [live demo](https://vue-auth.websanova.com) to see vue-auth in action.
+
+
+## Upgrade
+
+The new 4.x version comes with support for Vue 3 along with one small change with how the plugin is setup. Otherwise it is fully backwards compatable and no other changes will be required.
+
+* [2.x to 3.x Upgrade Guide](https://websanova.com/docs/vue-auth/upgrades/2x-3x).
+* [3.x to 4.x Upgrade Guide](https://websanova.com/docs/vue-auth/upgrades/3x-4x).
 
 
 ## Issues
