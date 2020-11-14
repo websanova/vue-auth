@@ -111,91 +111,88 @@
 
             function loginDefault() {
                 auth
-                    .login({
-                        data: state.form.body,
-                        remember: state.form.remember ? '{"name": "Default"}' : null,
-                        fetchUser: state.form.fetchUser,
-                        staySignedIn: state.form.staySignedIn,
-                        redirect: '/'
-                    })
-                    .then(null, (res) => {
-                        errors(res.response);
-                    });
+                .login({
+                    data: state.form.body,
+                    remember: state.form.remember ? '{"name": "Default"}' : null,
+                    fetchUser: state.form.fetchUser,
+                    staySignedIn: state.form.staySignedIn,
+                    redirect: '/'
+                })
+                .then(null, (res) => {
+                    errors(res.response);
+                });
             }
 
             function loginRedirect() {
                 auth
-                    .login({
-                        data: state.form.body,
-                        redirect: {name: 'user-account'},
-                        remember: state.form.remember ? '{"name": "Redirect"}' : null,
-                        fetchUser: state.form.fetchUser,
-                        staySignedIn: state.form.staySignedIn,
-                    })
-                    .then(null, (res) => {
-                        errors(res.response);
-                    });
+                .login({
+                    data: state.form.body,
+                    redirect: {name: 'user-account'},
+                    remember: state.form.remember ? '{"name": "Redirect"}' : null,
+                    fetchUser: state.form.fetchUser,
+                    staySignedIn: state.form.staySignedIn,
+                })
+                .then(null, (res) => {
+                    errors(res.response);
+                });
             }
 
             function loginThen() {
                 auth
-                    .login({
-                        data: state.form.body,
-                        redirect: null,
-                        fetchUser: state.form.fetchUser,
-                        staySignedIn: state.form.staySignedIn,
-                    })
-                    .then((res) => {
-                        if (state.form.remember) {
-                            auth.remember(JSON.stringify({
-                                name: auth.user().first_name
-                            }));
-                        }
+                .login({
+                    data: state.form.body,
+                    redirect: null,
+                    fetchUser: state.form.fetchUser,
+                    staySignedIn: state.form.staySignedIn,
+                })
+                .then((res) => {
+                    if (state.form.remember) {
+                        auth.remember(JSON.stringify({
+                            name: auth.user().first_name
+                        }));
+                    }
 
-                        router.push({name: 'user-account'});
-                    }, (res) => {
-                        errors(res.response);
-                    })
+                    router.push({name: 'user-account'});
+                }, (res) => {
+                    errors(res.response);
+                });
             }
 
             function loginVuex() {
                 store
-                    .dispatch('auth/login', {
-                        data: state.form.body,
-                        remember: state.form.remember,
-                        fetchUser: state.form.fetchUser,
-                        staySignedIn: state.form.staySignedIn,
-                    })
-                    .then(null, (res) => {
-                        errors(res.response);
-                    });
+                .dispatch('auth/login', {
+                    data: state.form.body,
+                    remember: state.form.remember,
+                    fetchUser: state.form.fetchUser,
+                    staySignedIn: state.form.staySignedIn,
+                })
+                .then(null, (res) => {
+                    errors(res.response);
+                });
             }
 
             function loginManual() {
                 auth.token(null, 'manual', false);
 
                 auth
-                    .user({
-                        id: 1,
-                        first_name: 'Manual',
-                        email: 'test@manual.com',
-                        type: 'user',
-                    });
+                .user({
+                    id: 1,
+                    first_name: 'Manual',
+                    email: 'test@manual.com',
+                    type: 'user',
+                });
 
                 if (state.form.remember) {
                     auth
-                        .remember(JSON.stringify({
-                            name: auth.user().first_name
-                        }));
+                    .remember(JSON.stringify({
+                        name: auth.user().first_name
+                    }));
                 }
                 else {
                     auth.unremember();
                 }
 
-                router
-                    .push({
-                        name: 'user-landing'
-                    });
+                router.push({name: 'user-landing'});
             }
 
             return {

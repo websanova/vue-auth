@@ -101,7 +101,6 @@
     </div>
 </template>
 
-
 <script>
     import {reactive } from 'vue';
     import {useStore } from 'vuex';
@@ -136,66 +135,66 @@
 
             function registerDefault() {
                 auth
-                    .register({
-                        data: state.form.body,
-                        remember: state.form.remember ? '{"name": "Default"}' : null,
-                        fetchUser: state.form.fetchUser,
-                        autoLogin: state.form.autoLogin,
-                        staySignedIn: state.form.staySignedIn,
-                    })
-                    .then(null, (res) => {
-                        errors(res.response);
-                    });
+                .register({
+                    data: state.form.body,
+                    remember: state.form.remember ? '{"name": "Default"}' : null,
+                    fetchUser: state.form.fetchUser,
+                    autoLogin: state.form.autoLogin,
+                    staySignedIn: state.form.staySignedIn,
+                })
+                .then(null, (res) => {
+                    errors(res.response);
+                });
             }
 
             function registerRedirect() {
                 auth
-                    .register({
-                        data: state.form.body,
-                        redirect: {name: 'user-account'},
-                        remember: state.form.remember ? '{"name": "Redirect"}' : null,
-                        fetchUser: state.form.fetchUser,
-                        autoLogin: state.form.autoLogin,
-                        staySignedIn: state.form.staySignedIn,
-                    })
-                    .then(null, (res) => {
-                        errors(res.response);
-                    });
+                .register({
+                    data: state.form.body,
+                    redirect: {name: 'user-account'},
+                    remember: state.form.remember ? '{"name": "Redirect"}' : null,
+                    fetchUser: state.form.fetchUser,
+                    autoLogin: state.form.autoLogin,
+                    staySignedIn: state.form.staySignedIn,
+                })
+                .then(null, (res) => {
+                    errors(res.response);
+                });
             }
 
             function registerThen() {
                 auth
-                    .register({
-                        data: state.form.body,
-                        fetchUser: state.form.fetchUser,
-                        autoLogin: state.form.autoLogin,
-                        staySignedIn: state.form.staySignedIn,
-                    })
-                    .then(() => {
-                        if (state.form.remember) {
-                            auth.remember(JSON.stringify({
-                                name: auth.user().first_name
-                            }));
-                        }
+                .register({
+                    data: state.form.body,
+                    fetchUser: state.form.fetchUser,
+                    autoLogin: state.form.autoLogin,
+                    staySignedIn: state.form.staySignedIn,
+                })
+                .then(() => {
+                    if (state.form.remember) {
+                        auth.remember(JSON.stringify({
+                            name: auth.user().first_name
+                        }));
+                    }
 
-                        router.push({name: 'user-account'});
-                    }, (res) => {
-                        errors(res.response);
-                    });
+                    router.push({name: 'user-account'});
+                }, (res) => {
+                    errors(res.response);
+                });
             }
 
             function registerVuex() {
                 store
-                    .dispatch('auth/register', {
-                        data: state.form.body,
-                        remember: state.form.remember,
-                        fetchUser: state.form.fetchUser,
-                        autoLogin: state.form.autoLogin,
-                        staySignedIn: state.form.staySignedIn,
-                    })
-                    .then(null, (res) => {
-                        errors(res.response);
-                    });
+                .dispatch('auth/register', {
+                    data: state.form.body,
+                    remember: state.form.remember,
+                    fetchUser: state.form.fetchUser,
+                    autoLogin: state.form.autoLogin,
+                    staySignedIn: state.form.staySignedIn,
+                })
+                .then(null, (res) => {
+                    errors(res.response);
+                });
             }
 
             return {
