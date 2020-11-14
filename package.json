@@ -1,5 +1,5 @@
 {
-    "version": "3.3.8",
+    "version": "4.0.0",
     "name": "@websanova/vue-auth",
     "description": "A simple light-weight authentication library for Vue.js",
     "keywords": ["vue", "vue.js", "vuejs", "plugin", "jwt", "auth", "authentication", "authorize", "authenticate", "bearer", "basic", "axios", "http", "api", "json", "web", "token"],
@@ -10,10 +10,10 @@
         "username": "websanova",
         "email": "rob@websanova.com"
     },
-    "main": "dist/v2/vue-auth.common.js",
-    "module": "dist/v2/vue-auth.esm.js",
-    "unpkg": "dist/v2/vue-auth.min.js",
-    "jsdelivr": "dist/v2/vue-auth.min.js",
+    "main": "dist/v3/vue-auth.common.js",
+    "module": "dist/v3/vue-auth.esm.js",
+    "unpkg": "dist/v3/vue-auth.min.js",
+    "jsdelivr": "dist/v3/vue-auth.min.js",
 
     "types": "types/index.d.ts",
     "repository": {

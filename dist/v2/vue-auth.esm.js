@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v3.3.8
+ * @websanova/vue-auth v4.0.0
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -344,9 +344,9 @@ var __defaultOptions = {
 };
 
 function _isAccess(role, key) {
-  if (__auth.$vm.authenticated === true) {
+  if (__auth.$vm.state.authenticated === true) {
     if (role) {
-      return compare(role, getProperty(__auth.$vm.data || {}, key || __auth.options.rolesKey));
+      return compare(role, getProperty(__auth.$vm.state.data || {}, key || __auth.options.rolesKey));
     }
 
     return true;
@@ -391,16 +391,16 @@ function _getRemember() {
 }
 
 function _setUser(data) {
-  __auth.$vm.data = data;
+  __auth.$vm.state.data = data;
 }
 
 function _setLoaded(loaded) {
-  __auth.$vm.loaded = loaded;
+  __auth.$vm.state.loaded = loaded;
 }
 
 function _setAuthenticated(authenticated) {
-  __auth.$vm.loaded = true;
-  __auth.$vm.authenticated = authenticated;
+  __auth.$vm.state.loaded = true;
+  __auth.$vm.state.authenticated = authenticated;
 }
 
 function _setStaySignedIn(staySignedIn) {
@@ -415,11 +415,11 @@ function _setRemember(val) {
   if (val) {
     set$2.call(__auth, __auth.options.rememberKey, val, false);
 
-    __auth.$vm.remember = val;
+    __auth.$vm.state.remember = val;
   } else {
     remove$2.call(__auth, __auth.options.rememberKey);
 
-    __auth.$vm.remember = null;
+    __auth.$vm.state.remember = null;
   }
 }
 
@@ -519,11 +519,11 @@ function _processInvalidToken(res, transition) {
 function _processRouterBeforeEach(cb) {
   var isTokenExpired = _isTokenExpired();
 
-  if (isTokenExpired && __auth.$vm.authenticated) {
+  if (isTokenExpired && __auth.$vm.state.authenticated) {
     _processLogout();
   }
 
-  if (!isTokenExpired && !__auth.$vm.loaded && __auth.options.refreshData.enabled) {
+  if (!isTokenExpired && !__auth.$vm.state.loaded && __auth.options.refreshData.enabled) {
     __auth.refresh().then(function () {
       _processAuthenticated(cb);
     });
@@ -535,7 +535,7 @@ function _processRouterBeforeEach(cb) {
 }
 
 function _processAuthenticated(cb) {
-  if (__auth.$vm.authenticated === null && get$2.call(__auth)) {
+  if (__auth.$vm.state.authenticated === null && get$2.call(__auth)) {
     if (__auth.options.fetchData.enabled) {
       __auth.fetch().then(cb, cb);
     } else {
@@ -565,7 +565,7 @@ function _processTransitionEach(transition, routeAuth, cb) {
       }
 
       cb.call(__auth, authRedirect);
-    } else if ((routeAuth.constructor === Array || isObject(routeAuth)) && !compare(routeAuth, __auth.$vm.data[__auth.options.rolesKey])) {
+    } else if ((routeAuth.constructor === Array || isObject(routeAuth)) && !compare(routeAuth, __auth.$vm.state.data[__auth.options.rolesKey])) {
       __auth.transitionRedirectType = 403;
 
       if (typeof forbiddenRedirect === 'function') {
@@ -574,7 +574,7 @@ function _processTransitionEach(transition, routeAuth, cb) {
 
       cb.call(__auth, forbiddenRedirect);
     } else {
-      __auth.$vm.redirect = __auth.transitionRedirectType ? {
+      __auth.$vm.state.redirect = __auth.transitionRedirectType ? {
         type: __auth.transitionRedirectType,
         from: __auth.transitionPrev,
         to: __auth.transitionThis
@@ -591,7 +591,7 @@ function _processTransitionEach(transition, routeAuth, cb) {
 
     cb.call(__auth, notFoundRedirect);
   } else {
-    __auth.$vm.redirect = __auth.transitionRedirectType ? {
+    __auth.$vm.state.redirect = __auth.transitionRedirectType ? {
       type: __auth.transitionRedirectType,
       from: __auth.transitionPrev,
       to: __auth.transitionThis
@@ -620,9 +620,9 @@ function _processLogout(redirect) {
 
   remove$2.call(__auth, __auth.options.staySignedInKey);
 
-  __auth.$vm.loaded = true;
-  __auth.$vm.authenticated = false;
-  __auth.$vm.data = null;
+  __auth.$vm.state.loaded = true;
+  __auth.$vm.state.authenticated = false;
+  __auth.$vm.state.data = null;
 
   _processRedirect(redirect);
 }
@@ -632,7 +632,7 @@ function _processImpersonate(defaultToken, redirect) {
 
   set$2.call(__auth, __auth.options.tokenDefaultKey, defaultToken, get$2.call(__auth, __auth.options.staySignedInKey) ? false : true);
 
-  __auth.$vm.impersonating = true;
+  __auth.$vm.state.impersonating = true;
 
   _processRedirect(redirect);
 }
@@ -640,7 +640,7 @@ function _processImpersonate(defaultToken, redirect) {
 function _processUnimpersonate(redirect) {
   remove$2.call(__auth, __auth.options.tokenImpersonateKey);
 
-  __auth.$vm.impersonating = false;
+  __auth.$vm.state.impersonating = false;
 
   _processRedirect(redirect);
 }
@@ -655,13 +655,15 @@ function _initVm(Vue) {
   __auth.$vm = new Vue({
     data: function () {
       return {
-        data: null,
-        loaded: false,
-        redirect: null,
-        authenticated: null,
-        // TODO: false ?
-        impersonating: undefined,
-        remember: undefined
+        state: {
+          data: null,
+          loaded: false,
+          redirect: null,
+          authenticated: null,
+          // TODO: false ?
+          impersonating: undefined,
+          remember: undefined
+        }
       };
     }
   });
@@ -729,14 +731,14 @@ function Auth(Vue, options) {
 }
 
 Auth.prototype.ready = function () {
-  return __auth.$vm.loaded;
+  return __auth.$vm.state.loaded;
 };
 
 Auth.prototype.load = function () {
   return new Promise(function (resolve) {
     var timer = null;
     timer = setInterval(function () {
-      if (__auth.$vm.loaded) {
+      if (__auth.$vm.state.loaded) {
         clearInterval(timer);
         resolve();
       }
@@ -745,7 +747,7 @@ Auth.prototype.load = function () {
 };
 
 Auth.prototype.redirect = function () {
-  return __auth.$vm.redirect;
+  return __auth.$vm.state.redirect;
 };
 
 Auth.prototype.user = function (data) {
@@ -753,7 +755,7 @@ Auth.prototype.user = function (data) {
     _processFetch(data);
   }
 
-  return __auth.$vm.data;
+  return __auth.$vm.state.data;
 };
 
 Auth.prototype.check = function (role, key) {
@@ -763,11 +765,11 @@ Auth.prototype.check = function (role, key) {
 Auth.prototype.impersonating = function () {
   var impersonating = get$2.call(__auth, __auth.options.tokenImpersonateKey) ? true : false;
 
-  if (__auth.$vm.impersonating === undefined) {
-    __auth.$vm.impersonating = impersonating;
+  if (__auth.$vm.state.impersonating === undefined) {
+    __auth.$vm.state.impersonating = impersonating;
   }
 
-  return __auth.$vm.impersonating;
+  return __auth.$vm.state.impersonating;
 };
 
 Auth.prototype.token = function (name, token, expires) {
@@ -853,11 +855,11 @@ Auth.prototype.remember = function (val) {
 
   var remember = _getRemember();
 
-  if (__auth.$vm.remember === undefined) {
-    __auth.$vm.remember = remember;
+  if (__auth.$vm.state.remember === undefined) {
+    __auth.$vm.state.remember = remember;
   }
 
-  return __auth.$vm.remember;
+  return __auth.$vm.state.remember;
 };
 
 Auth.prototype.unremember = function () {
