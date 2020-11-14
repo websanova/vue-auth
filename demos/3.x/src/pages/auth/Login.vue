@@ -67,8 +67,8 @@
                     Default
                 </button>
             </li><li>
-                <button @click="loginVuex">
-                    Vuex
+                <button @click="loginComp">
+                    Comp
                 </button>
             </li>
         </ul>
@@ -81,12 +81,14 @@
     import {useStore } from 'vuex';
     import {useRouter} from 'vue-router';
     import {useAuth  } from '@websanova/vue-auth/src/v3.js';
+    import useAuthComp from '../../../src/composables/useAuthComp.js';
     
     export default {
         setup() {
-            const auth   = useAuth();
-            const store  = useStore();
-            const router = useRouter();
+            const auth     = useAuth();
+            const store    = useStore();
+            const router   = useRouter();
+            const authComp = useAuthComp();
 
             const state = reactive({
                 form: {
@@ -158,10 +160,9 @@
                 });
             }
 
-            function loginVuex() {
-                store
-                .dispatch('auth/login', {
-                    data: state.form.body,
+            function loginComp() {
+                authComp.login({
+                    body: state.form.body,
                     remember: state.form.remember,
                     fetchUser: state.form.fetchUser,
                     staySignedIn: state.form.staySignedIn,
@@ -198,7 +199,7 @@
             return {
                 state,
                 loginThen,
-                loginVuex,
+                loginComp,
                 loginManual,
                 loginDefault,
                 loginRedirect,

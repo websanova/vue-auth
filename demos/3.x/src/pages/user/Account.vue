@@ -18,9 +18,9 @@
                             <span v-else>Default</span>
                         </button>
                     </li><li>
-                        <button @click="fetchVuex">
+                        <button @click="fetchComp">
                             <span v-if="state.form.status ==='loading'" class="spinner" />
-                            <span v-else>Vuex</span>
+                            <span v-else>Comp</span>
                         </button>
                     </li>
                 </ul>
@@ -42,9 +42,9 @@
                             <span v-else>Default</span>
                         </button>
                     </li><li>
-                        <button @click="refreshVuex">
+                        <button @click="refreshComp">
                             <span v-if="state.form.status ==='loading'" class="spinner" />
-                            <span v-else>Vuex</span>
+                            <span v-else>Comp</span>
                         </button>
                     </li>
                 </ul>
@@ -159,11 +159,13 @@
     import {useStore     } from 'vuex';
     import axios           from 'axios';
     import {useAuth      } from '@websanova/vue-auth/src/v3.js';
+    import useAuthComp     from '../../../src/composables/useAuthComp.js';
 
     export default {
         setup() {
-            const auth  = useAuth();
-            const store = useStore();
+            const auth     = useAuth();
+            const store    = useStore();
+            const authComp = useAuthComp();
 
             const state = reactive({
                 form: {
@@ -235,12 +237,10 @@
                 .then(complete, error);
             }
 
-            function fetchVuex() {
+            function fetchComp() {
                 loading();
                 
-                store
-                .dispatch('auth/fetch')
-                .then(complete, error);
+                authComp.fetch().then(complete, error);
             }
 
             function refreshDefault() {
@@ -251,20 +251,18 @@
                 .then(complete, error);
             }
 
-            function refreshVuex() {
+            function refreshComp() {
                 loading();
                 
-                store
-                .dispatch('auth/refresh')
-                .then(complete, error);
+                authComp.refresh().then(complete, error);
             }
 
             return {
                 state,
-                fetchVuex,
+                fetchComp,
                 fetchManual,
                 fetchDefault,
-                refreshVuex,
+                refreshComp,
                 refreshDefault,
             };
         },

@@ -35,9 +35,9 @@
                             </button>
                         </li><li>
                             <button
-                                @click="impersonateVuex(user)"
+                                @click="impersonateComp(user)"
                             >
-                                Vuex
+                                Comp
                             </button>
                         </li>
                     </ul>
@@ -53,11 +53,13 @@
     import {useStore } from 'vuex';
     import axios       from 'axios';
     import {useAuth  } from '@websanova/vue-auth/src/v3.js';
+    import useAuthComp from '../../../src/composables/useAuthComp.js';
 
     export default {
         setup() {
-            const auth   = useAuth();
-            const store  = useStore();
+            const auth     = useAuth();
+            const store    = useStore();
+            const authComp = useAuthComp();
 
             const state = reactive({
                 form: {
@@ -91,16 +93,13 @@
                 });
             }
 
-            function impersonateVuex(user) {
-                store
-                .dispatch('auth/impersonate', {
-                    user: user
-                });
+            function impersonateComp(user) {
+                authComp.impersonate({user: user});
             }
 
             return {
                 state,
-                impersonateVuex,
+                impersonateComp,
                 impersonateDefault,
             }
         }

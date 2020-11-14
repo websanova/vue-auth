@@ -18,8 +18,8 @@
                     Default
                 </button>
             </li><li>
-                <button @click="logoutVuex">
-                    Vuex
+                <button @click="logoutComp">
+                    Comp
                 </button>
             </li>
         </ul>
@@ -30,12 +30,14 @@
     import {useStore } from 'vuex';
     import {useRouter} from 'vue-router';
     import {useAuth  } from '@websanova/vue-auth/src/v3.js';
+    import useAuthComp from '../../../src/composables/useAuthComp.js';
 
     export default {
         setup() {
-            const auth   = useAuth();
-            const store  = useStore();
-            const router = useRouter();
+            const auth     = useAuth();
+            const store    = useStore();
+            const router   = useRouter();
+            const authComp = useAuthComp();
 
             function logoutDefault() {
                 auth.logout();
@@ -58,8 +60,8 @@
                     });
             }
 
-            function logoutVuex() {
-                store.dispatch('auth/logout');
+            function logoutComp() {
+                authComp.logout();
             }
             
             function logoutRequest() {
@@ -73,7 +75,7 @@
                 logoutDefault,
                 logoutRedirect,
                 logoutThen,
-                logoutVuex,
+                logoutComp,
                 logoutRequest,
             }
         }
