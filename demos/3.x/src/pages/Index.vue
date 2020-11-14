@@ -81,7 +81,11 @@
 
         <hr />
 
-        <router-view />
+        <div
+            v-if="state.loaded && state.readyOne && state.readyTwo"
+        >
+            <router-view />
+        </div>
     </el-layout>
 </template>
 
