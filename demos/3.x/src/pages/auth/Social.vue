@@ -1,5 +1,5 @@
 <template>
     <div>
-        <router-view />
+        Social
     </div>
 </template>

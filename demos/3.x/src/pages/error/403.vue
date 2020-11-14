@@ -1,5 +1,5 @@
 <template>
     <div>
-        <router-view />
+        403 Forbidden
     </div>
 </template>

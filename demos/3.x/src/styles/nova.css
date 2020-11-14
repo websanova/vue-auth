@@ -199,6 +199,14 @@ ul.spacer-pipe > li:not(:last-child)::after {
     max-width: 600px
 }
 
+.container-xs {
+    max-width: 200px
+}
+
+.container-sm {
+    max-width: 400px
+}
+
 .container-lg {
     max-width: 800px
 }
@@ -259,6 +267,18 @@ button {
 .btn-sm {
     font-size: 0.6em;
     padding: 2px 6px;
+}
+
+/**************************************
+ * INPUT
+ **************************************/
+.input-group {
+    margin-bottom: 10px;
+}
+
+.input-group > input[type=text],
+.input-group > input[type=password] {
+    width: 100%;
 }
 
 

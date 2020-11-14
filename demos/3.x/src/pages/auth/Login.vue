@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container container-sm">
         <div class="input-group">
             <input
                 v-model="state.form.body.email"
@@ -10,8 +10,6 @@
             <div>{{ state.form.errors.email }}</div>
         </div>
 
-        <br/>
-
         <div class="input-group">
             <input
                 v-model="state.form.body.password"
@@ -21,8 +19,6 @@
 
             <div>{{ state.form.errors.password }}</div>
         </div>
-
-        <br/>
 
         <div class="input-group">
             <input
@@ -35,8 +31,6 @@
             <div />
         </div>
 
-        <br/>
-
         <div class="input-group">
             <input
                 v-model="state.form.staySignedIn"
@@ -47,8 +41,6 @@
 
             <div />
         </div>
-
-        <br/>
         
         <div class="input-group">
             <input
@@ -60,28 +52,30 @@
 
             <div />
         </div>
-        
-        <br/>
 
-        <button @click="loginManual">
-            Manual
-        </button>
-
-        <button @click="loginThen">
-            Then
-        </button>
-
-        <button @click="loginRedirect">
-            Redirect
-        </button>
-
-        <button @click="loginDefault">
-            Default
-        </button>
-
-        <button @click="loginVuex">
-            Vuex
-        </button>
+        <ul class="spacer">
+            <li>
+                <button @click="loginManual">
+                    Manual
+                </button>
+            </li><li>
+                <button @click="loginThen">
+                    Then
+                </button>
+            </li><li>
+                <button @click="loginRedirect">
+                    Redirect
+                </button>
+            </li><li>
+                <button @click="loginDefault">
+                    Default
+                </button>
+            </li><li>
+                <button @click="loginVuex">
+                    Vuex
+                </button>
+            </li>
+        </ul>
     </div>
 </template>
 

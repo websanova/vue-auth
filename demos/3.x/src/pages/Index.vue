@@ -4,14 +4,13 @@
         package="vue-auth"
         :links="state.links"
     >
-
-        <div class="text-danger">
-            NOTE: This demo uses a public API to simulate realistic flow. The database is reset every 30 minutes and otherwise reveals no sensitive data such as emails or last names.
-
-            <br/>
-
-            NOTE: Would be nice to get some generic node (or deno?) service up for better/safer local testing. If you anyone can contribute, would be greatly appreciated :-) 
-
+        <div class="media text-danger">
+            <div class="media-tight media-middle px-2">
+                NOTE:
+            </div>
+            <div>
+                This demo uses a public API to simulate realistic flow, don't put any real info in there when testing :-)
+            </div>
         </div>
 
         <hr />
@@ -143,53 +142,33 @@
 
                     links.push({to: {name: 'site-home'}, text: 'home'});
 
-                    if (state.loaded && !auth.check()) {
-                        links.push({to: {name: 'auth-login'}, text: 'login'});
-                        links.push({to: {name: 'auth-register'}, text: 'register'});
-                        // links.push({to: {name: 'auth-social'}, text: 'social'});
-                        // links.push({to: {name: 'site-users'}, text: 'users'});
+                    if (state.loaded) {
+                        if (!auth.check()) {
+                            links.push({to: {name: 'auth-login'}, text: 'login'});
+                            links.push({to: {name: 'auth-register'}, text: 'register'});
+                            links.push({to: {name: 'auth-social'}, text: 'social'});
+                            links.push({to: {name: 'site-users'}, text: 'users'});
+                        }
+
+                        if (auth.check('user')) {
+                            links.push({to: {name: 'user-users'}, text: 'users'});
+                        }
+
+                        if (auth.check('admin')) {
+                            links.push({to: {name: 'admin-landing'}, text: 'admin'});
+                        }
+
+                        if (auth.impersonating()) {
+                            links.push({to: {name: 'user-unimpersonate'}, text: 'unimpersonate'});
+                        }
+
+                        if (auth.check()) {
+                            links.push({to: {name: 'user-account'}, text: 'account'});
+                            links.push({to: {name: 'user-logout'}, text: 'logout'});
+                        }
                     }
 
-
                     return links;
-
-                    // <router-link
-                    //     :to="{name: 'site-home'}"
-                    // >
-                    //     home
-                    // </router-link>
-
-                    // <span
-                    //     style="float:right;"
-                    // >
-                    //     <span
-                    //         v-show="!$auth.check()"
-                    //     >
-                    //         <router-link :to="{name: 'auth-login'}">login</router-link> |
-                    //         <router-link :to="{name: 'auth-register'}">register</router-link> |
-                    //         <router-link :to="{name: 'auth-social'}">social</router-link> |
-                    //         <router-link :to="{name: 'site-users'}">users</router-link>
-                    //     </span>
-
-                    //     <span
-                    //         v-show="$auth.check()"
-                    //     >
-                    //         <span v-show="$auth.check('user')">
-                    //             <router-link :to="{name: 'user-users'}">users</router-link> |
-                    //         </span>
-
-                    //         <span v-show="$auth.check('admin')">
-                    //             <router-link :to="{name: 'admin-landing'}">admin</router-link> |
-                    //         </span>
-
-                    //         <span v-show="$auth.impersonating()">
-                    //             <router-link :to="{name: 'user-unimpersonate'}">unimpersonate</router-link> |
-                    //         </span>
-                            
-                    //         <router-link :to="{name: 'user-account'}">account</router-link> |
-                    //         <router-link :to="{name: 'user-logout'}">logout</router-link>
-                    //     </span>
-                    // </span>
                 }),
             });
 
