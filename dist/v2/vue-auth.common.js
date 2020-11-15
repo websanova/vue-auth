@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.0.1
+ * @websanova/vue-auth v4.0.2
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -806,6 +806,12 @@ Auth.prototype.refresh = function (data) {
 
 Auth.prototype.register = function (data) {
   var registerData = extend(__auth.options.registerData, data);
+
+  if (registerData.autoLogin !== true) {
+    _setRemember(registerData.remember);
+
+    _setStaySignedIn(registerData.staySignedIn);
+  }
 
   return new Promise(function (resolve, reject) {
     __auth.drivers.http.http.call(__auth, registerData).then(function (res) {
