@@ -545,6 +545,11 @@ Auth.prototype.refresh = function (data) {
 Auth.prototype.register = function (data) {
     var registerData = __utils.extend(__auth.options.registerData, data);
 
+    if (registerData.autoLogin !== true) {
+        _setRemember(registerData.remember);
+        _setStaySignedIn(registerData.staySignedIn);
+    }
+
     return new Promise(function(resolve, reject) {
         __auth.drivers.http.http
             .call(__auth, registerData)
