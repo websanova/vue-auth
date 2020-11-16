@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.0.2
+ * @websanova/vue-auth v4.0.3
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -676,6 +676,7 @@ function _initVm(Vue) {
 }
 
 function _initDriverCheck() {
+  var msg;
   var i, ii;
   var drivers = ['auth', 'http', 'router'];
 
@@ -685,8 +686,8 @@ function _initDriverCheck() {
       return false;
     }
 
-    if (__auth.drivers[drivers[i]]._init) {
-      msg = __auth.drivers[drivers[i]]._init.call(__auth);
+    if (__auth.drivers[drivers[i]].init) {
+      msg = __auth.drivers[drivers[i]].init.call(__auth);
 
       if (msg) {
         console.error('Error (@websanova/vue-auth): ' + msg);
