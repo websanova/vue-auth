@@ -389,8 +389,8 @@ function _initVm(Vue) {
 }
 
 function _initDriverCheck() {
+    var msg;
     var i, ii;
-
     var drivers = ['auth', 'http', 'router'];
 
     for (i = 0, ii = drivers.length; i < ii; i++) {
@@ -400,8 +400,8 @@ function _initDriverCheck() {
             return false;
         }
 
-        if (__auth.drivers[drivers[i]]._init) {
-            msg = __auth.drivers[drivers[i]]._init.call(__auth);
+        if (__auth.drivers[drivers[i]].init) {
+            msg = __auth.drivers[drivers[i]].init.call(__auth);
 
             if (msg) {
                 console.error('Error (@websanova/vue-auth): ' + msg);
