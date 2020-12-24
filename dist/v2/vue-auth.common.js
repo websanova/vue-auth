@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.0.3
+ * @websanova/vue-auth v4.1.0
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -967,7 +967,7 @@ Auth.prototype.oauth2 = function (type, data) {
     params += '&' + key + '=' + encodeURIComponent(data.params[key]);
   }
 
-  window.location = data.url + '?' + params.substring();
+  window.open(data.url + '?' + params.substring(), (data.window || {}).name || '_self', (data.window || {}).specs || {}, (data.window || {}).replace !== false);
 };
 
 Auth.prototype.enableImpersonate = function () {
