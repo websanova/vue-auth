@@ -28,6 +28,10 @@ function processToken(action, key, token, expires) {
     }
 
     for (; i < ii; i++) {
+        if (typeof(ts[i][action]) === 'function') {
+            return ts[i][action].apply(this, args);
+        }
+        
         if (
             ts[i] === 'storage' &&
             __utils.isLocalStorage() &&
