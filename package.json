@@ -1,5 +1,5 @@
 {
-    "version": "4.1.0",
+    "version": "4.1.1",
     "name": "@websanova/vue-auth",
     "description": "A simple light-weight authentication library for Vue.js",
     "keywords": ["vue", "vue.js", "vuejs", "plugin", "jwt", "auth", "authentication", "authorize", "authenticate", "bearer", "basic", "axios", "http", "api", "json", "web", "token"],

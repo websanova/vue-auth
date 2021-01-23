@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.1.0
+ * @websanova/vue-auth v4.1.1
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
