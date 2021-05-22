@@ -279,7 +279,8 @@ function _processAuthenticated(cb) {
 function _processTransitionEach(transition, routeAuth, cb) {
     var authRedirect = (routeAuth || '').redirect || __auth.options.authRedirect,
         forbiddenRedirect = (routeAuth || '').forbiddenRedirect || (routeAuth || '').redirect || __auth.options.forbiddenRedirect,
-        notFoundRedirect = (routeAuth || '').notFoundRedirect || (routeAuth || '').redirect || __auth.options.notFoundRedirect;
+        notFoundRedirect = (routeAuth || '').notFoundRedirect || (routeAuth || '').redirect || __auth.options.notFoundRedirect,
+        rolesKey = (routeAuth || '').rolesKey || __auth.options.rolesKey;
 
     routeAuth = __utils.toArray((routeAuth || '').roles !== undefined ? routeAuth.roles : routeAuth);
 
@@ -293,7 +294,7 @@ function _processTransitionEach(transition, routeAuth, cb) {
 
             cb.call(__auth, authRedirect);
         }
-        else if ((routeAuth.constructor === Array || __utils.isObject(routeAuth)) && ! __utils.compare(routeAuth, __auth.$vm.state.data[__auth.options.rolesKey])) {
+        else if ((routeAuth.constructor === Array || __utils.isObject(routeAuth)) && ! __utils.compare(routeAuth, __auth.$vm.state.data[rolesKey])) {
             __auth.transitionRedirectType = 403;
 
             if (typeof forbiddenRedirect === 'function') {

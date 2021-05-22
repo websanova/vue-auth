@@ -51,7 +51,10 @@ Vue.router = new VueRouter({
         path: '/user',
         component: loadView('user/Index'),
         meta: {
-            auth: true
+            auth: {
+                roles: ['user', 'admin'],
+                rolesKey: 'type'
+            }
         },
         children: [{
             path: '',
