@@ -22,6 +22,7 @@ export default function useAuthComp() {
                 data: data.body,
                 remember: data.remember,
                 staySignedIn: data.staySignedIn,
+                fetchUser: data.fetchUser,
             })
             .then((res) => {
                 if (data.remember) {
