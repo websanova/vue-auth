@@ -105,10 +105,8 @@ function isCookieStorage() {
     return true;
 }
 
-function getProperty (obj, desc, res) {
+function getProperty (obj, desc) {
     var arr = desc.split('.');
-
-    res = res || [];
 
     while (arr.length) {
         obj = obj[arr.shift()];
