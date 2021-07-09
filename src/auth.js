@@ -294,7 +294,7 @@ function _processTransitionEach(transition, routeAuth, cb) {
 
             cb.call(__auth, authRedirect);
         }
-        else if ((routeAuth.constructor === Array || __utils.isObject(routeAuth)) && ! __utils.compare(routeAuth, __auth.$vm.state.data[rolesKey])) {
+        else if ((routeAuth.constructor === Array || __utils.isObject(routeAuth)) && ! __utils.compare(routeAuth, __utils.getProperty((__auth.$vm.state.data || {}), rolesKey))) {
             __auth.transitionRedirectType = 403;
 
             if (typeof forbiddenRedirect === 'function') {
