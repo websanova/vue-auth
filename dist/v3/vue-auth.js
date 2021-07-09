@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.1.3
+ * @websanova/vue-auth v4.1.4
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -115,9 +115,8 @@
       return true;
     }
 
-    function getProperty(obj, desc, res) {
+    function getProperty(obj, desc) {
       var arr = desc.split('.');
-      res = res || [];
 
       while (arr.length) {
         obj = obj[arr.shift()];
@@ -576,7 +575,7 @@
           }
 
           cb.call(__auth, authRedirect);
-        } else if ((routeAuth.constructor === Array || isObject(routeAuth)) && !compare(routeAuth, __auth.$vm.state.data[rolesKey])) {
+        } else if ((routeAuth.constructor === Array || isObject(routeAuth)) && !compare(routeAuth, getProperty(__auth.$vm.state.data || {}, rolesKey))) {
           __auth.transitionRedirectType = 403;
 
           if (typeof forbiddenRedirect === 'function') {
