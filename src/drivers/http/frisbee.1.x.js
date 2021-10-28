@@ -2,21 +2,21 @@ export default {
 
     init: function () {
         if ( ! this.plugins.http) {
-            return 'drivers/http/firsbee.js: http plugin has not been set.'
+            return 'drivers/http/frisbee.js: http plugin has not been set.'
         }
     },
 
     interceptor: function (req, res) {
         var _this = this;
 
-        this.plugins.http.interceptors.register({
+        this.plugins.http.interceptor.register({
             request: function (path, options) {
                 req.call(_this, options);
                 
                 return [path, options];
             },
             requestError: err => {
-                req.call(_this, error.request);
+                req.call(_this, err.request);
                 
                 return Promise.reject(err);
             },
@@ -26,7 +26,7 @@ export default {
                 return response;
             },
             responseError: err => {
-                res.call(_this, error.response);
+                res.call(_this, err.response);
                 
                 return Promise.reject(err);
             }
@@ -43,8 +43,8 @@ export default {
         return res.body || {};
     },
 
-    http: data => {
-        return this.plugins.http(data);
+    http: function (data) {
+        return this.plugins.http[data.method.toLowerCase()](data.url, data);
     },
 
     getHeaders: res => {
