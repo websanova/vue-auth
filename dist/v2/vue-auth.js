@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.1.4
+ * @websanova/vue-auth v4.1.5
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -135,16 +135,16 @@
           continue;
         } // If null and an option method exists such ex: "getCookieDomain".
         else if (params[i] === null) {
-            if (this.options['getCookie' + i]) {
-              cookie += ' ' + i + '=' + this.options['getCookie' + i]() + ';';
-            }
-          } // If true just set the flag as in "Secure;".
-          else if (params[i] === true) {
-              cookie += ' ' + i + ';';
-            } // Default key/val.
-            else {
-                cookie += ' ' + i + '=' + params[i] + ';';
-              }
+          if (this.options['getCookie' + i]) {
+            cookie += ' ' + i + '=' + this.options['getCookie' + i]() + ';';
+          }
+        } // If true just set the flag as in "Secure;".
+        else if (params[i] === true) {
+          cookie += ' ' + i + ';';
+        } // Default key/val.
+        else {
+          cookie += ' ' + i + '=' + params[i] + ';';
+        }
       }
 
       document.cookie = cookie;
