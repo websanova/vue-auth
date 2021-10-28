@@ -49,6 +49,9 @@ const files = [{
     input: 'src/drivers/http/axios.1.x.js',
     name: 'drivers/http/axios.1.x'
 }, {
+    input: 'src/drivers/http/frisbee.1.x.js',
+    name: 'drivers/http/frisbee.1.x'
+}, {
     input: 'src/drivers/http/vue-resource.1.x.js',
     name: 'drivers/http/vue-resource.1.x'
 }, {
