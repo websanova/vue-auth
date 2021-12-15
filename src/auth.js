@@ -713,7 +713,7 @@ Auth.prototype.unimpersonate = function (data) {
 
 Auth.prototype.oauth2 = function (type, data) {
     var key,
-        params = '';
+        params = [];
 
     if (data.code) {
         try {
@@ -740,12 +740,12 @@ Auth.prototype.oauth2 = function (type, data) {
     data.params.state        = JSON.stringify(data.params.state || {});
     data.params.redirect_uri = _parseRedirectUri(data.params.redirect_uri);
 
-    for (key in data.params) {
-        params += '&' + key + '=' + encodeURIComponent(data.params[key]);
-    }
+    Object.keys(data.params).forEach((key) => {
+        params.push(key + '=' + encodeURIComponent(data.params[key]));
+    });
 
     window.open(
-        data.url + '?' + params.substring(),
+        data.url + '?' + params.join('&'),
         (data.window || {}).name || '_self',
         (data.window || {}).specs || {},
         (data.window || {}).replace !== false
