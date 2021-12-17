@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.1.7
+ * @websanova/vue-auth v4.1.8
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -486,21 +486,7 @@ function _parseResponseIntercept(res, req) {
 }
 
 function _processInvalidToken(res, transition) {
-  var i,
-      auth,
-      query = '',
-      redirect = transition && transition.path; // Make sure we also attach any existing
-  // query parameters on the path.
-
-  if (redirect && transition.query) {
-    for (i in transition.query) {
-      if (transition.query[i]) {
-        query += '&' + i + '=' + transition.query[i];
-      }
-    }
-
-    redirect += '?' + query.substring(1);
-  }
+  var auth, redirect;
 
   if (!__auth.drivers.http.invalidToken || !__auth.drivers.http.invalidToken.call(__auth, res)) {
     return;
@@ -514,9 +500,7 @@ function _processInvalidToken(res, transition) {
     redirect = auth.redirect || __auth.options.authRedirect;
   }
 
-  _processLogout({
-    redirect: redirect
-  });
+  _processLogout(redirect);
 }
 
 function _processRouterBeforeEach(cb) {
