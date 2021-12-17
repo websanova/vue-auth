@@ -226,7 +226,7 @@ function _processInvalidToken(res, transition) {
         redirect = auth.redirect || __auth.options.authRedirect;
     }
 
-    _processLogout({redirect: redirect});
+    _processLogout(redirect);
 }
 
 function _processRouterBeforeEach(cb) {
