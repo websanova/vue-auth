@@ -234,6 +234,16 @@ interface VueAuth extends PluginObject<any> {
     enableImpersonate(): void;
 }
 
+interface VueAuthCreateOptions {
+    plugins: any,
+    drivers: any,
+    options?: any,
+}
+
+declare function createAuth(options: VueAuthCreateOptions): VueAuth & { install: (app: unknown) => void };
+
+declare function useAuth(key?: string): VueAuth;
+
 declare module 'vue/types/vue' {
     interface Vue {
         $auth: VueAuth;
