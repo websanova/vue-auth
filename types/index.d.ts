@@ -52,10 +52,15 @@ interface LogoutOptions extends RequestOptions {
 
 interface Oauth2Options extends RequestOptions {
     code?: boolean;
-    provider: string;
+    provider?: string;
     redirect?: Redirect;
     staySignedIn?: boolean;
     remember?: string;
+    window?: {
+        name?: string,
+        specs?: any,
+        replace?: boolean,
+    };
 }
 
 interface ImpersonateOptions extends RequestOptions {
