@@ -56,6 +56,7 @@ interface Oauth2Options extends RequestOptions {
     redirect?: Redirect;
     staySignedIn?: boolean;
     remember?: string;
+    fetchUser?: boolean;
     window?: {
         name?: string,
         specs?: any,
@@ -221,6 +222,7 @@ interface VueAuth extends PluginObject<any> {
      * @return {Promise}
      */
     oauth2(options: Oauth2Options): Promise<any>;
+    oauth2(provider: string, options: Oauth2Options): Promise<any>;
 
     /**
      * Disable impersonating mode.
