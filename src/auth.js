@@ -234,6 +234,8 @@ function _processRouterBeforeEach(cb) {
             .refresh()
             .then(function() {
                 _processAuthenticated(cb);
+            }, function() {
+                _processAuthenticated(cb);
             });
 
         return;
