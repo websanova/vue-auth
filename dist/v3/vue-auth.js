@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.1.11
+ * @websanova/vue-auth v4.1.12
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -518,6 +518,8 @@
 
       if (!isTokenExpired && !__auth.$vm.state.loaded && __auth.options.refreshData.enabled) {
         __auth.refresh().then(function () {
+          _processAuthenticated(cb);
+        }, function () {
           _processAuthenticated(cb);
         });
 
