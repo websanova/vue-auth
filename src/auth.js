@@ -292,8 +292,10 @@ function _processTransitionEach(transition, routeAuth, cb) {
             cb.call(__auth, forbiddenRedirect);
         }
         else {
-            __auth.$vm.state.redirect = __auth.transitionRedirectType ? {type: __auth.transitionRedirectType, from: __auth.transitionPrev, to: __auth.transitionThis} : null;
-            __auth.transitionRedirectType = null;
+            if ((__auth.transitionPrev || {}).path !== __auth.transitionThis.path) {
+                __auth.$vm.state.redirect = __auth.transitionRedirectType ? {type: __auth.transitionRedirectType, from: __auth.transitionPrev, to: __auth.transitionThis} : null;
+                __auth.transitionRedirectType = null;
+            }
 
             return cb();
         }
@@ -308,8 +310,10 @@ function _processTransitionEach(transition, routeAuth, cb) {
         cb.call(__auth, notFoundRedirect);
     }
     else {
-        __auth.$vm.state.redirect = __auth.transitionRedirectType ? {type: __auth.transitionRedirectType, from: __auth.transitionPrev, to: __auth.transitionThis} : null;
-        __auth.transitionRedirectType = null;
+        if ((__auth.transitionPrev || {}).path !== __auth.transitionThis.path) {
+            __auth.$vm.state.redirect = __auth.transitionRedirectType ? {type: __auth.transitionRedirectType, from: __auth.transitionPrev, to: __auth.transitionThis} : null;
+            __auth.transitionRedirectType = null;
+        }
 
         return cb();
     }
