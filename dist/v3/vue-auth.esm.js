@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.1.12
+ * @websanova/vue-auth v4.1.13
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -566,12 +566,15 @@ function _processTransitionEach(transition, routeAuth, cb) {
 
       cb.call(__auth, forbiddenRedirect);
     } else {
-      __auth.$vm.state.redirect = __auth.transitionRedirectType ? {
-        type: __auth.transitionRedirectType,
-        from: __auth.transitionPrev,
-        to: __auth.transitionThis
-      } : null;
-      __auth.transitionRedirectType = null;
+      if ((__auth.transitionPrev || {}).path !== __auth.transitionThis.path) {
+        __auth.$vm.state.redirect = __auth.transitionRedirectType ? {
+          type: __auth.transitionRedirectType,
+          from: __auth.transitionPrev,
+          to: __auth.transitionThis
+        } : null;
+        __auth.transitionRedirectType = null;
+      }
+
       return cb();
     }
   } else if (routeAuth === false && __auth.check()) {
@@ -583,12 +586,15 @@ function _processTransitionEach(transition, routeAuth, cb) {
 
     cb.call(__auth, notFoundRedirect);
   } else {
-    __auth.$vm.state.redirect = __auth.transitionRedirectType ? {
-      type: __auth.transitionRedirectType,
-      from: __auth.transitionPrev,
-      to: __auth.transitionThis
-    } : null;
-    __auth.transitionRedirectType = null;
+    if ((__auth.transitionPrev || {}).path !== __auth.transitionThis.path) {
+      __auth.$vm.state.redirect = __auth.transitionRedirectType ? {
+        type: __auth.transitionRedirectType,
+        from: __auth.transitionPrev,
+        to: __auth.transitionThis
+      } : null;
+      __auth.transitionRedirectType = null;
+    }
+
     return cb();
   }
 }
