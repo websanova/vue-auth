@@ -20,7 +20,7 @@
         "type": "git",
         "url": "https://github.com/websanova/vue-auth"
     },
-    "licenses": "MIT, GPL",
+    "license": "(MIT OR GPL)",
     "scripts": {
         "clear": "rm -rf dist/*",
         "build": "npm run clear; node build/build.js",
