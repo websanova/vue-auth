@@ -18,7 +18,6 @@
       },
       interceptor: function (req, res) {
         var _this = this;
-
         if (req) {
           this.plugins.http.interceptors.request.use(function (request) {
             req.call(_this, request);
@@ -28,7 +27,6 @@
             return Promise.reject(error);
           });
         }
-
         if (res) {
           this.plugins.http.interceptors.response.use(function (response) {
             res.call(_this, response);
@@ -37,7 +35,6 @@
             if (error && error.response) {
               res.call(_this, error.response);
             }
-
             return Promise.reject(error);
           });
         }
@@ -57,7 +54,7 @@
         return res.headers;
       },
       setHeaders: function (req, headers) {
-        req.headers.common = Object.assign({}, req.headers.common, headers);
+        req.headers = Object.assign({}, req.headers, headers);
       }
     };
 
