@@ -14,7 +14,6 @@ var frisbee_1_x = {
   },
   interceptor: function (req, res) {
     var _this = this;
-
     this.plugins.http.interceptor.register({
       request: function (path, options) {
         req.call(_this, options);

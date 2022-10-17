@@ -18,12 +18,10 @@
       },
       interceptor: function (req, res) {
         var _this = this;
-
         this.plugins.http.interceptors.push(function (request, next) {
           if (req) {
             req.call(_this, request);
           }
-
           next(function (response) {
             if (res) {
               res.call(_this, response, request);
@@ -44,18 +42,15 @@
       },
       getHeaders: function (res) {
         var i,
-            data = {},
-            headers = res.headers.map;
-
+          data = {},
+          headers = res.headers.map;
         for (i in headers) {
           data[i] = headers[i][0];
         }
-
         return data;
       },
       setHeaders: function (req, headers) {
         var i;
-
         for (i in headers) {
           req.headers.set(i, headers[i]);
         }

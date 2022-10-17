@@ -12,11 +12,11 @@ export default {
         if (req) {
             this.plugins.http.interceptors.request.use(function (request) {
                 req.call(_this, request);
-                
+
                 return request;
             }, function (error) {
                 req.call(_this, error.request);
-            
+
                 return Promise.reject(error);
             });
         }
@@ -24,7 +24,7 @@ export default {
         if (res) {
             this.plugins.http.interceptors.response.use(function (response) {
                 res.call(_this, response);
-        
+
                 return response;
             }, function (error) {
                 if (error && error.response) {
@@ -55,6 +55,6 @@ export default {
     },
 
     setHeaders: function (req, headers) {
-        req.headers.common = Object.assign({}, req.headers.common, headers);
+        req.headers = Object.assign({}, req.headers, headers);
     }
 }

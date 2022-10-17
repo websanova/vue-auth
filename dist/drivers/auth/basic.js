@@ -18,7 +18,7 @@
       },
       response: function (res) {
         var headers = this.drivers.http.getHeaders.call(this, res),
-            token = headers.Authorization || headers.authorization;
+          token = headers.Authorization || headers.authorization;
         return token;
       }
     };

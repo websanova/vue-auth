@@ -14,7 +14,6 @@ var vueRouter_2_x = {
   },
   beforeEach: function (routerBeforeEach, transitionEach, setTransitions, getAuthMeta) {
     var _this = this;
-
     this.plugins.router.beforeEach(function (transition, location, next) {
       setTransitions(transition);
       routerBeforeEach.call(_this, function () {
@@ -23,9 +22,9 @@ var vueRouter_2_x = {
           if (!redirect) {
             (next || transition.next)();
             return;
-          } // router v2.x
+          }
 
-
+          // router v2.x
           if (next) {
             next(redirect);
           } else {
