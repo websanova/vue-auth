@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.1.13
+ * @websanova/vue-auth v4.2.0
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -14,10 +14,12 @@ var vueResource_1_x = {
   },
   interceptor: function (req, res) {
     var _this = this;
+
     this.plugins.http.interceptors.push(function (request, next) {
       if (req) {
         req.call(_this, request);
       }
+
       next(function (response) {
         if (res) {
           res.call(_this, response, request);
@@ -38,15 +40,18 @@ var vueResource_1_x = {
   },
   getHeaders: function (res) {
     var i,
-      data = {},
-      headers = res.headers.map;
+        data = {},
+        headers = res.headers.map;
+
     for (i in headers) {
       data[i] = headers[i][0];
     }
+
     return data;
   },
   setHeaders: function (req, headers) {
     var i;
+
     for (i in headers) {
       req.headers.set(i, headers[i]);
     }

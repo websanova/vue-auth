@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.1.13
+ * @websanova/vue-auth v4.2.0
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -14,6 +14,7 @@ var vueRouter_2_x = {
   },
   beforeEach: function (routerBeforeEach, transitionEach, setTransitions, getAuthMeta) {
     var _this = this;
+
     this.plugins.router.beforeEach(function (transition, location, next) {
       setTransitions(transition);
       routerBeforeEach.call(_this, function () {
@@ -22,9 +23,9 @@ var vueRouter_2_x = {
           if (!redirect) {
             (next || transition.next)();
             return;
-          }
+          } // router v2.x
 
-          // router v2.x
+
           if (next) {
             next(redirect);
           } else {
