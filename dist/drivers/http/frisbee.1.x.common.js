@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.2.0
+ * @websanova/vue-auth v4.2.1
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -14,7 +14,6 @@ var frisbee_1_x = {
   },
   interceptor: function (req, res) {
     var _this = this;
-
     this.plugins.http.interceptor.register({
       request: function (path, options) {
         req.call(_this, options);

@@ -1,5 +1,5 @@
 /*!
- * @websanova/vue-auth v4.2.0
+ * @websanova/vue-auth v4.2.1
  * https://websanova.com/docs/vue-auth
  * Released under the MIT License.
  */
@@ -12,8 +12,7 @@ var bearer = {
   },
   response: function (res) {
     var headers = this.drivers.http.getHeaders.call(this, res),
-        token = headers.Authorization || headers.authorization;
-
+      token = headers.Authorization || headers.authorization;
     if (token) {
       token = token.split(/Bearer:?\s?/i);
       return token[token.length > 1 ? 1 : 0].trim();
