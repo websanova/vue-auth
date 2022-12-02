@@ -55,6 +55,9 @@ const files = [{
     input: 'src/drivers/http/vue-resource.1.x.js',
     name: 'drivers/http/vue-resource.1.x'
 }, {
+    input: 'src/drivers/oauth2/auth0.js',
+    name: 'drivers/oauth2/auth0'
+}, {
     input: 'src/drivers/oauth2/facebook.js',
     name: 'drivers/oauth2/facebook'
 }, {
