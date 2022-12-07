@@ -31,7 +31,7 @@ function setCookie (key, value, params) {
 }
 
 function getDate(val) {
-    if (typeof val === 'string') {
+    if (typeof val === 'string' || typeof val === 'function') {
         return val;
     }
     else if (val !== null && val !== undefined) {
