@@ -338,6 +338,7 @@ function _processLogout(redirect) {
 
     __auth.$vm.state.loaded = true;
     __auth.$vm.state.authenticated = false;
+    __auth.$vm.state.impersonating = undefined;
     __auth.$vm.state.data = null;
 
     _processRedirect(redirect);
