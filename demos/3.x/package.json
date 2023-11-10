@@ -12,7 +12,7 @@
         "vue": "3.0.1",
         "vuex": "4.0.0-rc.1",
         "vue-router": "next",
-        "axios": "0.20.0"
+        "axios": "1.6.0"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "~4.5.0",
