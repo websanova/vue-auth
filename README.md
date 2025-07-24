@@ -7,13 +7,7 @@ A simple light-weight authentication library for Vue.js
 
 If you like this plugin please consider sponsoring.
 
-* [GitHub](https://github.com/sponsors/websanova)
 * [Patreon](https://patreon.com/websanova)
-
-
-## Demo
-
-Check the [live demo](https://vue-auth.websanova.com) to see vue-auth in action.
 
 
 ## Upgrade
